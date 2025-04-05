@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ruyi_booking/providers/bookingDataProvider.dart';
-import 'package:ruyi_booking/utils/colors.dart';
+import 'package:ruyi_booking/widgets/extras/custom_buttons.dart';
 import 'package:ruyi_booking/widgets/extras/deskstopAppBar.dart';
 
 class DeskstopBookingSummaryScreen extends StatefulWidget {
@@ -28,73 +28,34 @@ class _DeskstopBookingSummaryScreenState
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const SizedBox(height: 10),
-                _buildInfoCard(
-                    context, 'name'.tr(), bookingData.nameController.text),
+                _buildInfoCard(context, Icons.person, 'name'.tr(),
+                    bookingData.nameController.text),
                 _buildDivider(),
-                _buildInfoCard(
-                    context, 'phNo'.tr(), bookingData.phNoController.text),
+                _buildInfoCard(context, Icons.phone, 'phNo'.tr(),
+                    bookingData.phNoController.text),
                 _buildDivider(),
-                _buildInfoCard(
-                    context, 'email'.tr(), bookingData.emailController.text),
+                _buildInfoCard(context, Icons.email_rounded, 'email'.tr(),
+                    bookingData.emailController.text),
                 _buildDivider(),
-                _buildInfoCard(
-                    context, 'selectedDate'.tr(), bookingData.formattedDate),
+                _buildInfoCard(context, Icons.calendar_month_rounded,
+                    'selectedDate'.tr(), bookingData.formattedDate),
                 _buildDivider(),
-                _buildInfoCard(context, 'hour'.tr(), bookingData.selectedTime),
+                _buildInfoCard(context, Icons.watch_later_rounded, 'hour'.tr(),
+                    bookingData.selectedTime),
                 _buildDivider(),
-                _buildInfoCard(context, 'number_people'.tr(),
-                    bookingData.guestCounter.toString()),
+                _buildInfoCard(context, Icons.group_rounded,
+                    'number_people'.tr(), bookingData.guestCounter.toString()),
                 _buildDivider(),
-                _buildInfoCard(context, 'roomType'.tr(),
+                _buildInfoCard(context, Icons.house_rounded, 'roomType'.tr(),
                     bookingData.selectedRoomtype ?? ''),
                 _buildDivider(),
-                _buildInfoCard(context, 'roomName'.tr(),
-                    bookingData.selectedRoomName ?? ''),
+                _buildInfoCard(context, Icons.local_offer_rounded,
+                    'roomName'.tr(), bookingData.selectedRoomName ?? ''),
                 const SizedBox(height: 20),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 15,
-                  ),
-                  width: MediaQuery.of(context).size.width * 0.35,
-                  child: ElevatedButton(
-                    onPressed: () => bookingData.savingBooking(context),
-                    style: ElevatedButton.styleFrom(
-                      elevation: 5,
-                      padding: const EdgeInsets.symmetric(vertical: 20),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
-                    ),
-                    child: Text(
-                      'confirm'.tr(),
-                      style: const TextStyle(fontSize: 17),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.35,
-                  child: Material(
-                    elevation: 5,
-                    shadowColor: Colors.black.withOpacity(0.8),
-                    borderRadius: BorderRadius.circular(10),
-                    color: AppColors.appBackground,
-                    child: OutlinedButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      style: OutlinedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 20),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10)),
-                      ),
-                      child: Text(
-                        'back'.tr(),
-                        style: const TextStyle(
-                          fontSize: 18,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+                ButtonUtils.forwardButton(double.infinity, 'confirm'.tr(),
+                    () => bookingData.savingBooking(context)),
+                ButtonUtils.backwardButton(
+                    double.infinity, 'back'.tr(), () => Navigator.pop(context)),
               ],
             ),
           ),
@@ -105,17 +66,21 @@ class _DeskstopBookingSummaryScreenState
 
   Divider _buildDivider() {
     return const Divider(
-      indent: 18,
-      endIndent: 18,
       thickness: 2,
     );
   }
 
-  ListTile _buildInfoCard(BuildContext context, String title, String value) {
+  ListTile _buildInfoCard(
+      BuildContext context, IconData icon, String title, String value) {
     return ListTile(
-      leading: Text(
+      contentPadding: EdgeInsets.zero,
+      leading: Icon(
+        icon,
+        color: Theme.of(context).iconTheme.color,
+      ),
+      title: Text(
         title,
-        style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 20),
+        style: Theme.of(context).textTheme.bodyLarge,
       ),
       trailing: Text(
         value,

@@ -6,6 +6,7 @@ import 'package:ruyi_booking/screens/admin_screens/admin_auth_screens/adminAuth_
 import 'package:ruyi_booking/screens/admin_screens/admin_screen.dart';
 import 'package:ruyi_booking/screens/booking_screens/booking_screen.dart';
 import 'package:ruyi_booking/utils/colors.dart';
+import 'package:ruyi_booking/widgets/extras/custom_buttons.dart';
 import 'package:ruyi_booking/widgets/extras/image_slider.dart';
 import 'package:ruyi_booking/widgets/extras/infoTile.dart';
 import 'package:ruyi_booking/widgets/cores/language_picker.dart';
@@ -86,45 +87,18 @@ class _DeskstopHomeScreenState extends State<DeskstopHomeScreen> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                Center(
-                  child: SizedBox(
-                    width: 400,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return const BookingScreen();
-                        }));
-                      },
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 22),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5)),
-                      ),
-                      child: Text(
-                        'reserve'.tr(),
-                        style: const TextStyle(fontSize: 17),
-                      ),
-                    ),
-                  ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 90),
+                  child: ButtonUtils.forwardButton(400, 'reserve'.tr(), () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return const BookingScreen();
+                    }));
+                  }),
                 ),
-                const SizedBox(height: 10),
-                Center(
-                  child: SizedBox(
-                    width: 400,
-                    child: OutlinedButton(
-                      onPressed: () {},
-                      style: OutlinedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 22),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5)),
-                      ),
-                      child: Text(
-                        'menu'.tr(),
-                        style: const TextStyle(fontSize: 17),
-                      ),
-                    ),
-                  ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 90),
+                  child: ButtonUtils.backwardButton(400, 'menu'.tr(), () {}),
                 ),
                 const SizedBox(height: 60),
                 _buildContent(),

@@ -115,7 +115,7 @@ class _MobileBookingListScreenState extends State<MobileBookingListScreen> {
       ),
       title: Text(
         'Booking User: ${bookingData['username'] ?? 'Unknown'}',
-        style: Theme.of(context).textTheme.bodyLarge,
+        style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 15),
       ),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -138,7 +138,7 @@ class _MobileBookingListScreenState extends State<MobileBookingListScreen> {
       ),
       trailing: PopupMenuButton<int>(
         onSelected: (value) async {
-          if (value == 0) {
+          if (value == 0 && bookingData['status'] == 'Pending') {
             DialogUtils.showBookingConfirmationDialog(
               context,
               'Confirm Booking',
@@ -156,7 +156,7 @@ class _MobileBookingListScreenState extends State<MobileBookingListScreen> {
               },
               isClickable: true,
             );
-          } else if (value == 1) {
+          } else if (value == 1 && bookingData['status'] == 'Confirmed') {
             DialogUtils.showBookingConfirmationDialog(
               context,
               'Confirm Complete',
@@ -199,25 +199,27 @@ class _MobileBookingListScreenState extends State<MobileBookingListScreen> {
         itemBuilder: (context) => [
           PopupMenuItem(
             value: 0,
+            enabled: bookingData['status'] == 'Pending',
             child: Center(
               child: Text(
                 'confirm'.tr(),
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyLarge
-                    ?.copyWith(color: AppColors.appBackground),
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: bookingData['status'] == 'Pending'
+                        ? AppColors.appBackground
+                        : Colors.grey[500]),
               ),
             ),
           ),
           PopupMenuItem(
             value: 1,
+            enabled: bookingData['status'] == 'Confirmed',
             child: Center(
               child: Text(
                 'complete'.tr(),
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyLarge
-                    ?.copyWith(color: AppColors.appBackground),
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: bookingData['status'] == 'Confirmed'
+                        ? AppColors.appBackground
+                        : Colors.grey[500]),
               ),
             ),
           ),

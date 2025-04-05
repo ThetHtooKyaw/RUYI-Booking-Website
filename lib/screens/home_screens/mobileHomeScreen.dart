@@ -5,6 +5,7 @@ import 'package:ruyi_booking/screens/admin_screens/admin_auth_screens/adminAuth_
 import 'package:ruyi_booking/screens/admin_screens/admin_screen.dart';
 import 'package:ruyi_booking/screens/booking_screens/booking_screen.dart';
 import 'package:ruyi_booking/utils/colors.dart';
+import 'package:ruyi_booking/widgets/extras/custom_buttons.dart';
 import 'package:ruyi_booking/widgets/extras/custom_divider.dart';
 import 'package:ruyi_booking/widgets/extras/image_slider.dart';
 import 'package:ruyi_booking/widgets/extras/infoTile.dart';
@@ -47,32 +48,15 @@ class _MobileHomeScreenState extends State<MobileHomeScreen> {
           const SizedBox(height: 20),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 90),
-            child: ElevatedButton(
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return const BookingScreen();
-                }));
-              },
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 22),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5)),
-              ),
-              child: Text('reserve'.tr()),
-            ),
+            child: ButtonUtils.forwardButton(100, 'reserve'.tr(), () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return const BookingScreen();
+              }));
+            }),
           ),
-          const SizedBox(height: 10),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 90),
-            child: OutlinedButton(
-              onPressed: () {},
-              style: OutlinedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 22),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5)),
-              ),
-              child: Text('menu'.tr()),
-            ),
+            child: ButtonUtils.backwardButton(100, 'menu'.tr(), () {}),
           ),
           const SizedBox(height: 40),
           const ImageSlider(indicaterLeft: 215),
@@ -91,7 +75,8 @@ class _MobileHomeScreenState extends State<MobileHomeScreen> {
           InfoTile(
               icon: Icons.phone,
               title: 'contact_us'.tr(),
-              content: 'Phone Number : 09-986619999, 09-986629999\nEmail: '),
+              content:
+                  'Phone Number : 09-986619999, 09-986629999\nEmail: yinli5027770@gmail.com'),
           const SizedBox(height: 20),
         ],
       ),
@@ -160,7 +145,7 @@ class _MobileHomeScreenState extends State<MobileHomeScreen> {
               }));
             },
             style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 22),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 20),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5)),
             ),
@@ -183,43 +168,36 @@ class _MobileHomeScreenState extends State<MobileHomeScreen> {
             color: Colors.black,
           ),
           const SizedBox(height: 40),
-          InkWell(
-            onTap: () {},
-            child: Text(
-              'about'.tr(),
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-          ),
+          _buildDrawerTab(context, 'about'.tr(), () {}),
           const CustomDivider(),
-          InkWell(
-            onTap: () {},
-            child: Text(
-              'FAQ'.tr(),
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-          ),
+          _buildDrawerTab(context, 'FAQ'.tr(), () {}),
           const CustomDivider(),
-          InkWell(
-            onTap: () {
-              if (FirebaseAuth.instance.currentUser != null) {
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) {
-                  return const AdminScreen();
-                }));
-                return;
-              }
+          _buildDrawerTab(context, 'admin'.tr(), () {
+            if (FirebaseAuth.instance.currentUser != null) {
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) {
-                return const AdminAuthScreen();
+                return const AdminScreen();
               }));
-            },
-            child: Text(
-              'admin'.tr(),
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-          ),
+              return;
+            }
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) {
+              return const AdminAuthScreen();
+            }));
+          }),
           const CustomDivider(),
         ],
+      ),
+    );
+  }
+
+  InkWell _buildDrawerTab(
+      BuildContext context, String text, VoidCallback onTap) {
+    return InkWell(
+      onTap: onTap,
+      child: Text(
+        text,
+        style: Theme.of(context).textTheme.bodyMedium,
       ),
     );
   }

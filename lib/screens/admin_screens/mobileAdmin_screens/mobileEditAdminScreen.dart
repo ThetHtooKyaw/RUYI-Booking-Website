@@ -4,7 +4,9 @@ import 'package:provider/provider.dart';
 import 'package:ruyi_booking/providers/adminAuthProvider.dart';
 import 'package:ruyi_booking/screens/admin_screens/admin_auth_screens/mobileSignUpScreen.dart';
 import 'package:ruyi_booking/utils/colors.dart';
+import 'package:ruyi_booking/widgets/extras/custom_buttons.dart';
 import 'package:ruyi_booking/widgets/extras/custom_icon.dart';
+import 'package:ruyi_booking/widgets/extras/custom_textfields.dart';
 
 class MobileEditAdminScreen extends StatefulWidget {
   const MobileEditAdminScreen({super.key});
@@ -54,33 +56,27 @@ class _MobileEditAdminScreenState extends State<MobileEditAdminScreen> {
                       ),
                       _buildTitle(context, 'username'.tr()),
                       adminAuthData.nameEdit
-                          ? Row(
-                              children: [
-                                Expanded(
-                                  child: _buildTextField(
-                                      context,
-                                      adminAuthData.updateNameController,
-                                      'Enter admin username', (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Username is required';
-                                    } else if (value.length < 3) {
-                                      return 'Username must have at least 3 characters';
-                                    }
-
-                                    return null;
-                                  }),
-                                ),
-                                const SizedBox(width: 20),
-                                _buildButtons(
-                                  context,
-                                  'done'.tr(),
-                                  100,
-                                  () async {
-                                    await adminAuthData
-                                        .updateAdminName(context);
-                                  },
-                                ),
-                              ],
+                          ? SizedBox(
+                              width: double.infinity,
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: TextFieldUtils.nameTextField(
+                                        adminAuthData.updateNameController,
+                                        'Enter new admin username',
+                                        double.infinity),
+                                  ),
+                                  const SizedBox(width: 20),
+                                  ButtonUtils.forwardButton(
+                                    100,
+                                    'done'.tr(),
+                                    () async {
+                                      await adminAuthData
+                                          .updateAdminName(context);
+                                    },
+                                  ),
+                                ],
+                              ),
                             )
                           : _buildCurrentData(
                               context,
@@ -96,33 +92,20 @@ class _MobileEditAdminScreenState extends State<MobileEditAdminScreen> {
                       adminAuthData.emailEdit
                           ? Column(
                               children: [
-                                _buildTextField(
-                                  context,
-                                  adminAuthData.updateEmailController,
-                                  'Enter new admin email',
-                                  (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Email is required';
-                                    } else if (value.length < 6) {
-                                      return 'Phone number must have at least 6 characters';
-                                    } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+')
-                                        .hasMatch(value)) {
-                                      return 'Enter a valid email';
-                                    }
-
-                                    return null;
-                                  },
-                                ),
-                                const SizedBox(height: 10),
-                                _buildPasswordTextField(
+                                TextFieldUtils.emailTextField(
+                                    adminAuthData.updateEmailController,
+                                    'Enter new admin email',
+                                    double.infinity),
+                                const SizedBox(height: 5),
+                                TextFieldUtils.passwordTextField(
                                     adminAuthData
                                         .passwordForEmailUpdateController,
-                                    'Enter old admin password'),
-                                const SizedBox(height: 10),
-                                _buildButtons(
-                                  context,
+                                    'Enter admin password',
+                                    double.infinity),
+                                const SizedBox(height: 5),
+                                ButtonUtils.forwardButton(
+                                  double.infinity,
                                   'done'.tr(),
-                                  MediaQuery.of(context).size.width * 0.95,
                                   () async {
                                     await adminAuthData.updateEmail(context);
                                   },
@@ -142,31 +125,29 @@ class _MobileEditAdminScreenState extends State<MobileEditAdminScreen> {
                       adminAuthData.passwordEdit
                           ? Column(
                               children: [
-                                _buildPasswordTextField(
-                                  adminAuthData
-                                      .passwordForPasswordUpdateController,
-                                  'Enter old admin password',
-                                ),
-                                const SizedBox(height: 10),
-                                _buildPasswordTextField(
-                                  adminAuthData.updatePasswordController,
-                                  'Enter new admin password',
-                                ),
-                                const SizedBox(height: 10),
-                                _buildButtons(
-                                  context,
+                                TextFieldUtils.passwordTextField(
+                                    adminAuthData
+                                        .passwordForPasswordUpdateController,
+                                    'Enter old admin password',
+                                    double.infinity),
+                                const SizedBox(height: 5),
+                                TextFieldUtils.passwordTextField(
+                                    adminAuthData.updatePasswordController,
+                                    'Enter new admin password',
+                                    double.infinity),
+                                const SizedBox(height: 5),
+                                ButtonUtils.forwardButton(
+                                  double.infinity,
                                   'done'.tr(),
-                                  MediaQuery.of(context).size.width * 0.95,
                                   () async {
                                     await adminAuthData.updatePassword(context);
                                   },
                                 ),
                               ],
                             )
-                          : _buildButtons(
-                              context,
+                          : ButtonUtils.forwardButton(
+                              double.infinity,
                               'change_password'.tr(),
-                              450,
                               () {
                                 setState(() {
                                   adminAuthData.setPasswordEdit(true);
@@ -174,34 +155,16 @@ class _MobileEditAdminScreenState extends State<MobileEditAdminScreen> {
                               },
                             ),
                       const SizedBox(height: 60),
-                      Container(
-                        padding: const EdgeInsets.only(
-                          bottom: 20,
-                        ),
-                        width: 450,
-                        child: Material(
-                          elevation: 5,
-                          shadowColor: Colors.black.withOpacity(0.8),
-                          borderRadius: BorderRadius.circular(10),
-                          color: AppColors.appBackground,
-                          child: OutlinedButton(
-                            onPressed: () {
-                              adminAuthData.setNameEdit(false);
-                              adminAuthData.setEmailEdit(false);
-                              adminAuthData.setPasswordEdit(false);
-                            },
-                            style: OutlinedButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(vertical: 20),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10)),
-                            ),
-                            child: Text(
-                              'cancel'.tr(),
-                              style: const TextStyle(
-                                fontSize: 18,
-                              ),
-                            ),
-                          ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 20),
+                        child: ButtonUtils.backwardButton(
+                          double.infinity,
+                          'cancel'.tr(),
+                          () {
+                            adminAuthData.setNameEdit(false);
+                            adminAuthData.setEmailEdit(false);
+                            adminAuthData.setPasswordEdit(false);
+                          },
                         ),
                       ),
                       Center(
@@ -248,92 +211,6 @@ class _MobileEditAdminScreenState extends State<MobileEditAdminScreen> {
           ),
         ),
       ],
-    );
-  }
-
-  Container _buildButtons(
-    BuildContext context,
-    String name,
-    double width,
-    VoidCallback onPressed,
-  ) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      width: width,
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          elevation: 5,
-          padding: const EdgeInsets.symmetric(vertical: 20),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        ),
-        child: Text(
-          name,
-          style: const TextStyle(fontSize: 17),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTextField(BuildContext context, TextEditingController controller,
-      String hintText, String? Function(String?) validator) {
-    return SizedBox(
-      child: TextFormField(
-        controller: controller,
-        validator: validator,
-        autovalidateMode: AutovalidateMode.onUserInteraction,
-        decoration: InputDecoration(
-          hintText: hintText,
-          errorStyle: const TextStyle(
-            fontSize: 15,
-            color: AppColors.appAccent,
-          ),
-          errorBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: AppColors.appAccent),
-            borderRadius: BorderRadius.circular(12),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildPasswordTextField(
-      TextEditingController controller, String hintText) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width * 0.95,
-      child: TextFormField(
-        controller: controller,
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'Password is required';
-          } else if (value.length < 8) {
-            return 'Password must have at least 8 characters';
-          } else if (!RegExp(r'[A-Z]').hasMatch(value)) {
-            return 'Password must contain at least one uppercase letter';
-          } else if (!RegExp(r'[a-z]').hasMatch(value)) {
-            return 'Password must contain at least one lowercase letter';
-          } else if (!RegExp(r'[0-9]').hasMatch(value)) {
-            return 'Password must contain at least one number';
-          }
-
-          return null;
-        },
-        autovalidateMode: AutovalidateMode.onUserInteraction,
-        obscureText: true,
-        autocorrect: false,
-        decoration: InputDecoration(
-          hintText: hintText,
-          errorStyle: const TextStyle(
-            fontSize: 15,
-            color: AppColors.appAccent,
-          ),
-          errorBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: AppColors.appAccent),
-            borderRadius: BorderRadius.circular(12),
-          ),
-        ),
-      ),
     );
   }
 

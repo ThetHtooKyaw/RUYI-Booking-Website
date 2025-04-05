@@ -106,7 +106,7 @@ class _DeskstopBookingListScreenState extends State<DeskstopBookingListScreen> {
         }));
       },
       leading: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.only(left: 10),
         child: FaIcon(
           (bookingData['status'] == 'Pending')
               ? Icons.pending_actions_rounded
@@ -114,7 +114,7 @@ class _DeskstopBookingListScreenState extends State<DeskstopBookingListScreen> {
                       bookingData['status'] == 'Completed')
                   ? FontAwesomeIcons.calendarCheck
                   : FontAwesomeIcons.calendarXmark,
-          size: 35,
+          size: 45,
           color: Theme.of(context).iconTheme.color,
         ),
       ),
@@ -149,7 +149,7 @@ class _DeskstopBookingListScreenState extends State<DeskstopBookingListScreen> {
       ),
       trailing: PopupMenuButton<int>(
         onSelected: (value) async {
-          if (value == 0) {
+          if (value == 0 && bookingData['status'] == 'Pending') {
             DialogUtils.showBookingConfirmationDialog(
               context,
               'Confirm Booking',
@@ -167,7 +167,7 @@ class _DeskstopBookingListScreenState extends State<DeskstopBookingListScreen> {
               },
               isClickable: true,
             );
-          } else if (value == 1) {
+          } else if (value == 1 && bookingData['status'] == 'Confirmed') {
             DialogUtils.showBookingConfirmationDialog(
               context,
               'Confirm Complete',
@@ -210,25 +210,27 @@ class _DeskstopBookingListScreenState extends State<DeskstopBookingListScreen> {
         itemBuilder: (context) => [
           PopupMenuItem(
             value: 0,
+            enabled: bookingData['status'] == 'Pending',
             child: Center(
               child: Text(
                 'confirm'.tr(),
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyLarge
-                    ?.copyWith(color: AppColors.appBackground),
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: bookingData['status'] == 'Pending'
+                        ? AppColors.appBackground
+                        : Colors.grey[500]),
               ),
             ),
           ),
           PopupMenuItem(
             value: 1,
+            enabled: bookingData['status'] == 'Confirmed',
             child: Center(
               child: Text(
                 'complete'.tr(),
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyLarge
-                    ?.copyWith(color: AppColors.appBackground),
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: bookingData['status'] == 'Confirmed'
+                        ? AppColors.appBackground
+                        : Colors.grey[500]),
               ),
             ),
           ),

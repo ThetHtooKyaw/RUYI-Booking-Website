@@ -69,7 +69,7 @@ class RoomPicker extends StatelessWidget {
               ),
               errorBorder: OutlineInputBorder(
                 borderSide: const BorderSide(color: AppColors.appAccent),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(10),
               ),
               suffixIcon: Padding(
                 padding: const EdgeInsets.only(right: 10),

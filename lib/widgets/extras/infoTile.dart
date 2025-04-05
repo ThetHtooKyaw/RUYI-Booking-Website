@@ -37,12 +37,12 @@ class InfoTile extends StatelessWidget {
           ),
         ),
         const Divider(
-          indent: 36,
-          endIndent: 36,
+          indent: 30,
+          endIndent: 30,
           height: 20,
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 50, right: 20),
+          padding: const EdgeInsets.only(left: 40, right: 20),
           child: Text(
             content,
             style: Theme.of(context).textTheme.bodyMedium,

@@ -89,51 +89,38 @@ class _MobileAdminScreenState extends State<MobileAdminScreen> {
             color: Colors.black,
           ),
           const SizedBox(height: 40),
-          InkWell(
-            onTap: () {
-              _onDrawerItemChange(0);
-              Navigator.pop(context);
-            },
-            child: Text(
-              'edit'.tr(),
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-          ),
+          _buildDrawerTab(context, 'edit'.tr(), () {
+            _onDrawerItemChange(0);
+            Navigator.pop(context);
+          }),
           const CustomDivider(),
-          InkWell(
-            onTap: () {
-              _onDrawerItemChange(1);
-              Navigator.pop(context);
-            },
-            child: Text(
-              'manage_booking'.tr(),
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-          ),
+          _buildDrawerTab(context, 'manage_booking'.tr(), () {
+            _onDrawerItemChange(1);
+            Navigator.pop(context);
+          }),
           const CustomDivider(),
-          InkWell(
-            onTap: () {
-              _onDrawerItemChange(2);
-              Navigator.pop(context);
-            },
-            child: Text(
-              'edit_calendar'.tr(),
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-          ),
+          _buildDrawerTab(context, 'edit_calendar'.tr(), () {
+            _onDrawerItemChange(2);
+            Navigator.pop(context);
+          }),
           const CustomDivider(),
-          InkWell(
-            onTap: () {
-              Provider.of<AdminAuthProvider>(context, listen: false)
-                  .adminSignOut(context);
-            },
-            child: Text(
-              'logout'.tr(),
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-          ),
+          _buildDrawerTab(context, 'logout'.tr(), () {
+            Provider.of<AdminAuthProvider>(context, listen: false)
+                .adminSignOut(context);
+          }),
           const CustomDivider(),
         ],
+      ),
+    );
+  }
+
+  InkWell _buildDrawerTab(
+      BuildContext context, String text, VoidCallback onTap) {
+    return InkWell(
+      onTap: onTap,
+      child: Text(
+        text,
+        style: Theme.of(context).textTheme.bodyMedium,
       ),
     );
   }
