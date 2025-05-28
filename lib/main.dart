@@ -4,8 +4,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ruyi_booking/firebase_options.dart';
-import 'package:ruyi_booking/providers/adminAuthProvider.dart';
-import 'package:ruyi_booking/providers/bookingDataProvider.dart';
+import 'package:ruyi_booking/providers/admin_auth_provider.dart';
+import 'package:ruyi_booking/providers/booking_data_provider.dart';
+import 'package:ruyi_booking/providers/menu_data_provider.dart';
 import 'package:ruyi_booking/screens/home_screens/home_screen.dart';
 import 'package:ruyi_booking/utils/theme.dart';
 
@@ -23,6 +24,7 @@ void main() async {
         providers: [
           ChangeNotifierProvider(create: (context) => BookingDataProvider()),
           ChangeNotifierProvider(create: (context) => AdminAuthProvider()),
+          ChangeNotifierProvider(create: (context) => MenuDataProvider()),
         ],
         child: const MyApp(),
       ),

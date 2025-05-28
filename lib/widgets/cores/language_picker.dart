@@ -1,5 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:ruyi_booking/utils/colors.dart';
+import 'package:universal_html/html.dart' as html;
 
 class LanguagePicker extends StatefulWidget {
   final double offset;
@@ -11,47 +13,72 @@ class LanguagePicker extends StatefulWidget {
 }
 
 class _LanguagePickerState extends State<LanguagePicker> {
-  String selectedLanguage = 'English';
-  final List<String> languageOptions = ['English', '中国', 'မြန်မာ'];
+  late Locale selectedLanguage = context.savedLocale ?? const Locale('en');
+  final List<Locale> languageOptions = [
+    const Locale('en'),
+    const Locale('zh'),
+    const Locale('my'),
+  ];
+
+  String getLanguageName(Locale locale) {
+    switch (locale.languageCode) {
+      case "zh":
+        return "中国";
+      case "my":
+        return "မြန်မာ";
+      default:
+        return "English";
+    }
+  }
+
+  Future<void> _changeLanguage(BuildContext context, Locale language) async {
+    OverlayEntry? loader;
+
+    loader = OverlayEntry(
+      builder: (_) => const ColoredBox(
+        color: AppColors.appBackground,
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      ),
+    );
+    Overlay.of(context).insert(loader);
+
+    try {
+      setState(() => selectedLanguage = language);
+      await context.setLocale(selectedLanguage);
+      html.window.location.reload();
+    } finally {
+      loader.remove();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        PopupMenuButton<String>(
+        PopupMenuButton<Locale>(
           offset: Offset(widget.offset, kToolbarHeight),
-          onSelected: (String value) {
-            setState(() {
-              selectedLanguage = value;
-            });
-
-            if (value == 'English') {
-              context.setLocale(const Locale('en'));
-            } else if (value == '中国') {
-              context.setLocale(const Locale('zh'));
-            } else if (value == 'မြန်မာ') {
-              context.setLocale(const Locale('my'));
-            }
-          },
+          onSelected: (value) => _changeLanguage(context, value),
           itemBuilder: (context) {
-            return languageOptions.map((String lan) {
-              return PopupMenuItem<String>(
-                value: lan,
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(minWidth: 100),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 25, right: 25),
-                    child: Center(child: Text(lan)),
-                  ),
-                ),
-              );
-            }).toList();
+            return languageOptions
+                .map((lan) => PopupMenuItem<Locale>(
+                      value: lan,
+                      child: ConstrainedBox(
+                        constraints: const BoxConstraints(minWidth: 100),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 25, right: 25),
+                          child: Center(child: Text(getLanguageName(lan))),
+                        ),
+                      ),
+                    ))
+                .toList();
           },
           child: TextButton(
             onPressed: null,
             child: Text(
-              selectedLanguage,
+              getLanguageName(selectedLanguage),
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: widget.color,

@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:ruyi_booking/screens/admin_screens/admin_auth_screens/adminAuth_screen%20copy.dart';
+import 'package:ruyi_booking/screens/admin_screens/adminAuth_screens/admin_auth_screen.dart';
 import 'package:ruyi_booking/services/booking_service.dart';
 import 'package:ruyi_booking/utils/colors.dart';
 import 'package:ruyi_booking/widgets/cores/main_logo.dart';
@@ -24,8 +24,8 @@ class ScrollableAppbar extends StatelessWidget {
         padding: const EdgeInsets.only(left: 40),
         child: Row(
           children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20),
+            const Padding(
+              padding: EdgeInsets.only(left: 20, right: 20),
               child: Center(
                 child: MainLogo(height: 55, width: 55),
               ),

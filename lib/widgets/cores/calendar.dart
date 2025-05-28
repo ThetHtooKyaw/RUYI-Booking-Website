@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:ruyi_booking/providers/bookingDataProvider.dart';
+import 'package:ruyi_booking/providers/booking_data_provider.dart';
 import 'package:ruyi_booking/utils/colors.dart';
 import 'package:table_calendar/table_calendar.dart';
 

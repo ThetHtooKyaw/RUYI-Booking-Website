@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:ruyi_booking/providers/bookingDataProvider.dart';
+import 'package:ruyi_booking/providers/booking_data_provider.dart';
 
 class GuestCounter extends StatefulWidget {
   final double width;
