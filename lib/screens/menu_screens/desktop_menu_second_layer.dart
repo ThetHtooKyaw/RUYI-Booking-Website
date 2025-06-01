@@ -3,46 +3,33 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ruyi_booking/classes/category.dart';
 import 'package:ruyi_booking/providers/menu_data_provider.dart';
-import 'package:ruyi_booking/screens/menu_screens/mobile_add_to_cart_screen.dart';
 import 'package:ruyi_booking/utils/colors.dart';
 import 'package:ruyi_booking/widgets/cores/item_counter.dart';
 import 'package:ruyi_booking/widgets/cores/menu_type_picker.dart';
-import 'package:ruyi_booking/widgets/extras/custom_buttons.dart';
-import 'package:ruyi_booking/widgets/extras/mobile_app_bar.dart';
 
-class MobileMenuScreen extends StatefulWidget {
-  const MobileMenuScreen({super.key});
+class DesktopMenuSecondLayer extends StatefulWidget {
+  final int selectedCategory;
+  final List<Map<String, dynamic>> filteredItems;
+  const DesktopMenuSecondLayer(
+      {super.key, required this.filteredItems, required this.selectedCategory});
 
   @override
-  State<MobileMenuScreen> createState() => _MobileMenuScreenState();
+  State<DesktopMenuSecondLayer> createState() => _DesktopMenuSecondLayerState();
 }
 
-class _MobileMenuScreenState extends State<MobileMenuScreen> {
-  int selectedCategory = 0;
-
+class _DesktopMenuSecondLayerState extends State<DesktopMenuSecondLayer> {
   @override
   Widget build(BuildContext context) {
     var menuData = Provider.of<MenuDataProvider>(context);
-    final filteredItems = menuData.getFilteredItems(selectedCategory);
-
-    return Scaffold(
-      appBar: MobileAppbar(title: 'menu'.tr(), isClickable: true),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+    return Expanded(
+      flex: 2,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
-              child: Column(
-                children: [
-                  searchBar(menuData.searchController),
-                  foodCategoryTabs(),
-                ],
-              ),
-            ),
-            const SizedBox(height: 10),
+            SizedBox(child: searchBar(menuData.searchController)),
             Expanded(
-              child: filteredItems.isEmpty
+              child: widget.filteredItems.isEmpty
                   ? Center(
                       child: Text(
                         'note1'.tr(),
@@ -52,14 +39,14 @@ class _MobileMenuScreenState extends State<MobileMenuScreen> {
                       ),
                     )
                   : ListView.separated(
-                      separatorBuilder: (context, index) => const Divider(
+                      separatorBuilder: (context, index) => Divider(
                         height: 1,
                         thickness: 1,
-                        color: AppColors.appAccent,
+                        color: Theme.of(context).iconTheme.color,
                       ),
-                      itemCount: filteredItems.length,
+                      itemCount: widget.filteredItems.length,
                       itemBuilder: (context, index) {
-                        final item = filteredItems[index];
+                        final item = widget.filteredItems[index];
                         String type = menuData.itemType[item['id']] ??
                             (item['type'] is Map
                                 ? item['type']['0']
@@ -72,7 +59,7 @@ class _MobileMenuScreenState extends State<MobileMenuScreen> {
                           children: [
                             if (index == 0)
                               Text(
-                                categories[selectedCategory].name.tr(),
+                                categories[widget.selectedCategory].name.tr(),
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodyLarge
@@ -90,7 +77,7 @@ class _MobileMenuScreenState extends State<MobileMenuScreen> {
                                     borderRadius: BorderRadius.circular(5),
                                     child: SizedBox(
                                       height: 160,
-                                      width: 170,
+                                      width: 200,
                                       child: Image.asset(
                                         item['image'],
                                         fit: BoxFit.cover,
@@ -107,57 +94,10 @@ class _MobileMenuScreenState extends State<MobileMenuScreen> {
                         );
                       },
                     ),
-            )
+            ),
           ],
         ),
       ),
-      bottomSheet: menuData.cartedItems.isNotEmpty
-          ? Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-              height: 65,
-              width: double.infinity,
-              decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius:
-                      BorderRadius.vertical(top: Radius.circular(10))),
-              child: Stack(
-                children: [
-                  ButtonUtils.forwardButton(
-                    double.infinity,
-                    'view_cart'.tr(),
-                    () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return const MobileAddToCartScreen();
-                      }));
-                    },
-                  ),
-                  Positioned(
-                    right: 5,
-                    top: 10,
-                    child: Container(
-                      height: 35,
-                      width: 35,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: Center(
-                        child: Text(
-                          menuData.cartedItems.length.toString(),
-                          style:
-                              Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                    color: AppColors.appAccent,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            )
-          : null,
     );
   }
 
@@ -272,56 +212,7 @@ class _MobileMenuScreenState extends State<MobileMenuScreen> {
             onChanged: (value) => menuData.setSearchQuery(value),
             decoration: InputDecoration(
               hintText: 'search'.tr(),
-              prefixIcon:
-                  Icon(Icons.search, color: Theme.of(context).iconTheme.color),
-            ),
-          );
-        },
-      ),
-    );
-  }
-
-  Widget foodCategoryTabs() {
-    return SizedBox(
-      height: 40,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        physics: const BouncingScrollPhysics(),
-        itemCount: categories.length,
-        itemBuilder: (context, index) {
-          final isSelected = selectedCategory == index;
-          final category = categories[index];
-
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5),
-            child: GestureDetector(
-              onTap: () => setState(() => selectedCategory = index),
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                decoration: BoxDecoration(
-                  color: isSelected ? AppColors.appAccent : Colors.white,
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: Row(
-                  children: [
-                    Image.asset(
-                      category.icon,
-                      width: 17,
-                      height: 17,
-                      color: isSelected ? Colors.white : AppColors.appAccent,
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      category.name.tr(),
-                      style: TextStyle(
-                        color: isSelected ? Colors.white : Colors.black,
-                        fontWeight:
-                            isSelected ? FontWeight.bold : FontWeight.normal,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              prefixIcon: const Icon(Icons.search, color: AppColors.appAccent),
             ),
           );
         },

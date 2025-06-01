@@ -4,18 +4,18 @@ import 'package:provider/provider.dart';
 import 'package:ruyi_booking/providers/menu_data_provider.dart';
 import 'package:ruyi_booking/utils/colors.dart';
 import 'package:ruyi_booking/utils/menu_data.dart';
-import 'package:ruyi_booking/widgets/cores/item_counter.dart';
 import 'package:ruyi_booking/widgets/extras/custom_buttons.dart';
 import 'package:ruyi_booking/widgets/extras/mobile_app_bar.dart';
 
-class MobileAddToCartScreen extends StatefulWidget {
-  const MobileAddToCartScreen({super.key});
+class MobileViewMenuFavScreen extends StatefulWidget {
+  const MobileViewMenuFavScreen({super.key});
 
   @override
-  State<MobileAddToCartScreen> createState() => _MobileAddToCartScreenState();
+  State<MobileViewMenuFavScreen> createState() =>
+      _MobileViewMenuFavScreenState();
 }
 
-class _MobileAddToCartScreenState extends State<MobileAddToCartScreen> {
+class _MobileViewMenuFavScreenState extends State<MobileViewMenuFavScreen> {
   @override
   Widget build(BuildContext context) {
     var menuData = Provider.of<MenuDataProvider>(context);
@@ -23,14 +23,15 @@ class _MobileAddToCartScreenState extends State<MobileAddToCartScreen> {
       appBar: MobileAppbar(title: 'cart_title'.tr(), isClickable: true),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: menuData.cartedItems.isEmpty
+        child: menuData.favItems.isEmpty
             ? cartEmpty(context)
             : ListView.builder(
                 padding: const EdgeInsets.only(bottom: 205),
-                itemCount: menuData.cartedItems.length,
+                itemCount: menuData.favItems.length,
                 itemBuilder: (context, index) {
-                  final itemKey = menuData.cartedItems.keys.toList()[index];
-                  final item = menuData.cartedItems[itemKey];
+                  final itemKey = menuData.favItems.keys.toList()[index];
+                  bool isclicked = menuData.isClickedItem(itemKey);
+                  final item = menuData.favItems[itemKey];
                   final itemDetail = menuItems.firstWhere(
                       (value) => value['id'] == item?['selectedItemId']);
 
@@ -120,19 +121,28 @@ class _MobileAddToCartScreenState extends State<MobileAddToCartScreen> {
                                   ],
                                 ),
                                 const Spacer(),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    ItemCounter(
-                                      quantity: item['quantity'],
-                                      onQuantityChanged: (newQty) {
-                                        menuData.onCartItemQuantityChanged(
-                                            itemKey, newQty);
-                                      },
-                                      onZeroQuantityReached: () =>
-                                          menuData.removeFromCart(itemKey),
+                                Align(
+                                  alignment: Alignment.centerRight,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      menuData.onFavItemAdd(
+                                          itemKey,
+                                          item,
+                                          menuData.priceKey(item),
+                                          menuData.typeKey(item));
+                                    },
+                                    child: CircleAvatar(
+                                      backgroundColor: isclicked
+                                          ? AppColors.appAccent
+                                          : Colors.white,
+                                      child: Icon(
+                                        Icons.favorite_rounded,
+                                        color: isclicked
+                                            ? Colors.white
+                                            : AppColors.appAccent,
+                                      ),
                                     ),
-                                  ],
+                                  ),
                                 ),
                               ],
                             ),
@@ -146,44 +156,18 @@ class _MobileAddToCartScreenState extends State<MobileAddToCartScreen> {
       ),
       bottomSheet: Container(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-        height: 195,
+        height: 65,
         width: double.infinity,
         decoration: const BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.vertical(top: Radius.circular(10))),
-        child: Column(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 5),
-              child: Text(
-                'note2'.tr(),
-                style: Theme.of(context)
-                    .textTheme
-                    .bodySmall
-                    ?.copyWith(color: AppColors.appAccent),
-              ),
-            ),
-            const SizedBox(height: 5),
-            priceText(context, 'assets/icons/quantity.png', 'quantity'.tr(),
-                menuData.cartedItems.length.toString()),
-            // priceText(context, 'Discount', ''),
-            const Divider(thickness: 2),
-            priceText(context, 'assets/icons/price.png', 'price'.tr(),
-                menuData.calculateTotalPrice()),
-            const Spacer(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: ButtonUtils.backwardButton(220, 'back'.tr(), () {
-                    Navigator.pop(context);
-                  }),
-                ),
-                const SizedBox(width: 20),
-                Expanded(
-                  child: ButtonUtils.forwardButton(220, 'confirm'.tr(), () {}),
-                )
-              ],
+            Expanded(
+              child: ButtonUtils.forwardButton(220, 'back'.tr(), () {
+                Navigator.pop(context);
+              }),
             ),
           ],
         ),

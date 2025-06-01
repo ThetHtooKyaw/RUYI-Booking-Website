@@ -3,19 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ruyi_booking/classes/category.dart';
 import 'package:ruyi_booking/providers/menu_data_provider.dart';
-import 'package:ruyi_booking/screens/menu_screens/desktop_menu_second_layer.dart';
-import 'package:ruyi_booking/screens/menu_screens/desktop_menu_third_layer.dart';
+import 'package:ruyi_booking/screens/view_menu_screens/desktop_view_menu_second_layer.dart';
+import 'package:ruyi_booking/screens/view_menu_screens/desktop_view_menu_third_layer.dart';
 import 'package:ruyi_booking/utils/colors.dart';
 import 'package:ruyi_booking/widgets/extras/desktop_app_bar.dart';
 
-class DesktopMenuScreen extends StatefulWidget {
-  const DesktopMenuScreen({super.key});
+class DesktopViewMenuScreen extends StatefulWidget {
+  const DesktopViewMenuScreen({super.key});
 
   @override
-  State<DesktopMenuScreen> createState() => _DesktopMenuScreenState();
+  State<DesktopViewMenuScreen> createState() => _DesktopViewMenuScreenState();
 }
 
-class _DesktopMenuScreenState extends State<DesktopMenuScreen> {
+class _DesktopViewMenuScreenState extends State<DesktopViewMenuScreen> {
   int selectedCategory = 0;
 
   @override
@@ -25,13 +25,13 @@ class _DesktopMenuScreenState extends State<DesktopMenuScreen> {
     return Scaffold(
       appBar: DesktopAppBar(title: 'menu'.tr(), isClickable: true),
       body: Padding(
-        padding: const EdgeInsets.only(top: 10, left: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10),
-              width: 300,
+              width: 350,
               height: double.infinity,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,10 +48,12 @@ class _DesktopMenuScreenState extends State<DesktopMenuScreen> {
                 ],
               ),
             ),
-            DesktopMenuSecondLayer(
+            DesktopViewMenuSecondLayer(
                 filteredItems: filteredItems,
                 selectedCategory: selectedCategory),
-            const DesktopMenuThirdLayer(),
+            menuData.favItems.isNotEmpty
+                ? const DesktopViewMenuThirdLayer()
+                : const SizedBox(),
           ],
         ),
       ),

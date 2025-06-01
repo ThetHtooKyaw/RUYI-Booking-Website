@@ -1,13 +1,24 @@
+import 'dart:convert';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:ruyi_booking/classes/category.dart';
 import 'package:ruyi_booking/utils/menu_data.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MenuDataProvider extends ChangeNotifier {
   final TextEditingController searchController = TextEditingController();
   Map<String, int> itemQty = {};
   Map<String, String> itemType = {};
+  Map<String, Map<String, dynamic>> favItems = {};
   Map<String, Map<String, dynamic>> cartedItems = {};
+  final Set<String> clickedItems = {};
+
+  MenuDataProvider() {
+    Future.microtask(() => loadFavItemToLocalStorage());
+  }
+
+  bool isClickedItem(String uniqueKey) => clickedItems.contains(uniqueKey);
 
   void refreshOnLanguageChange() {
     notifyListeners();
@@ -21,7 +32,7 @@ class MenuDataProvider extends ChangeNotifier {
     final searchText = searchController.text.toLowerCase();
 
     return menuItems.where((item) {
-      final name = item['name'].toString().toLowerCase();
+      final name = item['name'].toString().tr().toLowerCase();
       final searchMatches = name.contains(searchText);
 
       if (searchText.isNotEmpty) {
@@ -227,6 +238,43 @@ class MenuDataProvider extends ChangeNotifier {
     } else {
       cartedItems.remove(uniqueKey);
     }
+    notifyListeners();
+  }
+
+  Future<void> saveFavItemsToLocalStorage() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('favItems', jsonEncode(favItems));
+  }
+
+  Future<void> loadFavItemToLocalStorage() async {
+    final pref = await SharedPreferences.getInstance();
+    final favItemsString = pref.getString('favItems');
+    if (favItemsString != null) {
+      favItems = Map<String, Map<String, dynamic>>.from(
+          jsonDecode(favItemsString)
+              .map((k, v) => MapEntry(k, Map<String, dynamic>.from(v))));
+
+      clickedItems.clear();
+      clickedItems.addAll(favItems.keys);
+    }
+    notifyListeners();
+  }
+
+  void onFavItemAdd(String uniqueKey, Map<String, dynamic> item,
+      dynamic itemPrice, String? itemType) {
+    if (clickedItems.contains(uniqueKey)) {
+      clickedItems.remove(uniqueKey);
+      favItems.remove(uniqueKey);
+    } else {
+      clickedItems.add(uniqueKey);
+      favItems[uniqueKey] = {
+        'selectedItemId': item['id'],
+        'selectedPrice': itemPrice,
+        'selectedType': itemType,
+      };
+      print(favItems);
+    }
+    saveFavItemsToLocalStorage();
     notifyListeners();
   }
 

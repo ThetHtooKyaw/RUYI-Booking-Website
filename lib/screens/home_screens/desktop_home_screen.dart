@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:ruyi_booking/screens/admin_screens/adminAuth_screens/admin_auth_screen.dart';
 import 'package:ruyi_booking/screens/admin_screens/admin_screen.dart';
 import 'package:ruyi_booking/screens/booking_screens/booking_screen.dart';
-import 'package:ruyi_booking/screens/menu_screens/desktop_menu_screen.dart';
+import 'package:ruyi_booking/screens/view_menu_screens/desktop_view_menu_screen.dart';
 import 'package:ruyi_booking/utils/colors.dart';
 import 'package:ruyi_booking/widgets/extras/custom_buttons.dart';
 import 'package:ruyi_booking/widgets/extras/image_slider.dart';
@@ -102,7 +102,7 @@ class _DesktopHomeScreenState extends State<DesktopHomeScreen> {
                   child: ButtonUtils.backwardButton(400, 'view_menu'.tr(), () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
-                      return const DesktopMenuScreen();
+                      return const DesktopViewMenuScreen();
                     }));
                   }),
                 ),

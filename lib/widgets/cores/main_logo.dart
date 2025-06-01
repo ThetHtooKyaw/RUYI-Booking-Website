@@ -34,7 +34,7 @@ class MainLogo extends StatelessWidget {
             border: Border.all(width: 3, color: AppColors.appAccent),
             borderRadius: BorderRadius.circular(30)),
         child: Image.asset(
-          'assets/images/logo.png',
+          'assets/icons/logo.png',
           height: height,
           width: width,
           fit: BoxFit.contain,

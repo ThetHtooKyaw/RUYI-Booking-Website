@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:ruyi_booking/screens/admin_screens/adminAuth_screens/admin_auth_screen.dart';
 import 'package:ruyi_booking/screens/admin_screens/admin_screen.dart';
 import 'package:ruyi_booking/screens/booking_screens/booking_screen.dart';
-import 'package:ruyi_booking/screens/menu_screens/mobile_menu_screen.dart';
+import 'package:ruyi_booking/screens/view_menu_screens/mobile_view_menu_screen.dart';
 import 'package:ruyi_booking/utils/colors.dart';
 import 'package:ruyi_booking/widgets/extras/custom_buttons.dart';
 import 'package:ruyi_booking/widgets/extras/custom_divider.dart';
@@ -59,7 +59,7 @@ class _MobileHomeScreenState extends State<MobileHomeScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 90),
             child: ButtonUtils.backwardButton(100, 'view_menu'.tr(), () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return const MobileMenuScreen();
+                return const MobileViewMenuScreen();
               }));
             }),
           ),

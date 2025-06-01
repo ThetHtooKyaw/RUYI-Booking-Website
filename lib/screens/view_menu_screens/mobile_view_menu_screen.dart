@@ -3,21 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ruyi_booking/classes/category.dart';
 import 'package:ruyi_booking/providers/menu_data_provider.dart';
-import 'package:ruyi_booking/screens/menu_screens/mobile_add_to_cart_screen.dart';
+import 'package:ruyi_booking/screens/view_menu_screens/mobile_view_menu_fav_screen.dart';
 import 'package:ruyi_booking/utils/colors.dart';
-import 'package:ruyi_booking/widgets/cores/item_counter.dart';
 import 'package:ruyi_booking/widgets/cores/menu_type_picker.dart';
-import 'package:ruyi_booking/widgets/extras/custom_buttons.dart';
 import 'package:ruyi_booking/widgets/extras/mobile_app_bar.dart';
 
-class MobileMenuScreen extends StatefulWidget {
-  const MobileMenuScreen({super.key});
+class MobileViewMenuScreen extends StatefulWidget {
+  const MobileViewMenuScreen({super.key});
 
   @override
-  State<MobileMenuScreen> createState() => _MobileMenuScreenState();
+  State<MobileViewMenuScreen> createState() => _MobileViewMenuScreenState();
 }
 
-class _MobileMenuScreenState extends State<MobileMenuScreen> {
+class _MobileViewMenuScreenState extends State<MobileViewMenuScreen> {
   int selectedCategory = 0;
 
   @override
@@ -111,59 +109,12 @@ class _MobileMenuScreenState extends State<MobileMenuScreen> {
           ],
         ),
       ),
-      bottomSheet: menuData.cartedItems.isNotEmpty
-          ? Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-              height: 65,
-              width: double.infinity,
-              decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius:
-                      BorderRadius.vertical(top: Radius.circular(10))),
-              child: Stack(
-                children: [
-                  ButtonUtils.forwardButton(
-                    double.infinity,
-                    'view_cart'.tr(),
-                    () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return const MobileAddToCartScreen();
-                      }));
-                    },
-                  ),
-                  Positioned(
-                    right: 5,
-                    top: 10,
-                    child: Container(
-                      height: 35,
-                      width: 35,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: Center(
-                        child: Text(
-                          menuData.cartedItems.length.toString(),
-                          style:
-                              Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                    color: AppColors.appAccent,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            )
-          : null,
     );
   }
 
   Widget foodInfo(BuildContext context, MenuDataProvider menuData,
       Map<String, dynamic> item, String uniqueKey, String type) {
-    int qty = menuData.itemQty[uniqueKey] ?? 0;
+    bool isclicked = menuData.isClickedItem(uniqueKey);
 
     return Expanded(
       child: Column(
@@ -227,35 +178,21 @@ class _MobileMenuScreenState extends State<MobileMenuScreen> {
             ],
           ),
           const Spacer(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              ItemCounter(
-                quantity: qty,
-                onQuantityChanged: (newQty) =>
-                    menuData.onQuantityChanged(uniqueKey, newQty),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  if (qty == 0) {
-                    qty = 1;
-                    menuData.onQuantityChanged(uniqueKey, qty);
-                  }
-                  menuData.addToCart(uniqueKey, item, menuData.priceKey(item),
-                      menuData.typeKey(item), qty);
-                },
-                style: ElevatedButton.styleFrom(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 20, horizontal: 5),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5)),
-                ),
-                child: Text(
-                  'cart'.tr(),
-                  style: const TextStyle(fontSize: 14),
+          Align(
+            alignment: Alignment.centerRight,
+            child: GestureDetector(
+              onTap: () {
+                menuData.onFavItemAdd(uniqueKey, item, menuData.priceKey(item),
+                    menuData.typeKey(item));
+              },
+              child: CircleAvatar(
+                backgroundColor: isclicked ? AppColors.appAccent : Colors.white,
+                child: Icon(
+                  Icons.favorite_rounded,
+                  color: isclicked ? Colors.white : AppColors.appAccent,
                 ),
               ),
-            ],
+            ),
           ),
         ],
       ),
@@ -267,14 +204,62 @@ class _MobileMenuScreenState extends State<MobileMenuScreen> {
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Consumer<MenuDataProvider>(
         builder: (context, menuData, _) {
-          return TextField(
-            controller: controller,
-            onChanged: (value) => menuData.setSearchQuery(value),
-            decoration: InputDecoration(
-              hintText: 'search'.tr(),
-              prefixIcon:
-                  Icon(Icons.search, color: Theme.of(context).iconTheme.color),
-            ),
+          return Row(
+            children: [
+              Expanded(
+                flex: 2,
+                child: TextField(
+                  controller: controller,
+                  onChanged: (value) => menuData.setSearchQuery(value),
+                  decoration: InputDecoration(
+                    hintText: 'search'.tr(),
+                    prefixIcon: Icon(Icons.search,
+                        color: Theme.of(context).iconTheme.color),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 10),
+              Stack(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return const MobileViewMenuFavScreen();
+                      }));
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: Icon(
+                        Icons.favorite_rounded,
+                        color: Theme.of(context).iconTheme.color,
+                      ),
+                    ),
+                  ),
+                  menuData.favItems.isNotEmpty
+                      ? Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: CircleAvatar(
+                            radius: 8,
+                            backgroundColor: AppColors.appAccent,
+                            child: Text(
+                              menuData.favItems.length.toString(),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall
+                                  ?.copyWith(color: Colors.white),
+                            ),
+                          ),
+                        )
+                      : const SizedBox(),
+                ],
+              ),
+            ],
           );
         },
       ),

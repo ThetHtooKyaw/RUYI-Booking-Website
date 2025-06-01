@@ -32,9 +32,9 @@ class _LanguagePickerState extends State<LanguagePicker> {
   }
 
   Future<void> _changeLanguage(BuildContext context, Locale language) async {
-    OverlayEntry? loader;
+    final overlay = Overlay.of(context);
 
-    loader = OverlayEntry(
+    final loader = OverlayEntry(
       builder: (_) => const ColoredBox(
         color: AppColors.appBackground,
         child: Center(
@@ -42,11 +42,12 @@ class _LanguagePickerState extends State<LanguagePicker> {
         ),
       ),
     );
-    Overlay.of(context).insert(loader);
+    overlay.insert(loader);
 
     try {
       setState(() => selectedLanguage = language);
       await context.setLocale(selectedLanguage);
+      await Future.delayed(const Duration(milliseconds: 300));
       html.window.location.reload();
     } finally {
       loader.remove();
