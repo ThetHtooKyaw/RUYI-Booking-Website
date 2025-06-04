@@ -207,16 +207,80 @@ class _DesktopMenuSecondLayerState extends State<DesktopMenuSecondLayer> {
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Consumer<MenuDataProvider>(
         builder: (context, menuData, _) {
-          return TextField(
-            controller: controller,
-            onChanged: (value) => menuData.setSearchQuery(value),
-            decoration: InputDecoration(
-              hintText: 'search'.tr(),
-              prefixIcon: const Icon(Icons.search, color: AppColors.appAccent),
-            ),
+          return Row(
+            children: [
+              Expanded(
+                flex: 2,
+                child: TextField(
+                  controller: controller,
+                  onChanged: (value) => menuData.setSearchQuery(value),
+                  decoration: InputDecoration(
+                    hintText: 'search'.tr(),
+                    prefixIcon:
+                        const Icon(Icons.search, color: AppColors.appAccent),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 10),
+              menuData.isClicked
+                  ? iconBox(
+                      context,
+                      menuData,
+                      menuData.cartedItems,
+                      Image.asset(
+                        'assets/icons/cart.png',
+                        height: 23,
+                        width: 24,
+                        color: Theme.of(context).iconTheme.color,
+                      ))
+                  : iconBox(
+                      context,
+                      menuData,
+                      menuData.favItems,
+                      Icon(
+                        Icons.favorite_rounded,
+                        color: Theme.of(context).iconTheme.color,
+                      ))
+            ],
           );
         },
       ),
+    );
+  }
+
+  Widget iconBox(BuildContext context, MenuDataProvider menuData,
+      Map<String, Map<String, dynamic>> data, Widget icon) {
+    return Stack(
+      children: [
+        GestureDetector(
+          onTap: () => menuData.isClickedIcon(),
+          child: Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: icon,
+          ),
+        ),
+        data.isNotEmpty
+            ? Positioned(
+                bottom: 0,
+                right: 0,
+                child: CircleAvatar(
+                  radius: 8,
+                  backgroundColor: AppColors.appAccent,
+                  child: Text(
+                    data.length.toString(),
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodySmall
+                        ?.copyWith(color: Colors.white),
+                  ),
+                ),
+              )
+            : const SizedBox(),
+      ],
     );
   }
 }

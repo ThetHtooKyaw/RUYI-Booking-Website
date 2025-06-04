@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:ruyi_booking/classes/category.dart';
@@ -13,6 +13,12 @@ class MenuDataProvider extends ChangeNotifier {
   Map<String, Map<String, dynamic>> favItems = {};
   Map<String, Map<String, dynamic>> cartedItems = {};
   final Set<String> clickedItems = {};
+  bool isClicked = false;
+
+  void isClickedIcon() {
+    isClicked = !isClicked;
+    notifyListeners();
+  }
 
   MenuDataProvider() {
     Future.microtask(() => loadFavItemToLocalStorage());
@@ -190,14 +196,56 @@ class MenuDataProvider extends ChangeNotifier {
     }
   }
 
-  String calculateTotalPrice() {
+  Future<void> updateCartItemQty(
+      Map<String, dynamic> bookingData, String uniqueKey, int newQty) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('bookings')
+          .doc(bookingData['id'])
+          .update({
+        FieldPath(['menu_list', uniqueKey, 'quantity']): newQty
+      });
+
+      if (bookingData['menu_list'] is Map<String, dynamic>) {
+        bookingData['menu_list'][uniqueKey]['quantity'] = newQty;
+      }
+
+      debugPrint('Menu quantity updated successfully');
+    } catch (e) {
+      debugPrint('Error updating menu\'s quantity to Firestore: $e');
+    }
+    notifyListeners();
+  }
+
+  Future<void> removeCartItem(
+      Map<String, dynamic> bookingData, String uniqueKey) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('bookings')
+          .doc(bookingData['id'])
+          .update({
+        FieldPath(['menu_list', uniqueKey]): FieldValue.delete(),
+      });
+
+      if (bookingData['menu_list'] is Map<String, dynamic>) {
+        bookingData['menu_list'].remove(uniqueKey);
+      }
+
+      debugPrint('Menu item removed successfully');
+    } catch (e) {
+      debugPrint('Error removing menu item to Firestore: $e');
+    }
+    notifyListeners();
+  }
+
+  String calculateTotalPrice(dynamic items) {
     num totalPrice = 0;
     int marketPriceCount = 0;
 
     final stringPrice = 'string_price'.tr().toLowerCase();
     final stringPriceLabel = 'string_price1'.tr();
 
-    for (var item in cartedItems.values) {
+    for (var item in items.values) {
       final rawPrice = item['selectedPrice'];
       num quantity = item['quantity'] ?? 1;
 
@@ -226,8 +274,13 @@ class MenuDataProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void addToCart(String uniqueKey, Map<String, dynamic> item, dynamic itemPrice,
-      String? itemType, int itemQTY) {
+  void addToCart(
+    String uniqueKey,
+    Map<String, dynamic> item,
+    dynamic itemPrice,
+    String? itemType,
+    int itemQTY,
+  ) {
     if (itemQTY > 0) {
       cartedItems[uniqueKey] = {
         'selectedItemId': item['id'],
@@ -243,19 +296,34 @@ class MenuDataProvider extends ChangeNotifier {
 
   Future<void> saveFavItemsToLocalStorage() async {
     final prefs = await SharedPreferences.getInstance();
+    final currentTime = DateTime.now().millisecondsSinceEpoch;
+
     await prefs.setString('favItems', jsonEncode(favItems));
+    await prefs.setInt('favItemsTimestamp', currentTime);
   }
 
   Future<void> loadFavItemToLocalStorage() async {
-    final pref = await SharedPreferences.getInstance();
-    final favItemsString = pref.getString('favItems');
-    if (favItemsString != null) {
-      favItems = Map<String, Map<String, dynamic>>.from(
-          jsonDecode(favItemsString)
-              .map((k, v) => MapEntry(k, Map<String, dynamic>.from(v))));
+    final prefs = await SharedPreferences.getInstance();
+    final favItemsString = prefs.getString('favItems');
+    final savedTimestamp = prefs.getInt('favItemsTimestamp');
 
-      clickedItems.clear();
-      clickedItems.addAll(favItems.keys);
+    if (favItemsString != null && savedTimestamp != null) {
+      final now = DateTime.now().millisecondsSinceEpoch;
+      final difference = now - savedTimestamp;
+
+      if (difference < 86400000) {
+        favItems = Map<String, Map<String, dynamic>>.from(
+            jsonDecode(favItemsString)
+                .map((k, v) => MapEntry(k, Map<String, dynamic>.from(v))));
+
+        clickedItems.clear();
+        clickedItems.addAll(favItems.keys);
+      } else {
+        await prefs.remove('favItems');
+        await prefs.remove('favItemsTimestamp');
+        favItems.clear();
+        clickedItems.clear();
+      }
     }
     notifyListeners();
   }
@@ -272,7 +340,6 @@ class MenuDataProvider extends ChangeNotifier {
         'selectedPrice': itemPrice,
         'selectedType': itemType,
       };
-      print(favItems);
     }
     saveFavItemsToLocalStorage();
     notifyListeners();

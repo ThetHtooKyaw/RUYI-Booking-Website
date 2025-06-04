@@ -19,16 +19,18 @@
     "time": "Choose time to come",
     "no_guest": "Number of guest",
     "roomType": "Room Type",
+    "roomName": "Room Name or Table Number",
     "username": "Full name",
     "phNo": "Phone number",
     "email": "Email",
+    "pre_order": "Food Pre-order",
 
     "booking_summary": "Booking Summary",
     "name": "Name",
     "selectedDate": "Date",
     "hour": "Hours",
     "number_people": "Number of People",
-    "roomName": "Room Name or Table Number",
+    "status": "Status",
 
     "admin": "ADMIN",
     "edit": "EDIT ADMIN PROFILE",
@@ -73,6 +75,7 @@
     "note4": "Browse the menu and add your favorite dishes.",
     
     "category_title": "Category",
+    "favorite": "Favorite",
     "category": "All",
     "category1": "Premium Seafood",
     "category2": "Live Seafood",

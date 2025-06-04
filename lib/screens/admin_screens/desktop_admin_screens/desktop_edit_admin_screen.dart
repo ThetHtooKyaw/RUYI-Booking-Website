@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ruyi_booking/providers/admin_auth_provider.dart';
-import 'package:ruyi_booking/screens/admin_screens/adminAuth_screens/desktop_signup_screen.dart';
+import 'package:ruyi_booking/screens/admin_screens/admin_auth_screens/desktop_signup_screen.dart';
 import 'package:ruyi_booking/utils/colors.dart';
 import 'package:ruyi_booking/widgets/extras/custom_buttons.dart';
 import 'package:ruyi_booking/widgets/extras/custom_icon.dart';
@@ -68,14 +68,11 @@ class _DesktopEditAdminScreenState extends State<DesktopEditAdminScreen> {
                                           double.infinity),
                                     ),
                                     const SizedBox(width: 20),
-                                    ButtonUtils.forwardButton(
-                                      100,
-                                      'done'.tr(),
-                                      () async {
-                                        await adminAuthData
-                                            .updateAdminName(context);
-                                      },
-                                    ),
+                                    ButtonUtils.forwardButton(100, 'done'.tr(),
+                                        () async {
+                                      await adminAuthData
+                                          .updateAdminName(context);
+                                    }, 17),
                                   ],
                                 ),
                               )
@@ -105,12 +102,9 @@ class _DesktopEditAdminScreenState extends State<DesktopEditAdminScreen> {
                                       double.infinity),
                                   const SizedBox(height: 5),
                                   ButtonUtils.forwardButton(
-                                    double.infinity,
-                                    'done'.tr(),
-                                    () async {
-                                      await adminAuthData.updateEmail(context);
-                                    },
-                                  ),
+                                      double.infinity, 'done'.tr(), () async {
+                                    await adminAuthData.updateEmail(context);
+                                  }, 17),
                                 ],
                               )
                             : _buildCurrentData(
@@ -139,36 +133,26 @@ class _DesktopEditAdminScreenState extends State<DesktopEditAdminScreen> {
                                   const SizedBox(height: 5),
                                   const SizedBox(height: 10),
                                   ButtonUtils.forwardButton(
-                                    double.infinity,
-                                    'done'.tr(),
-                                    () async {
-                                      await adminAuthData
-                                          .updatePassword(context);
-                                    },
-                                  ),
+                                      double.infinity, 'done'.tr(), () async {
+                                    await adminAuthData.updatePassword(context);
+                                  }, 17),
                                 ],
                               )
                             : ButtonUtils.forwardButton(
-                                double.infinity,
-                                'change_password'.tr(),
-                                () {
-                                  setState(() {
-                                    adminAuthData.setPasswordEdit(true);
-                                  });
-                                },
-                              ),
+                                double.infinity, 'change_password'.tr(), () {
+                                setState(() {
+                                  adminAuthData.setPasswordEdit(true);
+                                });
+                              }, 17),
                         const SizedBox(height: 60),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 20),
                           child: ButtonUtils.backwardButton(
-                            double.infinity,
-                            'cancel'.tr(),
-                            () {
-                              adminAuthData.setNameEdit(false);
-                              adminAuthData.setEmailEdit(false);
-                              adminAuthData.setPasswordEdit(false);
-                            },
-                          ),
+                              double.infinity, 'cancel'.tr(), () {
+                            adminAuthData.setNameEdit(false);
+                            adminAuthData.setEmailEdit(false);
+                            adminAuthData.setPasswordEdit(false);
+                          }, 17),
                         ),
                         Center(
                           child: InkWell(

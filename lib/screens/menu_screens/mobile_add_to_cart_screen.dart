@@ -19,8 +19,9 @@ class _MobileAddToCartScreenState extends State<MobileAddToCartScreen> {
   @override
   Widget build(BuildContext context) {
     var menuData = Provider.of<MenuDataProvider>(context);
+
     return Scaffold(
-      appBar: MobileAppbar(title: 'cart_title'.tr(), isClickable: true),
+      appBar: MobileAppbar(title: 'cart_title'.tr(), isClickable: false),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: menuData.cartedItems.isEmpty
@@ -169,7 +170,7 @@ class _MobileAddToCartScreenState extends State<MobileAddToCartScreen> {
             // priceText(context, 'Discount', ''),
             const Divider(thickness: 2),
             priceText(context, 'assets/icons/price.png', 'price'.tr(),
-                menuData.calculateTotalPrice()),
+                menuData.calculateTotalPrice(menuData.cartedItems)),
             const Spacer(),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -177,11 +178,14 @@ class _MobileAddToCartScreenState extends State<MobileAddToCartScreen> {
                 Expanded(
                   child: ButtonUtils.backwardButton(220, 'back'.tr(), () {
                     Navigator.pop(context);
-                  }),
+                  }, 17),
                 ),
                 const SizedBox(width: 20),
                 Expanded(
-                  child: ButtonUtils.forwardButton(220, 'confirm'.tr(), () {}),
+                  child: ButtonUtils.forwardButton(220, 'confirm'.tr(), () {
+                    int count = 0;
+                    Navigator.popUntil(context, (route) => count++ == 2);
+                  }, 17),
                 )
               ],
             ),

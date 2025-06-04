@@ -2,7 +2,7 @@ import 'dart:ui';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:ruyi_booking/screens/admin_screens/adminAuth_screens/admin_auth_screen.dart';
+import 'package:ruyi_booking/screens/admin_screens/admin_auth_screens/admin_auth_screen.dart';
 import 'package:ruyi_booking/screens/admin_screens/admin_screen.dart';
 import 'package:ruyi_booking/screens/booking_screens/booking_screen.dart';
 import 'package:ruyi_booking/screens/view_menu_screens/desktop_view_menu_screen.dart';
@@ -95,7 +95,7 @@ class _DesktopHomeScreenState extends State<DesktopHomeScreen> {
                         MaterialPageRoute(builder: (context) {
                       return const BookingScreen();
                     }));
-                  }),
+                  }, 17),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 90),
@@ -104,7 +104,7 @@ class _DesktopHomeScreenState extends State<DesktopHomeScreen> {
                         MaterialPageRoute(builder: (context) {
                       return const DesktopViewMenuScreen();
                     }));
-                  }),
+                  }, 17),
                 ),
                 const SizedBox(height: 60),
                 _buildContent(),

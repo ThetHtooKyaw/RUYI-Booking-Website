@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:ruyi_booking/screens/bookingSummary_screen/booking_summary_screen.dart';
+import 'package:ruyi_booking/screens/booking_summary_screen/booking_summary_screen.dart';
 import 'package:ruyi_booking/screens/home_screens/home_screen.dart';
 import 'package:ruyi_booking/services/booking_service.dart';
 import 'package:ruyi_booking/widgets/extras/custom_dialog.dart';
@@ -172,7 +172,8 @@ class BookingDataProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> savingBooking(BuildContext context) async {
+  Future<void> savingBooking(
+      BuildContext context, Map<String, Map<String, dynamic>> menuList) async {
     try {
       await _bookingService.savingBookingData(
         name: nameController.text.trim(),
@@ -183,16 +184,20 @@ class BookingDataProvider extends ChangeNotifier {
         guests: guestCounter,
         roomType: selectedRoomtype ?? '',
         roomName: selectedRoomName ?? '',
+        menuList: menuList,
       );
       DialogUtils.showBookingConfirmationDialog(
         context,
         'Booking Successful',
         'Your booking is currently pending confirmation.\nWe will notify you once it\'s confirmed!',
         () {
-          Navigator.pushAndRemoveUntil(context,
-              MaterialPageRoute(builder: (context) {
-            return const HomeScreen();
-          }), (route) => false);
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => const HomeScreen()),
+              (route) => false,
+            );
+          });
           resetForm(context);
         },
         isClickable: false,

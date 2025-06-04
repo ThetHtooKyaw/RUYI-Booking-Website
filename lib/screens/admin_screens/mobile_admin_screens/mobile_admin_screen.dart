@@ -2,9 +2,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ruyi_booking/providers/admin_auth_provider.dart';
-import 'package:ruyi_booking/screens/admin_screens/mobileAdmin_screens/mobile_booking_list_screen.dart';
-import 'package:ruyi_booking/screens/admin_screens/mobileAdmin_screens/mobile_calendar_edit_screen.dart';
-import 'package:ruyi_booking/screens/admin_screens/mobileAdmin_screens/mobile_edit_admin_screen.dart';
+import 'package:ruyi_booking/screens/admin_screens/mobile_admin_screens/mobile_booking_list_screen.dart';
+import 'package:ruyi_booking/screens/admin_screens/mobile_admin_screens/mobile_calendar_edit_screen.dart';
+import 'package:ruyi_booking/screens/admin_screens/mobile_admin_screens/mobile_edit_admin_screen.dart';
 import 'package:ruyi_booking/services/booking_service.dart';
 import 'package:ruyi_booking/utils/colors.dart';
 import 'package:ruyi_booking/widgets/cores/language_picker.dart';
@@ -71,7 +71,7 @@ class _MobileAdminScreenState extends State<MobileAdminScreen> {
         actions: const [
           Padding(
             padding: EdgeInsets.only(right: 12),
-            child: MainLogo(height: 45, width: 45),
+            child: MainLogo(height: 45, width: 45, isClickable: true),
           ),
         ],
       ),

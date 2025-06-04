@@ -89,7 +89,7 @@ class TextFieldUtils {
               return 'Phone number is required';
             } else if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
               return 'Phone number must contain only digits';
-            } else if (value.length < 10) {
+            } else if (value.length < 9) {
               return 'Enter a valid phone number';
             } else if (value.contains(' ')) {
               return 'Email should not contain spaces';

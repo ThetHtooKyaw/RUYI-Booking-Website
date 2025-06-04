@@ -81,14 +81,14 @@ class _DesktopAuthScreenState extends State<DesktopAuthScreen> {
                         if (!adminAuthData.isLoading) {
                           adminAuthData.adminLogin(context);
                         }
-                      }),
+                      }, 17),
                       ButtonUtils.backwardButton(double.infinity, 'back'.tr(),
                           () {
                         Navigator.pushReplacement(context,
                             MaterialPageRoute(builder: (context) {
                           return const HomeScreen();
                         }));
-                      }),
+                      }, 17),
                     ],
                   ),
                 ),

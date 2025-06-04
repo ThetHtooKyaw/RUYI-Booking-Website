@@ -7,36 +7,36 @@ import 'package:ruyi_booking/widgets/cores/calendar.dart';
 import 'package:ruyi_booking/widgets/extras/calendar_rules.dart';
 import 'package:ruyi_booking/widgets/extras/custom_buttons.dart';
 
-class MobileCalendarEditScreen extends StatefulWidget {
-  const MobileCalendarEditScreen({super.key});
+class DesktopCalendarEditScreen extends StatefulWidget {
+  const DesktopCalendarEditScreen({super.key});
 
   @override
-  State<MobileCalendarEditScreen> createState() =>
-      _MobileCalendarEditScreenState();
+  State<DesktopCalendarEditScreen> createState() =>
+      _DesktopCalendarEditScreenState();
 }
 
-class _MobileCalendarEditScreenState extends State<MobileCalendarEditScreen> {
+class _DesktopCalendarEditScreenState extends State<DesktopCalendarEditScreen> {
   @override
   Widget build(BuildContext context) {
     var bookingData = Provider.of<BookingDataProvider>(context);
     return Scaffold(
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            children: [
-              Calendar(
-                  selectedDate: bookingData.selectedDate,
-                  onDateChanged: bookingData.onSelectedDate),
-              const Padding(
-                padding: EdgeInsets.only(top: 20, bottom: 10),
-                child: CalendarRules(),
-              ),
-              const SizedBox(height: 20),
-              ButtonUtils.forwardButton(
-                double.infinity,
-                'disable'.tr(),
-                () async {
+        child: Center(
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width * 0.35,
+            child: Column(
+              children: [
+                const SizedBox(height: 20),
+                Calendar(
+                    selectedDate: bookingData.selectedDate,
+                    onDateChanged: bookingData.onSelectedDate),
+                const Padding(
+                  padding: EdgeInsets.only(top: 20, bottom: 10),
+                  child: CalendarRules(),
+                ),
+                const SizedBox(height: 20),
+                ButtonUtils.forwardButton(double.infinity, 'disable'.tr(),
+                    () async {
                   DateTime? selectedDate = await showDatePicker(
                     context: context,
                     initialDate: DateTime.now(),
@@ -57,12 +57,9 @@ class _MobileCalendarEditScreenState extends State<MobileCalendarEditScreen> {
                       bookingData.addDisabledDate(selectedDate);
                     }
                   }
-                },
-              ),
-              ButtonUtils.backwardButton(
-                double.infinity,
-                'remove'.tr(),
-                () async {
+                }, 17),
+                ButtonUtils.backwardButton(double.infinity, 'remove'.tr(),
+                    () async {
                   DateTime? selectedDate = await showDatePicker(
                     context: context,
                     initialDate: DateTime.now(),
@@ -83,9 +80,10 @@ class _MobileCalendarEditScreenState extends State<MobileCalendarEditScreen> {
                       ));
                     }
                   }
-                },
-              ),
-            ],
+                }, 17),
+                const SizedBox(height: 20),
+              ],
+            ),
           ),
         ),
       ),

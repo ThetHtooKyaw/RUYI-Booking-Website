@@ -37,7 +37,7 @@ class _DesktopViewMenuScreenState extends State<DesktopViewMenuScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Category',
+                    'category'.tr(),
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                         color: AppColors.appAccent,
                         fontSize: 25,

@@ -78,14 +78,14 @@ class _MobileAuthScreenState extends State<MobileAuthScreen> {
                       if (!adminAuthData.isLoading) {
                         adminAuthData.adminLogin(context);
                       }
-                    }),
+                    }, 17),
                     ButtonUtils.backwardButton(double.infinity, 'back'.tr(),
                         () {
                       Navigator.pushReplacement(context,
                           MaterialPageRoute(builder: (context) {
                         return const HomeScreen();
                       }));
-                    }),
+                    }, 17),
                   ],
                 ),
               ),

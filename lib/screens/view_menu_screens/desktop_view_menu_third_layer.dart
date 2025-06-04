@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:ruyi_booking/providers/menu_data_provider.dart';
 import 'package:ruyi_booking/utils/colors.dart';
 import 'package:ruyi_booking/utils/menu_data.dart';
-import 'package:ruyi_booking/widgets/extras/custom_buttons.dart';
 
 class DesktopViewMenuThirdLayer extends StatefulWidget {
   const DesktopViewMenuThirdLayer({super.key});
@@ -26,7 +25,7 @@ class _DesktopViewMenuThirdLayerState extends State<DesktopViewMenuThirdLayer> {
       child: Column(
         children: [
           Text(
-            'cart'.tr(),
+            'favorite'.tr(),
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                 color: AppColors.appAccent,
                 fontSize: 25,
@@ -167,26 +166,6 @@ class _DesktopViewMenuThirdLayerState extends State<DesktopViewMenuThirdLayer> {
                     },
                   ),
                 ),
-          const Spacer(),
-          menuData.cartedItems.isNotEmpty
-              ? Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                  height: 195,
-                  width: double.infinity,
-                  decoration: const BoxDecoration(
-                      color: Colors.white,
-                      borderRadius:
-                          BorderRadius.vertical(top: Radius.circular(10))),
-                  child: Row(
-                    children: [
-                      Expanded(
-                          child: ButtonUtils.forwardButton(
-                              220, 'confirm'.tr(), () {})),
-                    ],
-                  ),
-                )
-              : const SizedBox(),
         ],
       ),
     );

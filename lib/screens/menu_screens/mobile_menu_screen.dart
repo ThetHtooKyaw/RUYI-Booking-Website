@@ -4,11 +4,11 @@ import 'package:provider/provider.dart';
 import 'package:ruyi_booking/classes/category.dart';
 import 'package:ruyi_booking/providers/menu_data_provider.dart';
 import 'package:ruyi_booking/screens/menu_screens/mobile_add_to_cart_screen.dart';
+import 'package:ruyi_booking/screens/view_menu_screens/mobile_view_menu_fav_screen.dart';
 import 'package:ruyi_booking/utils/colors.dart';
 import 'package:ruyi_booking/widgets/cores/item_counter.dart';
 import 'package:ruyi_booking/widgets/cores/menu_type_picker.dart';
 import 'package:ruyi_booking/widgets/extras/custom_buttons.dart';
-import 'package:ruyi_booking/widgets/extras/mobile_app_bar.dart';
 
 class MobileMenuScreen extends StatefulWidget {
   const MobileMenuScreen({super.key});
@@ -26,7 +26,30 @@ class _MobileMenuScreenState extends State<MobileMenuScreen> {
     final filteredItems = menuData.getFilteredItems(selectedCategory);
 
     return Scaffold(
-      appBar: MobileAppbar(title: 'menu'.tr(), isClickable: true),
+      appBar: AppBar(
+        centerTitle: true,
+        toolbarHeight: 60,
+        leadingWidth: 80,
+        backgroundColor: Colors.white,
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Icon(
+            Icons.keyboard_arrow_left_rounded,
+            size: 40,
+            color: Theme.of(context).iconTheme.color,
+          ),
+        ),
+        title: Text(
+          'menu'.tr(),
+          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                fontSize: 20,
+                color: AppColors.appAccent,
+                fontFamily: 'PlayfairDisplay',
+              ),
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
@@ -122,19 +145,16 @@ class _MobileMenuScreenState extends State<MobileMenuScreen> {
                       BorderRadius.vertical(top: Radius.circular(10))),
               child: Stack(
                 children: [
-                  ButtonUtils.forwardButton(
-                    double.infinity,
-                    'view_cart'.tr(),
-                    () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return const MobileAddToCartScreen();
-                      }));
-                    },
-                  ),
+                  ButtonUtils.forwardButton(double.infinity, 'view_cart'.tr(),
+                      () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return const MobileAddToCartScreen();
+                    }));
+                  }, 14),
                   Positioned(
                     right: 5,
-                    top: 10,
+                    top: 8.5,
                     child: Container(
                       height: 35,
                       width: 35,
@@ -267,14 +287,62 @@ class _MobileMenuScreenState extends State<MobileMenuScreen> {
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Consumer<MenuDataProvider>(
         builder: (context, menuData, _) {
-          return TextField(
-            controller: controller,
-            onChanged: (value) => menuData.setSearchQuery(value),
-            decoration: InputDecoration(
-              hintText: 'search'.tr(),
-              prefixIcon:
-                  Icon(Icons.search, color: Theme.of(context).iconTheme.color),
-            ),
+          return Row(
+            children: [
+              Expanded(
+                flex: 2,
+                child: TextField(
+                  controller: controller,
+                  onChanged: (value) => menuData.setSearchQuery(value),
+                  decoration: InputDecoration(
+                    hintText: 'search'.tr(),
+                    prefixIcon: Icon(Icons.search,
+                        color: Theme.of(context).iconTheme.color),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 10),
+              Stack(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return const MobileViewMenuFavScreen();
+                      }));
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: Icon(
+                        Icons.favorite_rounded,
+                        color: Theme.of(context).iconTheme.color,
+                      ),
+                    ),
+                  ),
+                  menuData.favItems.isNotEmpty
+                      ? Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: CircleAvatar(
+                            radius: 8,
+                            backgroundColor: AppColors.appAccent,
+                            child: Text(
+                              menuData.favItems.length.toString(),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall
+                                  ?.copyWith(color: Colors.white),
+                            ),
+                          ),
+                        )
+                      : const SizedBox(),
+                ],
+              ),
+            ],
           );
         },
       ),

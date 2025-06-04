@@ -23,12 +23,14 @@
     "username": "全名",
     "phNo": "电话号码",
     "email": "电子邮件",
+    "pre_order": "预订餐食",
 
     "booking_summary": "预订摘要",
     "name": "姓名",
     "selectedDate": "日期",
     "hour": "小时",
     "number_people": "人数",
+    "status": "地位",
 
     "admin": "行政",
     "edit": "编辑管理员资料",
@@ -73,6 +75,7 @@
     "note4": "浏览菜单并添加您喜欢的菜品。",
 
     "category_title": "类别",
+    "favorite": "最喜欢的",
     "category": "全部",
     "category1": "燕鮑翅",
     "category2": "生猛海鮮",

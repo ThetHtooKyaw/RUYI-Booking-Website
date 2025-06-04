@@ -216,18 +216,15 @@ class _DesktopViewMenuSecondLayerState
               const SizedBox(width: 10),
               Stack(
                 children: [
-                  GestureDetector(
-                    onTap: () {},
-                    child: Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: Icon(
-                        Icons.favorite_rounded,
-                        color: Theme.of(context).iconTheme.color,
-                      ),
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: Icon(
+                      Icons.favorite_rounded,
+                      color: Theme.of(context).iconTheme.color,
                     ),
                   ),
                   menuData.favItems.isNotEmpty

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ruyi_booking/screens/bookingSummary_screen/desktop_booking_summary_screen.dart';
-import 'package:ruyi_booking/screens/bookingSummary_screen/mobile_booking_summary_screen.dart';
+import 'package:ruyi_booking/screens/booking_summary_screen/desktop_booking_summary_screen.dart';
+import 'package:ruyi_booking/screens/booking_summary_screen/mobile_booking_summary_screen.dart';
 import 'package:ruyi_booking/widgets/cores/responsive_layout.dart';
 
 class BookingSummaryScreen extends StatelessWidget {

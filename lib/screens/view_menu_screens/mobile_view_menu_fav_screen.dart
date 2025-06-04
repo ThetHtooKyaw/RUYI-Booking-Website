@@ -20,7 +20,7 @@ class _MobileViewMenuFavScreenState extends State<MobileViewMenuFavScreen> {
   Widget build(BuildContext context) {
     var menuData = Provider.of<MenuDataProvider>(context);
     return Scaffold(
-      appBar: MobileAppbar(title: 'cart_title'.tr(), isClickable: true),
+      appBar: MobileAppbar(title: 'favorite'.tr(), isClickable: true),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: menuData.favItems.isEmpty
@@ -167,7 +167,7 @@ class _MobileViewMenuFavScreenState extends State<MobileViewMenuFavScreen> {
             Expanded(
               child: ButtonUtils.forwardButton(220, 'back'.tr(), () {
                 Navigator.pop(context);
-              }),
+              }, 17),
             ),
           ],
         ),

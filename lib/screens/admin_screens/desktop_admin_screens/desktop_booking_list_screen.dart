@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:ruyi_booking/screens/admin_screens/desktopAdmin_screens/desktop_booking_data_screen.dart';
+import 'package:ruyi_booking/screens/admin_screens/desktop_admin_screens/desktop_booking_data_screen.dart';
 import 'package:ruyi_booking/services/booking_service.dart';
 import 'package:ruyi_booking/utils/colors.dart';
 import 'package:ruyi_booking/widgets/extras/custom_dialog.dart';

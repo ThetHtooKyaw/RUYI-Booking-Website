@@ -2,9 +2,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ruyi_booking/providers/admin_auth_provider.dart';
-import 'package:ruyi_booking/screens/admin_screens/desktopAdmin_screens/desktop_booking_list_screen.dart';
-import 'package:ruyi_booking/screens/admin_screens/desktopAdmin_screens/desktop_calendar_edit_screen.dart';
-import 'package:ruyi_booking/screens/admin_screens/desktopAdmin_screens/desktop_edit_admin_screen.dart';
+import 'package:ruyi_booking/screens/admin_screens/desktop_admin_screens/desktop_booking_list_screen.dart';
+import 'package:ruyi_booking/screens/admin_screens/desktop_admin_screens/desktop_calendar_edit_screen.dart';
+import 'package:ruyi_booking/screens/admin_screens/desktop_admin_screens/desktop_edit_admin_screen.dart';
 import 'package:ruyi_booking/services/admin_auth_service.dart';
 import 'package:ruyi_booking/services/booking_service.dart';
 import 'package:ruyi_booking/utils/colors.dart';
@@ -64,7 +64,7 @@ class _DesktopAdminScreenState extends State<DesktopAdminScreen> {
         leading: const Padding(
           padding: EdgeInsets.only(left: 40),
           child: Center(
-            child: MainLogo(height: 55, width: 55),
+            child: MainLogo(height: 55, width: 55, isClickable: true),
           ),
         ),
         title: Text(

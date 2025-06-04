@@ -7,16 +7,16 @@ class BookingService {
   List<Map<String, dynamic>> bookings = [];
   Future<List<Map<String, dynamic>>>? bookingListFuture;
 
-  Future<void> savingBookingData({
-    required String name,
-    required String phNo,
-    required String email,
-    required String date,
-    required String time,
-    required int guests,
-    required String roomType,
-    required String roomName,
-  }) async {
+  Future<void> savingBookingData(
+      {required String name,
+      required String phNo,
+      required String email,
+      required String date,
+      required String time,
+      required int guests,
+      required String roomType,
+      required String roomName,
+      required Map<String, Map<String, dynamic>> menuList}) async {
     try {
       await db.collection('bookings').add({
         "username": name,
@@ -27,6 +27,7 @@ class BookingService {
         "guest": guests,
         "room_type": roomType,
         "room_name": roomName,
+        "menu_list": menuList,
         "status": "Pending",
         "timestamp": FieldValue.serverTimestamp(),
       });
@@ -86,6 +87,9 @@ class BookingService {
         <p><strong>Date:</strong> ${bookingSnapshot['date']}</p>
         <p><strong>Time:</strong> ${bookingSnapshot['time']}</p>
         <p><strong>Number of Guests:</strong> ${bookingSnapshot['guest']}</p>
+        <p><strong>Room Type:</strong> ${bookingSnapshot['room_type']}</p>
+        <p><strong>Room Name:</strong> ${bookingSnapshot['room_name']}</p>
+        <p><strong>Menu List:</strong> ${bookingSnapshot['menu_list'].length}</p>
 
         <p>If you need to modify or cancel your reservation, please contact us at these phone number <strong>09-986619999, 09-986629999</strong>.</p>
         <p>We look forward to serving you!</p>

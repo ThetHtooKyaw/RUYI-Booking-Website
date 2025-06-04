@@ -18,7 +18,7 @@ class _DesktopMenuThirdLayerState extends State<DesktopMenuThirdLayer> {
   @override
   Widget build(BuildContext context) {
     var menuData = Provider.of<MenuDataProvider>(context);
-    
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       width: 450,
@@ -189,13 +189,16 @@ class _DesktopMenuThirdLayerState extends State<DesktopMenuThirdLayer> {
                       // priceText(context, 'Discount', ''),
                       const Divider(thickness: 2),
                       priceText(context, 'assets/icons/price.png', 'price'.tr(),
-                          menuData.calculateTotalPrice()),
+                          menuData.calculateTotalPrice(menuData.cartedItems)),
                       const Spacer(),
                       Row(
                         children: [
                           Expanded(
-                              child: ButtonUtils.forwardButton(
-                                  220, 'confirm'.tr(), () {})),
+                            child: ButtonUtils.forwardButton(
+                                220, 'confirm'.tr(), () {
+                              Navigator.pop(context);
+                            }, 17),
+                          ),
                         ],
                       ),
                     ],

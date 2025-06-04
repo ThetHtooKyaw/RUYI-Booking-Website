@@ -92,12 +92,9 @@ class _MobileSignUpScreenState extends State<MobileSignUpScreen> {
                         if (!adminAuthData.isLoading) {
                           adminAuthData.adminSignUp(context);
                         }
-                      }),
-                      ButtonUtils.backwardButton(
-                        double.infinity,
-                        'back'.tr(),
-                        () => Navigator.pop(context),
-                      ),
+                      }, 17),
+                      ButtonUtils.backwardButton(double.infinity, 'back'.tr(),
+                          () => Navigator.pop(context), 17),
                     ],
                   ),
                 ),
