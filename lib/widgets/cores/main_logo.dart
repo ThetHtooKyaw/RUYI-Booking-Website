@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ruyi_booking/providers/booking_data_provider.dart';
+import 'package:ruyi_booking/providers/menu_data_provider.dart';
 import 'package:ruyi_booking/screens/home_screens/home_screen.dart';
 import 'package:ruyi_booking/utils/colors.dart';
 
@@ -19,10 +20,12 @@ class MainLogo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var bookingDate = Provider.of<BookingDataProvider>(context);
+    var menuData = Provider.of<MenuDataProvider>(context);
+
     return InkWell(
       onTap: isClickable
           ? () {
-              () => bookingDate.resetForm(context);
+              () => bookingDate.resetForm(context, menuData.cartedItems);
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) {
                 return const HomeScreen();

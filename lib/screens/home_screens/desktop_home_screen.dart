@@ -126,7 +126,7 @@ class _DesktopHomeScreenState extends State<DesktopHomeScreen> {
         children: [
           const Expanded(
             flex: 4,
-            child: ImageSlider(indicaterLeft: 250),
+            child: ImageSlider(),
           ),
           Expanded(
             flex: 6,
@@ -221,57 +221,59 @@ class _DesktopHomeScreenState extends State<DesktopHomeScreen> {
             child: Divider(thickness: 2),
           ),
           Positioned(
-            top: 140,
+            top: 125,
             left: 0,
             right: 0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                InkWell(
-                  onTap: () {},
-                  child: Text(
-                    'about'.tr(),
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyLarge
-                        ?.copyWith(color: Colors.white),
-                  ),
-                ),
-                const SizedBox(width: 50),
-                InkWell(
-                  onTap: () {},
-                  child: Text(
-                    'FAQ'.tr(),
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyLarge
-                        ?.copyWith(color: Colors.white),
-                  ),
-                ),
-                const SizedBox(width: 50),
-                InkWell(
-                  onTap: () {
-                    if (FirebaseAuth.instance.currentUser != null) {
+            child: Center(
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // InkWell(
+                  //   onTap: () {},
+                  //   child: Text(
+                  //     'about'.tr(),
+                  //     style: Theme.of(context)
+                  //         .textTheme
+                  //         .bodyLarge
+                  //         ?.copyWith(color: Colors.white),
+                  //   ),
+                  // ),
+                  // const SizedBox(width: 50),
+                  // InkWell(
+                  //   onTap: () {},
+                  //   child: Text(
+                  //     'FAQ'.tr(),
+                  //     style: Theme.of(context)
+                  //         .textTheme
+                  //         .bodyLarge
+                  //         ?.copyWith(color: Colors.white),
+                  //   ),
+                  // ),
+                  // const SizedBox(width: 50),
+                  InkWell(
+                    onTap: () {
+                      if (FirebaseAuth.instance.currentUser != null) {
+                        Navigator.pushReplacement(context,
+                            MaterialPageRoute(builder: (context) {
+                          return const AdminScreen();
+                        }));
+                        return;
+                      }
                       Navigator.pushReplacement(context,
                           MaterialPageRoute(builder: (context) {
-                        return const AdminScreen();
+                        return const AdminAuthScreen();
                       }));
-                      return;
-                    }
-                    Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context) {
-                      return const AdminAuthScreen();
-                    }));
-                  },
-                  child: Text(
-                    'admin'.tr(),
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyLarge
-                        ?.copyWith(color: Colors.white),
+                    },
+                    child: Text(
+                      'admin'.tr(),
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyLarge
+                          ?.copyWith(color: Colors.white),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           Positioned(

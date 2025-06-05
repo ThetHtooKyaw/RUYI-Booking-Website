@@ -35,7 +35,7 @@ class _DesktopViewMenuThirdLayerState extends State<DesktopViewMenuThirdLayer> {
           menuData.favItems.isEmpty
               ? cartEmpty(context)
               : SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.53,
+                  height: MediaQuery.of(context).size.height * 0.8,
                   child: ListView.builder(
                     padding: const EdgeInsets.only(bottom: 1),
                     itemCount: menuData.favItems.length,

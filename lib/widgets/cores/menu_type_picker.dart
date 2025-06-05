@@ -21,7 +21,6 @@ class _MenuTypePickerState extends State<MenuTypePicker> {
     super.initState();
     final item = menuItems.firstWhere((item) => item['id'] == widget.itemID);
     final defaultOption = item['type']['0'] as String;
-
     selectedOption = defaultOption;
   }
 
@@ -31,53 +30,66 @@ class _MenuTypePickerState extends State<MenuTypePicker> {
     final item = menuItems.firstWhere((item) => item['id'] == widget.itemID);
     final typeOptions = (item['type'] as Map).values.cast<String>().toList();
 
-    return DropdownMenu(
-      menuHeight: typeOptions.length * 60,
-      initialSelection: selectedOption,
-      onSelected: (String? value) {
-        if (value != null) {
-          setState(() {
-            selectedOption = value;
-            menuData.onOptionChanged(widget.itemID, selectedOption);
-          });
-        }
-      },
-      dropdownMenuEntries: typeOptions
-          .map((value) => DropdownMenuEntry<String>(
-                value: value,
-                label: value.tr(),
-                labelWidget: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 5),
-                  width: 100,
-                  child: Text(
-                    value.tr(),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ))
-          .toList(),
-      inputDecorationTheme: InputDecorationTheme(
-        filled: true,
-        fillColor: Colors.white,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 10),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(5),
-          borderSide: BorderSide.none,
+    return SizedBox(
+      width: 150,
+      child: DropdownButtonFormField<String>(
+        value: selectedOption,
+        onChanged: (String? newValue) {
+          if (newValue != null) {
+            setState(() {
+              selectedOption = newValue;
+              menuData.onOptionChanged(widget.itemID, selectedOption);
+            });
+          }
+        },
+        items: typeOptions.map((value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 5),
+              width: 100,
+              child: Text(
+                value.tr(),
+                maxLines: 2,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
+              ),
+            ),
+          );
+        }).toList(),
+        selectedItemBuilder: (BuildContext context) {
+          return typeOptions.map<Widget>((String value) {
+            return SizedBox(
+              width: 90,
+              child: Text(
+                value.tr(),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.appAccent,
+                    ),
+              ),
+            );
+          }).toList();
+        },
+        decoration: InputDecoration(
+          filled: true,
+          fillColor: Colors.white,
+          contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(5),
+            borderSide: BorderSide.none,
+          ),
         ),
-      ),
-      menuStyle: MenuStyle(
-        visualDensity: VisualDensity.compact,
-        backgroundColor: WidgetStateProperty.all(AppColors.appAccent),
-      ),
-      textStyle: const TextStyle(
-        fontSize: 12,
-        fontWeight: FontWeight.bold,
-        color: AppColors.appAccent,
-      ),
-      trailingIcon: Icon(
-        Icons.arrow_drop_down,
-        color: Theme.of(context).iconTheme.color,
+        icon: Icon(
+          Icons.arrow_drop_down,
+          color: Theme.of(context).iconTheme.color,
+        ),
+        dropdownColor: AppColors.appAccent,
       ),
     );
   }

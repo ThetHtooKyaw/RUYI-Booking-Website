@@ -144,6 +144,7 @@ class _MobileMenuScreenState extends State<MobileMenuScreen> {
                   borderRadius:
                       BorderRadius.vertical(top: Radius.circular(10))),
               child: Stack(
+                alignment: Alignment.centerRight,
                 children: [
                   ButtonUtils.forwardButton(double.infinity, 'view_cart'.tr(),
                       () {
@@ -154,7 +155,6 @@ class _MobileMenuScreenState extends State<MobileMenuScreen> {
                   }, 14),
                   Positioned(
                     right: 5,
-                    top: 8.5,
                     child: Container(
                       height: 35,
                       width: 35,

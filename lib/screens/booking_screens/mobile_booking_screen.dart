@@ -86,6 +86,8 @@ class _MobileBookingScreenState extends State<MobileBookingScreen> {
                       selectedRoomtype: bookingData.selectedRoomtype,
                       onRoomTypeChange: bookingData.onRoomTypeChange,
                       isVipRoomAvailable: bookingData.isVipRoomAvailable,
+                      isVipBigRoomAvailable: bookingData.isVipBigRoomAvailable,
+                      isTableNoAvailable: bookingData.isTableNoAvailable,
                       width: MediaQuery.of(context).size.width * 0.95,
                     ),
                   ),
@@ -148,8 +150,12 @@ class _MobileBookingScreenState extends State<MobileBookingScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Expanded(
-                          child: ButtonUtils.backwardButton(220, 'cancel'.tr(),
-                              () => bookingData.resetForm(context), 17),
+                          child: ButtonUtils.backwardButton(
+                              220,
+                              'cancel'.tr(),
+                              () => bookingData.resetForm(
+                                  context, menuData.cartedItems),
+                              17),
                         ),
                         const SizedBox(width: 20),
                         Expanded(

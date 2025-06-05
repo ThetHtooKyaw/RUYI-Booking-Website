@@ -88,6 +88,9 @@ class _DesktopBookingScreenState extends State<DesktopBookingScreen> {
                         selectedRoomtype: bookingData.selectedRoomtype,
                         onRoomTypeChange: bookingData.onRoomTypeChange,
                         isVipRoomAvailable: bookingData.isVipRoomAvailable,
+                        isVipBigRoomAvailable:
+                            bookingData.isVipBigRoomAvailable,
+                        isTableNoAvailable: bookingData.isTableNoAvailable,
                         width: 400,
                       ),
                       _buildCardName(
@@ -161,8 +164,11 @@ class _DesktopBookingScreenState extends State<DesktopBookingScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ButtonUtils.backwardButton(400, 'cancel'.tr(),
-                    () => bookingData.resetForm(context), 17),
+                ButtonUtils.backwardButton(
+                    400,
+                    'cancel'.tr(),
+                    () => bookingData.resetForm(context, menuData.cartedItems),
+                    17),
                 const SizedBox(width: 20),
                 ButtonUtils.forwardButton(400, 'continue'.tr(),
                     () => bookingData.continueBooking(context), 17),

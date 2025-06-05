@@ -98,6 +98,7 @@ class BookingService {
         <strong>The RUYI Chinese Cuisine</strong><br>
         """,
       });
+      debugPrint('Send email to user successfully');
     } catch (e) {
       debugPrint('Error sending email to user: $e');
     }
@@ -133,14 +134,47 @@ class BookingService {
     bookingListFuture = fetchBookingList();
   }
 
+  Future<List<Map<String, dynamic>>> fetchBookedTableNo(String date) async {
+    try {
+      final bookedSnapshot = await db
+          .collection('bookings')
+          .where('date', isEqualTo: date)
+          .where('room_type', isEqualTo: 'General Dining Room')
+          .get();
+
+      return bookedSnapshot.docs.map((doc) => doc.data()).toList();
+    } catch (e) {
+      debugPrint('Error fetching booked table number from Firestore: $e');
+      return [];
+    }
+  }
+
   Future<List<Map<String, dynamic>>> fetchBookedVipRooms(String date) async {
     try {
-      final bookedSnapshot =
-          await db.collection('bookings').where('date', isEqualTo: date).get();
+      final bookedSnapshot = await db
+          .collection('bookings')
+          .where('date', isEqualTo: date)
+          .where('room_type', isEqualTo: 'Private VIP Room')
+          .get();
 
       return bookedSnapshot.docs.map((doc) => doc.data()).toList();
     } catch (e) {
       debugPrint('Error fetching booked VIP rooms from Firestore: $e');
+      return [];
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> fetchBookedVipBigRooms(String date) async {
+    try {
+      final bookedSnapshot = await db
+          .collection('bookings')
+          .where('date', isEqualTo: date)
+          .where('room_type', isEqualTo: 'Private VIP Big Room')
+          .get();
+
+      return bookedSnapshot.docs.map((doc) => doc.data()).toList();
+    } catch (e) {
+      debugPrint('Error fetching booked VIP Big rooms from Firestore: $e');
       return [];
     }
   }

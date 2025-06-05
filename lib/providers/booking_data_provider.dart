@@ -18,6 +18,20 @@ class BookingDataProvider extends ChangeNotifier {
   String? selectedRoomtype;
   String? selectedRoomName;
 
+  final List<String> _tableNo = [
+    'Table 1',
+    'Table 2',
+    'Table 3',
+    'Table 4',
+    'Table 5',
+    'Table 6',
+    'Table 7',
+    'Table 8',
+    'Table 9',
+    'Table 10',
+    'Table 11'
+  ];
+
   final List<String> _vipRooms = [
     'VIP 1',
     'VIP 2',
@@ -28,11 +42,14 @@ class BookingDataProvider extends ChangeNotifier {
     'VIP 9',
     'VIP 10',
     'VIP 11',
-    'VIP 12',
-    'VIP 888',
-    'VIP 999'
+    'VIP 12'
   ];
+
+  final List<String> _vipBigRooms = ['VIP 888', 'VIP 999'];
+
+  List<Map<String, dynamic>> bookedTableNo = [];
   List<Map<String, dynamic>> bookedVipRooms = [];
+  List<Map<String, dynamic>> bookedVipBigRooms = [];
 
   final TextEditingController nameController = TextEditingController();
   final TextEditingController phNoController = TextEditingController();
@@ -104,7 +121,7 @@ class BookingDataProvider extends ChangeNotifier {
       formattedDate = DateFormat('MM-dd-yyyy').format(date);
       dateErrorText = null;
 
-      fetchBookedVipRooms();
+      fetchBookedRoomsAndTable();
     }
     notifyListeners();
   }
@@ -119,8 +136,14 @@ class BookingDataProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  bool isTableNoAvailable() => _tableNo.any(
+      (room) => !bookedTableNo.any((booked) => booked['room_name'] == room));
+
   bool isVipRoomAvailable() => _vipRooms.any(
       (room) => !bookedVipRooms.any((booked) => booked['room_name'] == room));
+
+  bool isVipBigRoomAvailable() => _vipBigRooms.any((room) =>
+      !bookedVipBigRooms.any((booked) => booked['room_name'] == room));
 
   void onRoomTypeChange(String? roomType) {
     if (roomType == 'Private VIP Room' && isVipRoomAvailable()) {
@@ -132,23 +155,42 @@ class BookingDataProvider extends ChangeNotifier {
         selectedRoomtype = roomType;
         selectedRoomName = availableRoom;
       }
+    } else if (roomType == 'Private VIP Big Room' && isVipBigRoomAvailable()) {
+      final availableRoom = _vipBigRooms.firstWhere(
+        (room) =>
+            !bookedVipBigRooms.any((booked) => booked['room_name'] == room),
+        orElse: () => '',
+      );
+      if (availableRoom.isNotEmpty) {
+        selectedRoomtype = roomType;
+        selectedRoomName = availableRoom;
+      }
     } else {
-      selectedRoomtype = roomType;
-      selectedRoomName = '';
+      final availableRoom = _tableNo.firstWhere(
+        (room) => !bookedTableNo.any((booked) => booked['room_name'] == room),
+        orElse: () => '',
+      );
+      if (availableRoom.isNotEmpty) {
+        selectedRoomtype = roomType;
+        selectedRoomName = availableRoom;
+      }
     }
     notifyListeners();
   }
 
-  Future<void> fetchBookedVipRooms() async {
+  Future<void> fetchBookedRoomsAndTable() async {
     try {
+      bookedTableNo = await _bookingService.fetchBookedTableNo(formattedDate);
       bookedVipRooms = await _bookingService.fetchBookedVipRooms(formattedDate);
+      bookedVipBigRooms =
+          await _bookingService.fetchBookedVipBigRooms(formattedDate);
       notifyListeners();
     } catch (e) {
       debugPrint('Error fetching booked VIP rooms: $e');
     }
   }
 
-  void resetForm(BuildContext context) {
+  void resetForm(BuildContext context, Map<String, Map<String, dynamic>> menuData) {
     selectedDate = DateTime.now();
     formattedDate = DateFormat('MM-dd-yyyy').format(DateTime.now());
     dateErrorText = null;
@@ -159,6 +201,7 @@ class BookingDataProvider extends ChangeNotifier {
     nameController.clear();
     phNoController.clear();
     emailController.clear();
+    menuData.clear();
     notifyListeners();
     Navigator.pop(context);
   }
@@ -198,7 +241,7 @@ class BookingDataProvider extends ChangeNotifier {
               (route) => false,
             );
           });
-          resetForm(context);
+          resetForm(context, menuList);
         },
         isClickable: false,
       );

@@ -64,7 +64,7 @@ class _MobileHomeScreenState extends State<MobileHomeScreen> {
             }, 17),
           ),
           const SizedBox(height: 40),
-          const ImageSlider(indicaterLeft: 215),
+          const ImageSlider(),
           const SizedBox(height: 30),
           InfoTile(
               icon: Icons.access_time_filled_rounded,
@@ -173,9 +173,9 @@ class _MobileHomeScreenState extends State<MobileHomeScreen> {
             color: Colors.black,
           ),
           const SizedBox(height: 40),
-          _buildDrawerTab(context, 'about'.tr(), () {}),
-          const CustomDivider(),
-          _buildDrawerTab(context, 'FAQ'.tr(), () {}),
+          // _buildDrawerTab(context, 'about'.tr(), () {}),
+          // const CustomDivider(),
+          // _buildDrawerTab(context, 'FAQ'.tr(), () {}),
           const CustomDivider(),
           _buildDrawerTab(context, 'admin'.tr(), () {
             if (FirebaseAuth.instance.currentUser != null) {
@@ -190,7 +190,7 @@ class _MobileHomeScreenState extends State<MobileHomeScreen> {
               return const AdminAuthScreen();
             }));
           }),
-          const CustomDivider(),
+          // const CustomDivider(),
         ],
       ),
     );

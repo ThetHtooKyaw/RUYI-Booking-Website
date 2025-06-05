@@ -229,7 +229,7 @@ List<Map<String, dynamic>> menuItems = [
     'id': '23',
     'image': 'assets/images/menu/menu_23.png',
     'name': 'menu23',
-    'price': 78000,
+    'price': 88000,
     'category': 'category3',
   },
   {
@@ -306,7 +306,7 @@ List<Map<String, dynamic>> menuItems = [
     'id': '34',
     'image': 'assets/images/menu/menu_34.png',
     'name': 'menu34',
-    'price': 36800,
+    'price': 56800,
     'category': 'category3',
   },
   {
@@ -458,7 +458,7 @@ List<Map<String, dynamic>> menuItems = [
     'id': '53',
     'image': 'assets/images/menu/menu_53.png',
     'name': 'menu53',
-    'price': 38800,
+    'price': 66800,
     'category': 'category5',
   },
   {
@@ -496,13 +496,13 @@ List<Map<String, dynamic>> menuItems = [
     'price': 42800,
     'category': 'category5',
   },
-  {
-    'id': '59',
-    'image': 'assets/images/menu/menu_59.png',
-    'name': 'menu59',
-    'price': 168000,
-    'category': 'category5',
-  },
+  // {
+  //   'id': '59',
+  //   'image': 'assets/images/menu/menu_59.png',
+  //   'name': 'menu59',
+  //   'price': 168000,
+  //   'category': 'category5',
+  // },
   {
     'id': '60',
     'image': 'assets/images/menu/menu_60.png',
@@ -682,7 +682,7 @@ List<Map<String, dynamic>> menuItems = [
     'id': '85',
     'image': 'assets/images/menu/menu_85.png',
     'name': 'menu85',
-    'price': 46800,
+    'price': 56800,
     'category': 'category5',
   },
   {
@@ -745,7 +745,7 @@ List<Map<String, dynamic>> menuItems = [
     'id': '94',
     'image': 'assets/images/menu/menu_94.png',
     'name': 'menu94',
-    'price': 46800,
+    'price': 56800,
     'category': 'category5',
   },
   {
@@ -942,7 +942,7 @@ List<Map<String, dynamic>> menuItems = [
     'id': '120',
     'image': 'assets/images/menu/menu_120.png',
     'name': 'menu120',
-    'price': 68000,
+    'price': 88000,
     'category': 'category7',
   },
   {
@@ -956,7 +956,7 @@ List<Map<String, dynamic>> menuItems = [
     'id': '122',
     'image': 'assets/images/menu/menu_122.png',
     'name': 'menu122',
-    'price': 68000,
+    'price': 88000,
     'category': 'category7',
   },
   {

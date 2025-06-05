@@ -6,17 +6,21 @@ class RoomPicker extends StatelessWidget {
   final String? selectedRoomtype;
   final void Function(String?) onRoomTypeChange;
   final bool Function() isVipRoomAvailable;
-  const RoomPicker({
-    super.key,
-    required this.width,
-    required this.selectedRoomtype,
-    required this.onRoomTypeChange,
-    required this.isVipRoomAvailable,
-  });
+  final bool Function() isVipBigRoomAvailable;
+  final bool Function() isTableNoAvailable;
+  const RoomPicker(
+      {super.key,
+      required this.width,
+      required this.selectedRoomtype,
+      required this.onRoomTypeChange,
+      required this.isVipRoomAvailable,
+      required this.isVipBigRoomAvailable,
+      required this.isTableNoAvailable});
 
   static const List<String> _roomTypes = [
     'General Dining Room',
     'Private VIP Room',
+    'Private VIP Big Room',
   ];
 
   @override
@@ -32,10 +36,16 @@ class RoomPicker extends StatelessWidget {
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Please select a room type';
-              }
-              if (value == 'Private VIP Room' && !isVipRoomAvailable()) {
+              } else if (value == 'General Dining Room' &&
+                  !isTableNoAvailable()) {
+                return 'No table available at the moment';
+              } else if (value == 'Private VIP Room' && !isVipRoomAvailable()) {
                 return 'No VIP rooms available at the moment';
+              } else if (value == 'Private VIP Big Room' &&
+                  !isVipBigRoomAvailable()) {
+                return 'No VIP big rooms available at the moment';
               }
+
               return null;
             },
             items: _roomTypes.map((room) {
