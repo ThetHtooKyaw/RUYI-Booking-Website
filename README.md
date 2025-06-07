@@ -1,4 +1,4 @@
-# lan_ting_booking
+# ruyi_booking
 
 A new Flutter project.
 

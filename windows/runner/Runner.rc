@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "lan_ting_booking" "\0"
+            VALUE "FileDescription", "ruyi_booking" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "lan_ting_booking" "\0"
+            VALUE "InternalName", "ruyi_booking" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2025 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "lan_ting_booking.exe" "\0"
-            VALUE "ProductName", "lan_ting_booking" "\0"
+            VALUE "OriginalFilename", "ruyi_booking.exe" "\0"
+            VALUE "ProductName", "ruyi_booking" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

@@ -69,7 +69,7 @@ class BookingService {
 
       await db.collection("emails").add({
         "from": {
-          "email": "MS_WiP7dl@test-69oxl5e2dydl785k.mlsender.net",
+          "email": "admin@ruyi-restaurant.xyz",
         },
         "to": [
           {
