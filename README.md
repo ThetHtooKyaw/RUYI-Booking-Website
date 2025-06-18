@@ -1,16 +1,37 @@
-# ruyi_booking
+# RUYI Booking Website
 
-A new Flutter project.
+A real-world restaurant's table booking web app built for Ruyi Restaurant using Flutter Web and Firebase. It supports both user and admin interfaces and is responsive for desktop and mobile.
+
+## Features
+
+- User can:
+  - Browse menu
+  - Book tables (with pre-order menu)
+  - Receive booking confirmation emails
+- Admin can:
+  - Manage bookings, disable dates
+  - Approve/reject bookings
+  - View orders and
+  - add new admin or change admin data
+- Responsive design with `ResponsiveBuilder`
+- Email notifications via **MailerSend API**
+- Hosted on **Netlify**
+
+## Tech Stack
+
+- **Flutter Web**
+- **Firebase Firestore** (Database)
+- **Firebase Auth** (Admin Login)
+- **Provider** (for menu, booking, admin logic)
+- **MailerSend API** (email confirmation)
+- **ResponsiveBuilder** (responsive UI)
+
+## Live Demo
+
+🔗 [Visit the Website](https://ruyi-restaurant.xyz/)
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1. Clone the repo: git clone https://github.com/yourusername/ruyi-booking.git
+2. Navigate to the project: cd todo-app
+3. Run the app: flutter pub get & flutter run

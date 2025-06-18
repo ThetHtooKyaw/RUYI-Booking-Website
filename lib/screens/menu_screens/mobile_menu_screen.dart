@@ -106,7 +106,7 @@ class _MobileMenuScreenState extends State<MobileMenuScreen> {
                               ),
                             Container(
                               padding: const EdgeInsets.symmetric(vertical: 10),
-                              height: 175,
+                              height: 178,
                               child: Row(
                                 children: [
                                   ClipRRect(
@@ -213,23 +213,39 @@ class _MobileMenuScreenState extends State<MobileMenuScreen> {
                     ),
                   ],
                 )
-              : item['id'] == '22'
+              : (item['type']?.isNotEmpty == true && item['type'] is! List)
                   ? Row(
                       children: [
                         Image.asset(
-                          'assets/icons/detail.png',
+                          'assets/icons/cooking.png',
                           width: 17,
                           height: 17,
                           color: Theme.of(context).iconTheme.color,
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          item['detail']?.toString().tr() ?? '',
+                          item['type']?.toString().tr() ?? '',
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                       ],
                     )
-                  : const SizedBox(),
+                  : item['id'] == '22'
+                      ? Row(
+                          children: [
+                            Image.asset(
+                              'assets/icons/detail.png',
+                              width: 17,
+                              height: 17,
+                              color: Theme.of(context).iconTheme.color,
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              item['detail']?.toString().tr() ?? '',
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
+                          ],
+                        )
+                      : const SizedBox(),
           const SizedBox(height: 5),
           Row(
             children: [

@@ -53,12 +53,13 @@ class MenuDataProvider extends ChangeNotifier {
   }
 
   bool onShowPicker(Map<String, dynamic> item) {
+    final id = int.tryParse(item['id']);
     if ((item['category'].toString().tr() == 'category2'.tr() &&
             item['id'] != '15') ||
         item['category'].toString().tr() == 'category4'.tr() ||
         item['category'].toString().tr() == 'category6'.tr() ||
         item['category'].toString().tr() == 'category10'.tr() ||
-        item['id'] == '136') {
+        [27, 136, 138].contains(id)) {
       return true;
     }
     return false;
