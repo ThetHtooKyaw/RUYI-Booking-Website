@@ -3,7 +3,6 @@
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
@@ -54,8 +53,8 @@ class DefaultFirebaseOptions {
   }
 
   static FirebaseOptions web = FirebaseOptions(
-    apiKey: dotenv.env['FIREBASE_API_KEY']!,
-    appId: dotenv.env['FIREBASE_APP_ID']!,
+    apiKey: 'AIzaSyBNrUVLmxjMEBUy5fddWYPqkntITu4seCA',
+    appId: '1:544047487845:web:2747186eac45e8aa005f8c',
     messagingSenderId: '544047487845',
     projectId: 'lanting-cfb35',
     authDomain: 'lanting-cfb35.firebaseapp.com',
