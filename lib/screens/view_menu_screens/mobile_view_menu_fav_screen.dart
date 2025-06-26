@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ruyi_booking/providers/menu_data_provider.dart';
 import 'package:ruyi_booking/utils/colors.dart';
-import 'package:ruyi_booking/utils/menu_data.dart';
 import 'package:ruyi_booking/widgets/extras/custom_buttons.dart';
 import 'package:ruyi_booking/widgets/extras/mobile_app_bar.dart';
 
@@ -20,7 +19,7 @@ class _MobileViewMenuFavScreenState extends State<MobileViewMenuFavScreen> {
   Widget build(BuildContext context) {
     var menuData = Provider.of<MenuDataProvider>(context);
     return Scaffold(
-      appBar: MobileAppbar(title: 'favorite'.tr(), isClickable: true),
+      appBar: MobileAppbar(title: 'favorite'.tr()),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: menuData.favItems.isEmpty
@@ -32,8 +31,6 @@ class _MobileViewMenuFavScreenState extends State<MobileViewMenuFavScreen> {
                   final itemKey = menuData.favItems.keys.toList()[index];
                   bool isclicked = menuData.isClickedItem(itemKey);
                   final item = menuData.favItems[itemKey];
-                  final itemDetail = menuItems.firstWhere(
-                      (value) => value['id'] == item?['selectedItemId']);
 
                   if (item == null) return const SizedBox();
 
@@ -55,7 +52,7 @@ class _MobileViewMenuFavScreenState extends State<MobileViewMenuFavScreen> {
                               height: 130,
                               width: 160,
                               child: Image.asset(
-                                itemDetail['image'],
+                                item['itemImage'],
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -66,7 +63,7 @@ class _MobileViewMenuFavScreenState extends State<MobileViewMenuFavScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  itemDetail['name'].toString().tr(),
+                                  item['itemName'].toString().tr(),
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyMedium
@@ -76,10 +73,10 @@ class _MobileViewMenuFavScreenState extends State<MobileViewMenuFavScreen> {
                                       ),
                                 ),
                                 const SizedBox(height: 5),
-                                item['selectedType'] != null &&
+                                (item['selectedType'] != null &&
                                         item['selectedType']
                                             .toString()
-                                            .isNotEmpty
+                                            .isNotEmpty)
                                     ? Row(
                                         children: [
                                           Image.asset(
@@ -125,11 +122,7 @@ class _MobileViewMenuFavScreenState extends State<MobileViewMenuFavScreen> {
                                   alignment: Alignment.centerRight,
                                   child: GestureDetector(
                                     onTap: () {
-                                      menuData.onFavItemAdd(
-                                          itemKey,
-                                          item,
-                                          menuData.priceKey(item),
-                                          menuData.typeKey(item));
+                                      menuData.onFavItemRemove(itemKey);
                                     },
                                     child: CircleAvatar(
                                       backgroundColor: isclicked

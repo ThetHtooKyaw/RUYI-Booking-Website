@@ -1,10 +1,10 @@
-List<Map<String, dynamic>> menuItems = [
+[
   {
     "id": "1",
     "image": "assets/images/menu/menu_1.png",
     "name": "menu1",
     "type": {},
-    "price": {"0": 168000},
+    "price": { "0": 168000 },
     "category": "category1"
   },
   {
@@ -12,7 +12,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_2.png",
     "name": "menu2",
     "type": {},
-    "price": {"0": 88000},
+    "price": { "0": 88000 },
     "category": "category1"
   },
   {
@@ -20,7 +20,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_3.png",
     "name": "menu3",
     "type": {},
-    "price": {"0": 128000},
+    "price": { "0": 128000 },
     "category": "category1"
   },
   {
@@ -28,7 +28,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_4.png",
     "name": "menu4",
     "type": {},
-    "price": {"0": 108000},
+    "price": { "0": 108000 },
     "category": "category1"
   },
   {
@@ -36,14 +36,14 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_5.png",
     "name": "menu5",
     "type": {},
-    "price": {"0": 86000},
+    "price": { "0": 86000 },
     "category": "category1"
   },
   {
     "id": "6",
     "image": "assets/images/menu/menu_6.png",
     "name": "menu6",
-    "type": {"0": "method1", "1": "method2", "2": "method3", "3": "method4"},
+    "type": { "0": "method1", "1": "method2", "2": "method3", "3": "method4" },
     "price": {
       "0": "string_price",
       "1": "string_price",
@@ -56,7 +56,7 @@ List<Map<String, dynamic>> menuItems = [
     "id": "7",
     "image": "assets/images/menu/menu_7.png",
     "name": "menu7",
-    "type": {"0": "method1", "1": "method2", "2": "method3", "3": "method4"},
+    "type": { "0": "method1", "1": "method2", "2": "method3", "3": "method4" },
     "price": {
       "0": "string_price",
       "1": "string_price",
@@ -69,7 +69,7 @@ List<Map<String, dynamic>> menuItems = [
     "id": "8",
     "image": "assets/images/menu/menu_8.png",
     "name": "menu8",
-    "type": {"0": "method1", "1": "method2", "2": "method3", "3": "method4"},
+    "type": { "0": "method1", "1": "method2", "2": "method3", "3": "method4" },
     "price": {
       "0": "string_price",
       "1": "string_price",
@@ -82,16 +82,16 @@ List<Map<String, dynamic>> menuItems = [
     "id": "9",
     "image": "assets/images/menu/menu_9.png",
     "name": "menu9",
-    "type": {"0": "method3", "1": "method5"},
-    "price": {"0": "string_price", "1": "string_price"},
+    "type": { "0": "method3", "1": "method5" },
+    "price": { "0": "string_price", "1": "string_price" },
     "category": "category2"
   },
   {
     "id": "10",
     "image": "assets/images/menu/menu_10.png",
     "name": "menu10",
-    "type": {"0": "method14", "1": "method6"},
-    "price": {"0": "string_price", "1": "string_price"},
+    "type": { "0": "method14", "1": "method6" },
+    "price": { "0": "string_price", "1": "string_price" },
     "category": "category2"
   },
   {
@@ -120,15 +120,20 @@ List<Map<String, dynamic>> menuItems = [
     "id": "12",
     "image": "assets/images/menu/menu_12.png",
     "name": "menu12",
-    "type": {"0": "method12", "1": "method13"},
-    "price": {"0": "string_price", "1": "string_price"},
+    "type": { "0": "method12", "1": "method13" },
+    "price": { "0": "string_price", "1": "string_price" },
     "category": "category2"
   },
   {
     "id": "13",
     "image": "assets/images/menu/menu_13.png",
     "name": "menu13",
-    "type": {"0": "method14", "1": "method15", "2": "method13", "3": "method7"},
+    "type": {
+      "0": "method14",
+      "1": "method15",
+      "2": "method13",
+      "3": "method7"
+    },
     "price": {
       "0": "string_price",
       "1": "string_price",
@@ -141,23 +146,28 @@ List<Map<String, dynamic>> menuItems = [
     "id": "14",
     "image": "assets/images/menu/menu_14.png",
     "name": "menu14",
-    "type": {"0": "method16", "1": "method5"},
-    "price": {"0": 13800, "1": 13800},
+    "type": { "0": "method16", "1": "method5" },
+    "price": { "0": 13800, "1": 13800 },
     "category": "category2"
   },
   {
     "id": "15",
     "image": "assets/images/menu/menu_15.png",
     "name": "menu15",
-    "type": {"0": "method6"},
-    "price": {"0": 16800},
+    "type": { "0": "method6" },
+    "price": { "0": 16800 },
     "category": "category2"
   },
   {
     "id": "16",
     "image": "assets/images/menu/menu_16.png",
     "name": "menu16",
-    "type": {"0": "method13", "1": "method17", "2": "method8", "3": "method18"},
+    "type": {
+      "0": "method13",
+      "1": "method17",
+      "2": "method8",
+      "3": "method18"
+    },
     "price": {
       "0": "string_price",
       "1": "string_price",
@@ -170,16 +180,16 @@ List<Map<String, dynamic>> menuItems = [
     "id": "17",
     "image": "assets/images/menu/menu_17.png",
     "name": "menu17",
-    "type": {"0": "method14", "1": "method6"},
-    "price": {"0": "string_price", "1": "string_price"},
+    "type": { "0": "method14", "1": "method6" },
+    "price": { "0": "string_price", "1": "string_price" },
     "category": "category2"
   },
   {
     "id": "18",
     "image": "assets/images/menu/menu_18.png",
     "name": "menu18",
-    "type": {"0": "method19", "1": "method11", "2": "method16"},
-    "price": {"0": "string_price", "1": "string_price", "2": "string_price"},
+    "type": { "0": "method19", "1": "method11", "2": "method16" },
+    "price": { "0": "string_price", "1": "string_price", "2": "string_price" },
     "category": "category2"
   },
   {
@@ -206,7 +216,12 @@ List<Map<String, dynamic>> menuItems = [
     "id": "20",
     "image": "assets/images/menu/menu_20.png",
     "name": "menu20",
-    "type": {"0": "method8", "1": "method1", "2": "method17", "3": "method20"},
+    "type": {
+      "0": "method8",
+      "1": "method1",
+      "2": "method17",
+      "3": "method20"
+    },
     "price": {
       "0": "string_price",
       "1": "string_price",
@@ -220,7 +235,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_21.png",
     "name": "menu21",
     "type": {},
-    "price": {"0": 158000},
+    "price": { "0": 158000 },
     "category": "category3"
   },
   {
@@ -228,7 +243,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_22.png",
     "name": "menu22",
     "type": {},
-    "price": {"0": 568000},
+    "price": { "0": 568000 },
     "detail": "detail",
     "category": "category3"
   },
@@ -237,7 +252,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_23.png",
     "name": "menu23",
     "type": {},
-    "price": {"0": 88000},
+    "price": { "0": 88000 },
     "category": "category3"
   },
   {
@@ -245,7 +260,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_24.png",
     "name": "menu24",
     "type": {},
-    "price": {"0": 42800},
+    "price": { "0": 42800 },
     "category": "category3"
   },
   {
@@ -253,7 +268,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_25.png",
     "name": "menu25",
     "type": {},
-    "price": {"0": 188000},
+    "price": { "0": 188000 },
     "category": "category3"
   },
   {
@@ -261,15 +276,15 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_26.png",
     "name": "menu26",
     "type": {},
-    "price": {"0": 52800},
+    "price": { "0": 52800 },
     "category": "category3"
   },
   {
     "id": "27",
     "image": "assets/images/menu/menu_27.png",
     "name": "menu27",
-    "type": {"0": "method32", "1": "method33"},
-    "price": {"0": 35800, "1": 66800},
+    "type": { "0": "method32", "1": "method33" },
+    "price": { "0": 35800, "1": 66800 },
     "category": "category3"
   },
   {
@@ -277,7 +292,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_28.png",
     "name": "menu28",
     "type": {},
-    "price": {"0": 42800},
+    "price": { "0": 42800 },
     "category": "category3"
   },
   {
@@ -285,7 +300,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_29.png",
     "name": "menu29",
     "type": {},
-    "price": {"0": 52800},
+    "price": { "0": 52800 },
     "category": "category3"
   },
   {
@@ -293,7 +308,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_30.png",
     "name": "menu30",
     "type": {},
-    "price": {"0": 22800},
+    "price": { "0": 22800 },
     "category": "category3"
   },
   {
@@ -301,7 +316,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_31.png",
     "name": "menu31",
     "type": {},
-    "price": {"0": 42800},
+    "price": { "0": 42800 },
     "category": "category3"
   },
   {
@@ -309,7 +324,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_32.png",
     "name": "menu32",
     "type": {},
-    "price": {"0": 42800},
+    "price": { "0": 42800 },
     "category": "category3"
   },
   {
@@ -317,7 +332,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_33.png",
     "name": "menu33",
     "type": {},
-    "price": {"0": 32800},
+    "price": { "0": 32800 },
     "category": "category3"
   },
   {
@@ -325,7 +340,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_34.png",
     "name": "menu34",
     "type": {},
-    "price": {"0": 56800},
+    "price": { "0": 56800 },
     "category": "category3"
   },
   {
@@ -333,7 +348,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_35.png",
     "name": "menu35",
     "type": {},
-    "price": {"0": 52800},
+    "price": { "0": 52800 },
     "category": "category3"
   },
   {
@@ -341,7 +356,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_37.png",
     "name": "menu37",
     "type": {},
-    "price": {"0": 19800},
+    "price": { "0": 19800 },
     "category": "category3"
   },
   {
@@ -349,7 +364,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_38.png",
     "name": "menu38",
     "type": {},
-    "price": {"0": 36800},
+    "price": { "0": 36800 },
     "category": "category3"
   },
   {
@@ -357,7 +372,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_39.png",
     "name": "menu39",
     "type": {},
-    "price": {"0": 42800},
+    "price": { "0": 42800 },
     "category": "category3"
   },
   {
@@ -365,7 +380,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_40.png",
     "name": "menu40",
     "type": {},
-    "price": {"0": 32800},
+    "price": { "0": 32800 },
     "category": "category3"
   },
   {
@@ -373,7 +388,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_42.png",
     "name": "menu42",
     "type": {},
-    "price": {"0": 18000},
+    "price": { "0": 18000 },
     "category": "category3"
   },
   {
@@ -381,7 +396,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_43.png",
     "name": "menu43",
     "type": {},
-    "price": {"0": 22800},
+    "price": { "0": 22800 },
     "category": "category3"
   },
   {
@@ -389,7 +404,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_44.png",
     "name": "menu44",
     "type": {},
-    "price": {"0": 26800},
+    "price": { "0": 26800 },
     "category": "category3"
   },
   {
@@ -397,7 +412,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_45.png",
     "name": "menu45",
     "type": {},
-    "price": {"0": 18000},
+    "price": { "0": 18000 },
     "category": "category3"
   },
   {
@@ -424,7 +439,7 @@ List<Map<String, dynamic>> menuItems = [
     "id": "47",
     "image": "assets/images/menu/menu_47.png",
     "name": "menu47",
-    "type": {"0": "fish1", "1": "fish4", "2": "fish5", "3": "fish3"},
+    "type": { "0": "fish1", "1": "fish4", "2": "fish5", "3": "fish3" },
     "price": {
       "0": 66800,
       "1": "string_price",
@@ -438,7 +453,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_48.png",
     "name": "menu48",
     "type": {},
-    "price": {"0": 88000},
+    "price": { "0": 88000 },
     "category": "category5"
   },
   {
@@ -446,7 +461,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_49.png",
     "name": "menu49",
     "type": {},
-    "price": {"0": 56800},
+    "price": { "0": 56800 },
     "category": "category5"
   },
   {
@@ -454,7 +469,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_50.png",
     "name": "menu50",
     "type": {},
-    "price": {"0": 418000},
+    "price": { "0": 418000 },
     "category": "category5"
   },
   {
@@ -462,7 +477,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_51.png",
     "name": "menu51",
     "type": {},
-    "price": {"0": 268000},
+    "price": { "0": 268000 },
     "category": "category5"
   },
   {
@@ -470,7 +485,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_52.png",
     "name": "menu52",
     "type": {},
-    "price": {"0": 42800},
+    "price": { "0": 42800 },
     "category": "category5"
   },
   {
@@ -478,7 +493,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_53.png",
     "name": "menu53",
     "type": {},
-    "price": {"0": 66800},
+    "price": { "0": 66800 },
     "category": "category5"
   },
   {
@@ -486,7 +501,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_54.png",
     "name": "menu54",
     "type": {},
-    "price": {"0": 42800},
+    "price": { "0": 42800 },
     "category": "category5"
   },
   {
@@ -494,7 +509,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_55.png",
     "name": "menu55",
     "type": {},
-    "price": {"0": 88000},
+    "price": { "0": 88000 },
     "category": "category5"
   },
   {
@@ -502,7 +517,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_56.png",
     "name": "menu56",
     "type": {},
-    "price": {"0": 72800},
+    "price": { "0": 72800 },
     "category": "category5"
   },
   {
@@ -510,7 +525,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_57.png",
     "name": "menu57",
     "type": {},
-    "price": {"0": 228000},
+    "price": { "0": 228000 },
     "category": "category5"
   },
   {
@@ -518,7 +533,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_58.png",
     "name": "menu58",
     "type": {},
-    "price": {"0": 42800},
+    "price": { "0": 42800 },
     "category": "category5"
   },
   {
@@ -526,7 +541,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_60.png",
     "name": "menu60",
     "type": {},
-    "price": {"0": 42800},
+    "price": { "0": 42800 },
     "category": "category5"
   },
   {
@@ -534,7 +549,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_61.png",
     "name": "menu61",
     "type": {},
-    "price": {"0": 158000},
+    "price": { "0": 158000 },
     "category": "category5"
   },
   {
@@ -542,7 +557,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_62.png",
     "name": "menu62",
     "type": {},
-    "price": {"0": 74800},
+    "price": { "0": 74800 },
     "category": "category5"
   },
   {
@@ -550,7 +565,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_63.png",
     "name": "menu63",
     "type": {},
-    "price": {"0": 198000},
+    "price": { "0": 198000 },
     "category": "category5"
   },
   {
@@ -558,7 +573,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_64.png",
     "name": "menu64",
     "type": {},
-    "price": {"0": 42800},
+    "price": { "0": 42800 },
     "category": "category5"
   },
   {
@@ -566,7 +581,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_65.png",
     "name": "menu65",
     "type": {},
-    "price": {"0": 128000},
+    "price": { "0": 128000 },
     "category": "category5"
   },
   {
@@ -574,7 +589,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_66.png",
     "name": "menu66",
     "type": {},
-    "price": {"0": 78000},
+    "price": { "0": 78000 },
     "category": "category5"
   },
   {
@@ -582,7 +597,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_67.png",
     "name": "menu67",
     "type": {},
-    "price": {"0": 118000},
+    "price": { "0": 118000 },
     "category": "category5"
   },
   {
@@ -590,7 +605,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_68.png",
     "name": "menu68",
     "type": {},
-    "price": {"0": 32800},
+    "price": { "0": 32800 },
     "category": "category5"
   },
   {
@@ -598,7 +613,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_69.png",
     "name": "menu69",
     "type": {},
-    "price": {"0": 36800},
+    "price": { "0": 36800 },
     "category": "category5"
   },
   {
@@ -606,7 +621,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_70.png",
     "name": "menu70",
     "type": {},
-    "price": {"0": 58000},
+    "price": { "0": 58000 },
     "category": "category5"
   },
   {
@@ -614,7 +629,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_71.png",
     "name": "menu71",
     "type": {},
-    "price": {"0": 68000},
+    "price": { "0": 68000 },
     "category": "category5"
   },
   {
@@ -622,7 +637,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_72.png",
     "name": "menu72",
     "type": {},
-    "price": {"0": 56800},
+    "price": { "0": 56800 },
     "category": "category5"
   },
   {
@@ -630,7 +645,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_73.png",
     "name": "menu73",
     "type": {},
-    "price": {"0": 42800},
+    "price": { "0": 42800 },
     "category": "category5"
   },
   {
@@ -638,7 +653,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_74.png",
     "name": "menu74",
     "type": {},
-    "price": {"0": 78000},
+    "price": { "0": 78000 },
     "category": "category5"
   },
   {
@@ -646,7 +661,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_75.png",
     "name": "menu75",
     "type": {},
-    "price": {"0": 76800},
+    "price": { "0": 76800 },
     "category": "category5"
   },
   {
@@ -654,7 +669,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_76.png",
     "name": "menu76",
     "type": {},
-    "price": {"0": 68000},
+    "price": { "0": 68000 },
     "category": "category5"
   },
   {
@@ -662,7 +677,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_77.png",
     "name": "menu77",
     "type": {},
-    "price": {"0": 42800},
+    "price": { "0": 42800 },
     "category": "category5"
   },
   {
@@ -670,7 +685,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_78.png",
     "name": "menu78",
     "type": {},
-    "price": {"0": 46800},
+    "price": { "0": 46800 },
     "category": "category5"
   },
   {
@@ -678,7 +693,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_79.png",
     "name": "menu79",
     "type": {},
-    "price": {"0": 148000},
+    "price": { "0": 148000 },
     "category": "category5"
   },
   {
@@ -686,7 +701,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_80.png",
     "name": "menu80",
     "type": {},
-    "price": {"0": 36000},
+    "price": { "0": 36000 },
     "category": "category5"
   },
   {
@@ -694,7 +709,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_81.png",
     "name": "menu81",
     "type": {},
-    "price": {"0": 68000},
+    "price": { "0": 68000 },
     "category": "category5"
   },
   {
@@ -702,7 +717,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_82.png",
     "name": "menu82",
     "type": {},
-    "price": {"0": 58000},
+    "price": { "0": 58000 },
     "category": "category5"
   },
   {
@@ -710,7 +725,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_83.png",
     "name": "menu83",
     "type": {},
-    "price": {"0": 68000},
+    "price": { "0": 68000 },
     "category": "category5"
   },
   {
@@ -718,7 +733,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_84.png",
     "name": "menu84",
     "type": {},
-    "price": {"0": 42800},
+    "price": { "0": 42800 },
     "category": "category5"
   },
   {
@@ -726,7 +741,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_85.png",
     "name": "menu85",
     "type": {},
-    "price": {"0": 56800},
+    "price": { "0": 56800 },
     "category": "category5"
   },
   {
@@ -734,7 +749,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_86.png",
     "name": "menu86",
     "type": {},
-    "price": {"0": 6800},
+    "price": { "0": 6800 },
     "category": "category5"
   },
   {
@@ -742,7 +757,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_87.png",
     "name": "menu87",
     "type": {},
-    "price": {"0": 56800},
+    "price": { "0": 56800 },
     "category": "category5"
   },
   {
@@ -750,7 +765,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_88.png",
     "name": "menu88",
     "type": {},
-    "price": {"0": 78000},
+    "price": { "0": 78000 },
     "category": "category5"
   },
   {
@@ -758,7 +773,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_89.png",
     "name": "menu89",
     "type": {},
-    "price": {"0": 58000},
+    "price": { "0": 58000 },
     "category": "category5"
   },
   {
@@ -766,7 +781,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_90.png",
     "name": "menu90",
     "type": {},
-    "price": {"0": 42800},
+    "price": { "0": 42800 },
     "category": "category5"
   },
   {
@@ -774,7 +789,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_91.png",
     "name": "menu91",
     "type": {},
-    "price": {"0": 42800},
+    "price": { "0": 42800 },
     "category": "category5"
   },
   {
@@ -782,7 +797,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_92.png",
     "name": "menu92",
     "type": {},
-    "price": {"0": 36800},
+    "price": { "0": 36800 },
     "category": "category5"
   },
   {
@@ -790,7 +805,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_93.png",
     "name": "menu93",
     "type": {},
-    "price": {"0": 38000},
+    "price": { "0": 38000 },
     "category": "category5"
   },
   {
@@ -798,7 +813,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_94.png",
     "name": "menu94",
     "type": {},
-    "price": {"0": 56800},
+    "price": { "0": 56800 },
     "category": "category5"
   },
   {
@@ -806,7 +821,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_95.png",
     "name": "menu95",
     "type": {},
-    "price": {"0": 42800},
+    "price": { "0": 42800 },
     "category": "category5"
   },
   {
@@ -814,7 +829,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_96.png",
     "name": "menu96",
     "type": {},
-    "price": {"0": 22800},
+    "price": { "0": 22800 },
     "category": "category5"
   },
   {
@@ -822,7 +837,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_97.png",
     "name": "menu97",
     "type": {},
-    "price": {"0": 23800},
+    "price": { "0": 23800 },
     "category": "category5"
   },
   {
@@ -830,7 +845,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_98.png",
     "name": "menu98",
     "type": {},
-    "price": {"0": 41800},
+    "price": { "0": 41800 },
     "category": "category5"
   },
   {
@@ -838,7 +853,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_99.png",
     "name": "menu99",
     "type": {},
-    "price": {"0": 48800},
+    "price": { "0": 48800 },
     "category": "category5"
   },
   {
@@ -846,7 +861,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_100.png",
     "name": "menu100",
     "type": {},
-    "price": {"0": 38000},
+    "price": { "0": 38000 },
     "category": "category5"
   },
   {
@@ -854,7 +869,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_101.png",
     "name": "menu101",
     "type": {},
-    "price": {"0": 36800},
+    "price": { "0": 36800 },
     "category": "category5"
   },
   {
@@ -862,7 +877,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_102.png",
     "name": "menu102",
     "type": {},
-    "price": {"0": 38000},
+    "price": { "0": 38000 },
     "category": "category5"
   },
   {
@@ -870,7 +885,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_103.png",
     "name": "menu103",
     "type": {},
-    "price": {"0": 42000},
+    "price": { "0": 42000 },
     "category": "category5"
   },
   {
@@ -878,7 +893,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_104.png",
     "name": "menu104",
     "type": {},
-    "price": {"0": 24800},
+    "price": { "0": 24800 },
     "category": "category5"
   },
   {
@@ -886,7 +901,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_105.png",
     "name": "menu105",
     "type": {},
-    "price": {"0": 28000},
+    "price": { "0": 28000 },
     "category": "category5"
   },
   {
@@ -894,7 +909,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_106.png",
     "name": "menu106",
     "type": {},
-    "price": {"0": 24800},
+    "price": { "0": 24800 },
     "category": "category5"
   },
   {
@@ -902,7 +917,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_107.png",
     "name": "menu107",
     "type": {},
-    "price": {"0": 42000},
+    "price": { "0": 42000 },
     "category": "category5"
   },
   {
@@ -910,7 +925,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_108.png",
     "name": "menu108",
     "type": {},
-    "price": {"0": 32000},
+    "price": { "0": 32000 },
     "category": "category5"
   },
   {
@@ -918,7 +933,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_109.png",
     "name": "menu109",
     "type": {},
-    "price": {"0": 29800},
+    "price": { "0": 29800 },
     "category": "category5"
   },
   {
@@ -926,7 +941,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_110.png",
     "name": "menu110",
     "type": {},
-    "price": {"0": 68000},
+    "price": { "0": 68000 },
     "category": "category5"
   },
   {
@@ -934,7 +949,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_111.png",
     "name": "menu111",
     "type": {},
-    "price": {"0": 19800},
+    "price": { "0": 19800 },
     "category": "category5"
   },
   {
@@ -942,39 +957,39 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_112.png",
     "name": "menu112",
     "type": {},
-    "price": {"0": 19800},
+    "price": { "0": 19800 },
     "category": "category5"
   },
   {
     "id": "113",
     "image": "assets/images/menu/menu_113.png",
     "name": "menu113",
-    "type": {"0": "method22", "1": "method23", "2": "method24"},
-    "price": {"0": 18000, "1": 22800, "2": 18000},
+    "type": { "0": "method22", "1": "method23", "2": "method24" },
+    "price": { "0": 18000, "1": 22800, "2": 18000 },
     "category": "category6"
   },
   {
     "id": "114",
     "image": "assets/images/menu/menu_114.png",
     "name": "menu114",
-    "type": {"0": "method22", "1": "method24", "2": "method25"},
-    "price": {"0": 18000, "1": 18000, "2": 18000},
+    "type": { "0": "method22", "1": "method24", "2": "method25" },
+    "price": { "0": 18000, "1": 18000, "2": 18000 },
     "category": "category6"
   },
   {
     "id": "115",
     "image": "assets/images/menu/menu_115.png",
     "name": "menu115",
-    "type": {"0": "method22", "1": "method24", "2": "method27"},
-    "price": {"0": 18000, "1": 18000, "2": 22800},
+    "type": { "0": "method22", "1": "method24", "2": "method27" },
+    "price": { "0": 18000, "1": 18000, "2": 22800 },
     "category": "category6"
   },
   {
     "id": "116",
     "image": "assets/images/menu/menu_116.png",
     "name": "menu116",
-    "type": {"0": "method22", "1": "method24"},
-    "price": {"0": 18000, "1": 18000},
+    "type": { "0": "method22", "1": "method24" },
+    "price": { "0": 18000, "1": 18000 },
     "category": "category6"
   },
   {
@@ -987,7 +1002,7 @@ List<Map<String, dynamic>> menuItems = [
       "2": "method22",
       "3": "method23"
     },
-    "price": {"0": 18000, "1": 18000, "2": 18000, "3": 22800},
+    "price": { "0": 18000, "1": 18000, "2": 18000, "3": 22800 },
     "category": "category6"
   },
   {
@@ -995,7 +1010,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_118.png",
     "name": "menu118",
     "type": {},
-    "price": {"0": 138000},
+    "price": { "0": 138000 },
     "category": "category7"
   },
   {
@@ -1003,7 +1018,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_119.png",
     "name": "menu119",
     "type": {},
-    "price": {"0": 158000},
+    "price": { "0": 158000 },
     "category": "category7"
   },
   {
@@ -1011,7 +1026,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_120.png",
     "name": "menu120",
     "type": {},
-    "price": {"0": 88000},
+    "price": { "0": 88000 },
     "category": "category7"
   },
   {
@@ -1019,7 +1034,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_121.png",
     "name": "menu121",
     "type": {},
-    "price": {"0": 68000},
+    "price": { "0": 68000 },
     "category": "category7"
   },
   {
@@ -1027,7 +1042,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_122.png",
     "name": "menu122",
     "type": {},
-    "price": {"0": 88000},
+    "price": { "0": 88000 },
     "category": "category7"
   },
   {
@@ -1035,7 +1050,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_123.png",
     "name": "menu123",
     "type": {},
-    "price": {"0": 48000},
+    "price": { "0": 48000 },
     "category": "category7"
   },
   {
@@ -1043,7 +1058,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_124.png",
     "name": "menu124",
     "type": {},
-    "price": {"0": 21800},
+    "price": { "0": 21800 },
     "category": "category7"
   },
   {
@@ -1051,7 +1066,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_125.png",
     "name": "menu125",
     "type": {},
-    "price": {"0": 20800},
+    "price": { "0": 20800 },
     "category": "category7"
   },
   {
@@ -1059,7 +1074,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_126.png",
     "name": "menu126",
     "type": {},
-    "price": {"0": 19800},
+    "price": { "0": 19800 },
     "category": "category7"
   },
   {
@@ -1067,7 +1082,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_128.png",
     "name": "menu128",
     "type": {},
-    "price": {"0": 21800},
+    "price": { "0": 21800 },
     "category": "category8"
   },
   {
@@ -1075,7 +1090,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_130.png",
     "name": "menu130",
     "type": {},
-    "price": {"0": 22800},
+    "price": { "0": 22800 },
     "category": "category8"
   },
   {
@@ -1083,7 +1098,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_131.png",
     "name": "menu131",
     "type": {},
-    "price": {"0": 26800},
+    "price": { "0": 26800 },
     "category": "category8"
   },
   {
@@ -1091,7 +1106,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_133.png",
     "name": "menu133",
     "type": {},
-    "price": {"0": 21800},
+    "price": { "0": 21800 },
     "category": "category8"
   },
   {
@@ -1099,7 +1114,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_134.png",
     "name": "menu134",
     "type": {},
-    "price": {"0": 22800},
+    "price": { "0": 22800 },
     "category": "category8"
   },
   {
@@ -1107,23 +1122,23 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_135.png",
     "name": "menu135",
     "type": {},
-    "price": {"0": "string_price"},
+    "price": { "0": "string_price" },
     "category": "category9"
   },
   {
     "id": "136",
     "image": "assets/images/menu/menu_136.png",
     "name": "menu136",
-    "type": {"0": "method28", "1": "method29"},
-    "price": {"0": 30800, "1": 28800},
+    "type": { "0": "method28", "1": "method29" },
+    "price": { "0": 30800, "1": 28800 },
     "category": "category9"
   },
   {
     "id": "138",
     "image": "assets/images/menu/menu_138.png",
     "name": "menu138",
-    "type": {"0": "method28", "1": "method29"},
-    "price": {"0": 30800, "1": 28800},
+    "type": { "0": "method28", "1": "method29" },
+    "price": { "0": 30800, "1": 28800 },
     "category": "category9"
   },
   {
@@ -1131,7 +1146,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_140.png",
     "name": "menu140",
     "type": {},
-    "price": {"0": 38000},
+    "price": { "0": 38000 },
     "category": "category9"
   },
   {
@@ -1139,7 +1154,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_141.png",
     "name": "menu141",
     "type": {},
-    "price": {"0": 30800},
+    "price": { "0": 30800 },
     "category": "category9"
   },
   {
@@ -1147,7 +1162,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_142.png",
     "name": "menu142",
     "type": {},
-    "price": {"0": 34800},
+    "price": { "0": 34800 },
     "category": "category9"
   },
   {
@@ -1155,7 +1170,7 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_143.png",
     "name": "menu143",
     "type": {},
-    "price": {"0": 27000},
+    "price": { "0": 27000 },
     "category": "category9"
   },
   {
@@ -1163,47 +1178,47 @@ List<Map<String, dynamic>> menuItems = [
     "image": "assets/images/menu/menu_144.png",
     "name": "menu144",
     "type": {},
-    "price": {"0": 28000},
+    "price": { "0": 28000 },
     "category": "category9"
   },
   {
     "id": "145",
     "image": "assets/images/menu/menu_145.png",
     "name": "menu145",
-    "type": {"0": "method30", "1": "method31"},
-    "price": {"0": 23800, "1": 6800},
+    "type": { "0": "method30", "1": "method31" },
+    "price": { "0": 23800, "1": 6800 },
     "category": "category10"
   },
   {
     "id": "147",
     "image": "assets/images/menu/menu_147.png",
     "name": "menu147",
-    "type": {"0": "method30", "1": "method31"},
-    "price": {"0": 28800, "1": 8800},
+    "type": { "0": "method30", "1": "method31" },
+    "price": { "0": 28800, "1": 8800 },
     "category": "category10"
   },
   {
     "id": "148",
     "image": "assets/images/menu/menu_148.png",
     "name": "menu148",
-    "type": {"0": "method30", "1": "method31"},
-    "price": {"0": 23800, "1": 6800},
+    "type": { "0": "method30", "1": "method31" },
+    "price": { "0": 23800, "1": 6800 },
     "category": "category10"
   },
   {
     "id": "149",
     "image": "assets/images/menu/menu_149.png",
     "name": "menu149",
-    "type": {"0": "method30", "1": "method31"},
-    "price": {"0": 28800, "1": 8800},
+    "type": { "0": "method30", "1": "method31" },
+    "price": { "0": 28800, "1": 8800 },
     "category": "category10"
   },
   {
     "id": "150",
     "image": "assets/images/menu/menu_150.png",
     "name": "menu150",
-    "type": {"0": "method30", "1": "method31"},
-    "price": {"0": 28800, "1": 8800},
+    "type": { "0": "method30", "1": "method31" },
+    "price": { "0": 28800, "1": 8800 },
     "category": "category10"
   }
-];
+]

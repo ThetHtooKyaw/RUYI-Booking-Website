@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ruyi_booking/providers/menu_data_provider.dart';
 import 'package:ruyi_booking/utils/colors.dart';
-import 'package:ruyi_booking/utils/menu_data.dart';
 
 class DesktopViewMenuThirdLayer extends StatefulWidget {
   const DesktopViewMenuThirdLayer({super.key});
@@ -43,8 +42,6 @@ class _DesktopViewMenuThirdLayerState extends State<DesktopViewMenuThirdLayer> {
                       final itemKey = menuData.favItems.keys.toList()[index];
                       bool isclicked = menuData.isClickedItem(itemKey);
                       final item = menuData.favItems[itemKey];
-                      final itemDetail = menuItems.firstWhere(
-                          (value) => value['id'] == item?['selectedItemId']);
 
                       if (item == null) return const SizedBox();
 
@@ -66,7 +63,7 @@ class _DesktopViewMenuThirdLayerState extends State<DesktopViewMenuThirdLayer> {
                                   height: 130,
                                   width: 160,
                                   child: Image.asset(
-                                    itemDetail['image'],
+                                    item['itemImage'],
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -77,7 +74,7 @@ class _DesktopViewMenuThirdLayerState extends State<DesktopViewMenuThirdLayer> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      itemDetail['name'].toString().tr(),
+                                      item['itemName'].toString().tr(),
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodyMedium
@@ -137,11 +134,7 @@ class _DesktopViewMenuThirdLayerState extends State<DesktopViewMenuThirdLayer> {
                                       alignment: Alignment.centerRight,
                                       child: GestureDetector(
                                         onTap: () {
-                                          menuData.onFavItemAdd(
-                                              itemKey,
-                                              item,
-                                              menuData.priceKey(item),
-                                              menuData.typeKey(item));
+                                          menuData.onFavItemRemove(itemKey);
                                         },
                                         child: CircleAvatar(
                                           backgroundColor: isclicked

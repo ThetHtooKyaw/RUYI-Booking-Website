@@ -24,7 +24,7 @@ class _MobileViewMenuScreenState extends State<MobileViewMenuScreen> {
     final filteredItems = menuData.getFilteredItems(selectedCategory);
 
     return Scaffold(
-      appBar: MobileAppbar(title: 'menu'.tr(), isClickable: true),
+      appBar: MobileAppbar(title: 'menu'.tr()),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
@@ -60,8 +60,10 @@ class _MobileViewMenuScreenState extends State<MobileViewMenuScreen> {
                         final item = filteredItems[index];
                         String type = menuData.itemType[item['id']] ??
                             (item['type'] is Map
-                                ? item['type']['0']
-                                : item['type'] ?? '');
+                                ? item['type'].isEmpty
+                                    ? ''
+                                    : item['type']['0']
+                                : 'N/A');
                         String uniqueKey = '${item['id']}-$type';
                         menuData.itemQty.putIfAbsent(uniqueKey, () => 0);
 
@@ -96,8 +98,7 @@ class _MobileViewMenuScreenState extends State<MobileViewMenuScreen> {
                                     ),
                                   ),
                                   const SizedBox(width: 15),
-                                  foodInfo(
-                                      context, menuData, item, uniqueKey, type),
+                                  foodInfo(context, menuData, item, uniqueKey),
                                 ],
                               ),
                             ),
@@ -112,8 +113,12 @@ class _MobileViewMenuScreenState extends State<MobileViewMenuScreen> {
     );
   }
 
-  Widget foodInfo(BuildContext context, MenuDataProvider menuData,
-      Map<String, dynamic> item, String uniqueKey, String type) {
+  Widget foodInfo(
+    BuildContext context,
+    MenuDataProvider menuData,
+    Map<String, dynamic> item,
+    String uniqueKey,
+  ) {
     bool isclicked = menuData.isClickedItem(uniqueKey);
 
     return Expanded(
@@ -139,12 +144,13 @@ class _MobileViewMenuScreenState extends State<MobileViewMenuScreen> {
                     ),
                     const SizedBox(width: 8),
                     MenuTypePicker(
-                      itemID: item['id'],
+                      itemId: item['id'],
+                      itemType: item['type'],
                       key: ObjectKey(item['id']),
                     ),
                   ],
                 )
-              : (item['type']?.isNotEmpty == true && item['type'] is! List)
+              : (item['type'].length == 1)
                   ? Row(
                       children: [
                         Image.asset(
@@ -155,7 +161,7 @@ class _MobileViewMenuScreenState extends State<MobileViewMenuScreen> {
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          item['type']?.toString().tr() ?? '',
+                          item['type'].values.first?.toString().tr() ?? '',
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                       ],

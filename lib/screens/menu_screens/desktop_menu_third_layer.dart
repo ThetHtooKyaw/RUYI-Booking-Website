@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ruyi_booking/providers/menu_data_provider.dart';
 import 'package:ruyi_booking/utils/colors.dart';
-import 'package:ruyi_booking/utils/menu_data.dart';
 import 'package:ruyi_booking/widgets/cores/item_counter.dart';
 import 'package:ruyi_booking/widgets/extras/custom_buttons.dart';
 
@@ -43,8 +42,6 @@ class _DesktopMenuThirdLayerState extends State<DesktopMenuThirdLayer> {
                     itemBuilder: (context, index) {
                       final itemKey = menuData.cartedItems.keys.toList()[index];
                       final item = menuData.cartedItems[itemKey];
-                      final itemDetail = menuItems.firstWhere(
-                          (value) => value['id'] == item?['selectedItemId']);
 
                       if (item == null) return const SizedBox();
 
@@ -66,7 +63,7 @@ class _DesktopMenuThirdLayerState extends State<DesktopMenuThirdLayer> {
                                   height: 130,
                                   width: 160,
                                   child: Image.asset(
-                                    itemDetail['image'],
+                                    item['itemImage'],
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -77,7 +74,7 @@ class _DesktopMenuThirdLayerState extends State<DesktopMenuThirdLayer> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      itemDetail['name'].toString().tr(),
+                                      item['itemName'].toString().tr(),
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodyMedium

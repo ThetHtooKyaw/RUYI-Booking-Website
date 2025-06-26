@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ruyi_booking/providers/menu_data_provider.dart';
 import 'package:ruyi_booking/utils/colors.dart';
-import 'package:ruyi_booking/utils/menu_data.dart';
 
 class MenuTypePicker extends StatefulWidget {
-  final String itemID;
-  const MenuTypePicker({super.key, required this.itemID});
+  final String itemId;
+  final Map<String, dynamic> itemType;
+  const MenuTypePicker(
+      {super.key, required this.itemId, required this.itemType});
 
   @override
   State<MenuTypePicker> createState() => _MenuTypePickerState();
@@ -19,16 +20,14 @@ class _MenuTypePickerState extends State<MenuTypePicker> {
   @override
   void initState() {
     super.initState();
-    final item = menuItems.firstWhere((item) => item['id'] == widget.itemID);
-    final defaultOption = item['type']['0'] as String;
+    final defaultOption = widget.itemType['0'] as String;
     selectedOption = defaultOption;
   }
 
   @override
   Widget build(BuildContext context) {
     var menuData = Provider.of<MenuDataProvider>(context);
-    final item = menuItems.firstWhere((item) => item['id'] == widget.itemID);
-    final typeOptions = (item['type'] as Map).values.cast<String>().toList();
+    final typeOptions = (widget.itemType as Map).values.cast<String>().toList();
 
     return SizedBox(
       width: 150,
@@ -38,7 +37,7 @@ class _MenuTypePickerState extends State<MenuTypePicker> {
           if (newValue != null) {
             setState(() {
               selectedOption = newValue;
-              menuData.onOptionChanged(widget.itemID, selectedOption);
+              menuData.onOptionChanged(widget.itemId, selectedOption);
             });
           }
         },

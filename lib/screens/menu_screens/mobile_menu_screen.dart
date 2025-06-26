@@ -9,6 +9,7 @@ import 'package:ruyi_booking/utils/colors.dart';
 import 'package:ruyi_booking/widgets/cores/item_counter.dart';
 import 'package:ruyi_booking/widgets/cores/menu_type_picker.dart';
 import 'package:ruyi_booking/widgets/extras/custom_buttons.dart';
+import 'package:ruyi_booking/widgets/extras/mobile_app_bar.dart';
 
 class MobileMenuScreen extends StatefulWidget {
   const MobileMenuScreen({super.key});
@@ -26,30 +27,7 @@ class _MobileMenuScreenState extends State<MobileMenuScreen> {
     final filteredItems = menuData.getFilteredItems(selectedCategory);
 
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        toolbarHeight: 60,
-        leadingWidth: 80,
-        backgroundColor: Colors.white,
-        leading: GestureDetector(
-          onTap: () {
-            Navigator.pop(context);
-          },
-          child: Icon(
-            Icons.keyboard_arrow_left_rounded,
-            size: 40,
-            color: Theme.of(context).iconTheme.color,
-          ),
-        ),
-        title: Text(
-          'menu'.tr(),
-          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                fontSize: 20,
-                color: AppColors.appAccent,
-                fontFamily: 'PlayfairDisplay',
-              ),
-        ),
-      ),
+      appBar: MobileAppbar(title: 'menu'.tr()),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
@@ -85,7 +63,9 @@ class _MobileMenuScreenState extends State<MobileMenuScreen> {
                         final item = filteredItems[index];
                         String type = menuData.itemType[item['id']] ??
                             (item['type'] is Map
-                                ? item['type']['0']
+                                ? item['type'].isEmpty
+                                    ? ''
+                                    : item['type']['0']
                                 : item['type'] ?? '');
                         String uniqueKey = '${item['id']}-$type';
                         menuData.itemQty.putIfAbsent(uniqueKey, () => 0);
@@ -208,12 +188,13 @@ class _MobileMenuScreenState extends State<MobileMenuScreen> {
                     ),
                     const SizedBox(width: 8),
                     MenuTypePicker(
-                      itemID: item['id'],
+                      itemId: item['id'],
+                      itemType: item['type'],
                       key: ObjectKey(item['id']),
                     ),
                   ],
                 )
-              : (item['type']?.isNotEmpty == true && item['type'] is! List)
+              : (item['type'].length == 1)
                   ? Row(
                       children: [
                         Image.asset(
@@ -224,7 +205,7 @@ class _MobileMenuScreenState extends State<MobileMenuScreen> {
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          item['type']?.toString().tr() ?? '',
+                          item['type'].values.first?.toString().tr() ?? '',
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                       ],

@@ -68,22 +68,27 @@ class MenuDataProvider extends ChangeNotifier {
   String onGetPrice(Map<String, dynamic> item) {
     final itemID = item['id'];
     final unit = getPriceUnit(itemID);
-    final itemPrice = item['price'];
 
-    if (itemPrice is String) return '${itemPrice.tr()} $unit';
-    if (item['type'] == null || itemPrice is int) {
-      return 'Ks. ${formatPrice(itemPrice)} $unit';
+    final typesMap =
+        item['type'] is Map ? Map<String, dynamic>.from(item['type']) : {};
+    final priceMap =
+        item['price'] is Map ? Map<String, dynamic>.from(item['price']) : {};
+
+    if (typesMap.isEmpty && priceMap.length == 1) {
+      final firstValue = priceMap.entries.first.value;
+      if (firstValue is int) return 'Ks. ${formatPrice(firstValue)} $unit';
+      if (firstValue is String) return '${firstValue.tr()} $unit';
     }
-    final selectedOption = itemType[itemID]?.toString().tr();
-    final Map typesMap = item['type'] as Map;
-    final Map priceMap = itemPrice as Map;
 
-    final effectiveType = selectedOption ?? typesMap['0'].toString().tr();
+    final selectedLabel = itemType[itemID]?.toString().tr();
+    final defaultLabel =
+        typesMap.isNotEmpty ? typesMap.values.first.toString().tr() : '';
+    final effectiveLabel = selectedLabel ?? defaultLabel;
+
     String? matchKey;
-
     typesMap.forEach(
       (key, value) {
-        if (value.toString().tr() == effectiveType) matchKey = key;
+        if (value.toString().tr() == effectiveLabel) matchKey = key;
       },
     );
     if (matchKey != null && priceMap.containsKey(matchKey)) {
@@ -95,23 +100,23 @@ class MenuDataProvider extends ChangeNotifier {
             : '${price.toString().tr()} ${'price_unit1'.tr()}';
       }
 
-      return 'Ks. ${formatPrice(priceMap[matchKey])} $unit';
-    }
-
-    return '';
-  }
-
-  String onGetCartPrice(Map<String, dynamic> item) {
-    final itemID = item['selectedItemId'];
-    final unit = getPriceUnit(itemID);
-    final price = item['selectedPrice'];
-
-    if (price is String) '${price.tr()} $unit';
-    if (item['type'] == null || price is int) {
       return 'Ks. ${formatPrice(price)} $unit';
     }
 
-    return '';
+    return 'N/A';
+  }
+
+  String onGetCartPrice(Map<String, dynamic> item) {
+    final itemID = item['itemId'];
+    final unit = getPriceUnit(itemID);
+    final price = item['selectedPrice'];
+
+    if (price is String) return '${price.tr()} $unit';
+    if (item['selectedType'] == null || price is int) {
+      return 'Ks. ${formatPrice(price)} $unit';
+    }
+
+    return 'N/A';
   }
 
   String formatPrice(dynamic price) {
@@ -154,27 +159,30 @@ class MenuDataProvider extends ChangeNotifier {
   }
 
   String? typeKey(Map<String, dynamic> item) {
-    if (item['type'] == null) {
-      return null;
-    }
-    return itemType[item['id']] ?? item['type']['0'];
+    final typesMap = item['type'];
+    return itemType[item['id']] ?? typesMap?['0'];
   }
 
   dynamic priceKey(Map<String, dynamic> item) {
-    if (item['price'] is String ||
-        item['price'] is int ||
-        item['type'] == null) {
-      return item['price'];
-    }
+    final typesMap = item['type'];
+    final priceMap = item['price'];
 
-    final ty = itemType[item['id']] ?? item['type']['0'];
-    for (var key in item['type'].keys) {
-      if (item['type'][key] == ty) {
-        return item['price'][key];
+    if ((typesMap == null || typesMap.isEmpty) &&
+        (priceMap != null && priceMap.isNotEmpty)) {
+      final firstValue = priceMap.values.first;
+      if (firstValue is String || firstValue is int) {
+        return firstValue;
       }
     }
 
-    return '';
+    final selectedType = itemType[item['id']] ?? typesMap?['0'];
+    for (final key in typesMap.keys) {
+      if (typesMap[key] == selectedType) {
+        return priceMap[key];
+      }
+    }
+
+    return 'N/A';
   }
 
   void onOptionChanged(String itemID, String option) {
@@ -269,12 +277,6 @@ class MenuDataProvider extends ChangeNotifier {
     }
   }
 
-  void removeFromCart(String itemKey) {
-    cartedItems.remove(itemKey);
-    itemQty[itemKey] = 0;
-    notifyListeners();
-  }
-
   void addToCart(
     String uniqueKey,
     Map<String, dynamic> item,
@@ -284,7 +286,9 @@ class MenuDataProvider extends ChangeNotifier {
   ) {
     if (itemQTY > 0) {
       cartedItems[uniqueKey] = {
-        'selectedItemId': item['id'],
+        'itemId': item['id'],
+        'itemImage': item['image'],
+        'itemName': item['name'],
         'selectedPrice': itemPrice,
         'selectedType': itemType,
         'quantity': itemQTY,
@@ -292,6 +296,12 @@ class MenuDataProvider extends ChangeNotifier {
     } else {
       cartedItems.remove(uniqueKey);
     }
+    notifyListeners();
+  }
+
+  void removeFromCart(String itemKey) {
+    cartedItems.remove(itemKey);
+    itemQty[itemKey] = 0;
     notifyListeners();
   }
 
@@ -337,10 +347,22 @@ class MenuDataProvider extends ChangeNotifier {
     } else {
       clickedItems.add(uniqueKey);
       favItems[uniqueKey] = {
-        'selectedItemId': item['id'],
-        'selectedPrice': itemPrice,
+        'itemId': item['id'],
+        'itemImage': item['image'],
+        'itemName': item['name'],
         'selectedType': itemType,
+        'selectedPrice': itemPrice,
       };
+    }
+
+    saveFavItemsToLocalStorage();
+    notifyListeners();
+  }
+
+  void onFavItemRemove(String uniqueKey) {
+    if (clickedItems.contains(uniqueKey)) {
+      clickedItems.remove(uniqueKey);
+      favItems.remove(uniqueKey);
     }
     saveFavItemsToLocalStorage();
     notifyListeners();

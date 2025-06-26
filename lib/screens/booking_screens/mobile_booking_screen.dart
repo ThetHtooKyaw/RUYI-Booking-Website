@@ -28,7 +28,7 @@ class _MobileBookingScreenState extends State<MobileBookingScreen> {
     var menuData = Provider.of<MenuDataProvider>(context);
 
     return Scaffold(
-      appBar: MobileAppbar(title: 'booking'.tr(), isClickable: true),
+      appBar: MobileAppbar(title: 'booking'.tr()),
       body: Form(
         key: bookingData.formKey,
         child: ListView(

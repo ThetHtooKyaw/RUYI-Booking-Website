@@ -20,7 +20,7 @@ class _MobileSignUpScreenState extends State<MobileSignUpScreen> {
   Widget build(BuildContext context) {
     var adminAuthData = Provider.of<AdminAuthProvider>(context);
     return Scaffold(
-      appBar: MobileAppbar(title: 'admin_signup'.tr(), isClickable: false),
+      appBar: MobileAppbar(title: 'admin_signup'.tr()),
       body: adminAuthData.isLoading
           ? const Center(
               child: CircularProgressIndicator(),

@@ -22,7 +22,7 @@ class _MobileBookingSummaryScreenState
     var menuData = Provider.of<MenuDataProvider>(context);
 
     return Scaffold(
-      appBar: MobileAppbar(title: 'booking_summary'.tr(), isClickable: false),
+      appBar: MobileAppbar(title: 'booking_summary'.tr()),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),

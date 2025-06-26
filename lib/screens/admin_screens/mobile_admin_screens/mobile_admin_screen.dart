@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ruyi_booking/providers/admin_auth_provider.dart';
+import 'package:ruyi_booking/screens/admin_screens/mobile_admin_edit_menu_screens/mobile_admin_update_menu_screens.dart';
 import 'package:ruyi_booking/screens/admin_screens/mobile_admin_screens/mobile_booking_list_screen.dart';
 import 'package:ruyi_booking/screens/admin_screens/mobile_admin_screens/mobile_calendar_edit_screen.dart';
 import 'package:ruyi_booking/screens/admin_screens/mobile_admin_screens/mobile_edit_admin_screen.dart';
@@ -40,6 +41,10 @@ class _MobileAdminScreenState extends State<MobileAdminScreen> {
         case 2:
           _title = 'edit_calendar_title'.tr();
           _currentBody = const MobileCalendarEditScreen();
+          break;
+        case 3:
+          _title = 'edit_menu_title'.tr();
+          _currentBody = const MobileAdminUpdateMenuScreens();
           break;
       }
     });
@@ -101,6 +106,11 @@ class _MobileAdminScreenState extends State<MobileAdminScreen> {
           const CustomDivider(),
           _buildDrawerTab(context, 'edit_calendar'.tr(), () {
             _onDrawerItemChange(2);
+            Navigator.pop(context);
+          }),
+          const CustomDivider(),
+          _buildDrawerTab(context, 'edit_menu'.tr(), () {
+            _onDrawerItemChange(3);
             Navigator.pop(context);
           }),
           const CustomDivider(),

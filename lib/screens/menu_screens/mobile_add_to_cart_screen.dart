@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ruyi_booking/providers/menu_data_provider.dart';
 import 'package:ruyi_booking/utils/colors.dart';
-import 'package:ruyi_booking/utils/menu_data.dart';
 import 'package:ruyi_booking/widgets/cores/item_counter.dart';
 import 'package:ruyi_booking/widgets/extras/custom_buttons.dart';
 import 'package:ruyi_booking/widgets/extras/mobile_app_bar.dart';
@@ -21,7 +20,7 @@ class _MobileAddToCartScreenState extends State<MobileAddToCartScreen> {
     var menuData = Provider.of<MenuDataProvider>(context);
 
     return Scaffold(
-      appBar: MobileAppbar(title: 'cart_title'.tr(), isClickable: false),
+      appBar: MobileAppbar(title: 'cart_title'.tr()),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: menuData.cartedItems.isEmpty
@@ -32,8 +31,6 @@ class _MobileAddToCartScreenState extends State<MobileAddToCartScreen> {
                 itemBuilder: (context, index) {
                   final itemKey = menuData.cartedItems.keys.toList()[index];
                   final item = menuData.cartedItems[itemKey];
-                  final itemDetail = menuItems.firstWhere(
-                      (value) => value['id'] == item?['selectedItemId']);
 
                   if (item == null) return const SizedBox();
 
@@ -55,7 +52,7 @@ class _MobileAddToCartScreenState extends State<MobileAddToCartScreen> {
                               height: 130,
                               width: 160,
                               child: Image.asset(
-                                itemDetail['image'],
+                                item['itemImage'],
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -66,7 +63,7 @@ class _MobileAddToCartScreenState extends State<MobileAddToCartScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  itemDetail['name'].toString().tr(),
+                                  item['itemName'].toString().tr(),
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyMedium

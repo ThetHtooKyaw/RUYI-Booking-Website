@@ -12,7 +12,7 @@ class MobileBookingDataScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MobileAppbar(title: 'booking_summary'.tr(), isClickable: false),
+      appBar: MobileAppbar(title: 'booking_summary'.tr()),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),

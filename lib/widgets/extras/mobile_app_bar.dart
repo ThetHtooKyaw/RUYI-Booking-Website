@@ -4,9 +4,8 @@ import 'package:ruyi_booking/widgets/cores/main_logo.dart';
 
 class MobileAppbar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
-  final bool isClickable;
   const MobileAppbar(
-      {super.key, required this.title, required this.isClickable});
+      {super.key, required this.title});
 
   @override
   Size get preferredSize => const Size.fromHeight(60);
@@ -16,12 +15,17 @@ class MobileAppbar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       centerTitle: true,
       toolbarHeight: 60,
-      leadingWidth: 80,
+      leadingWidth: 70,
       backgroundColor: Colors.white,
-      leading: Padding(
-        padding: const EdgeInsets.only(left: 10),
-        child: Center(
-            child: MainLogo(height: 45, width: 45, isClickable: isClickable)),
+      leading: GestureDetector(
+        onTap: () {
+          Navigator.pop(context);
+        },
+        child: Icon(
+          Icons.keyboard_arrow_left_rounded,
+          size: 40,
+          color: Theme.of(context).iconTheme.color,
+        ),
       ),
       title: Text(
         title,
@@ -31,6 +35,13 @@ class MobileAppbar extends StatelessWidget implements PreferredSizeWidget {
               fontFamily: 'PlayfairDisplay',
             ),
       ),
+      actions: const [
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 10),
+          child: Center(
+              child: MainLogo(height: 45, width: 45, isClickable: false)),
+        ),
+      ],
     );
   }
 }

@@ -51,7 +51,9 @@ class _DesktopViewMenuSecondLayerState
                         final item = widget.filteredItems[index];
                         String type = menuData.itemType[item['id']] ??
                             (item['type'] is Map
-                                ? item['type']['0']
+                                ? item['type'].isEmpty
+                                    ? ''
+                                    : item['type']['0']
                                 : item['type'] ?? '');
                         String uniqueKey = '${item['id']}-$type';
                         menuData.itemQty.putIfAbsent(uniqueKey, () => 0);
@@ -130,12 +132,13 @@ class _DesktopViewMenuSecondLayerState
                     ),
                     const SizedBox(width: 8),
                     MenuTypePicker(
-                      itemID: item['id'],
+                      itemId: item['id'],
+                      itemType: item['type'],
                       key: ObjectKey(item['id']),
                     ),
                   ],
                 )
-              : (item['type']?.isNotEmpty == true && item['type'] is! List)
+              : (item['type'].length == 1)
                   ? Row(
                       children: [
                         Image.asset(
@@ -146,7 +149,7 @@ class _DesktopViewMenuSecondLayerState
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          item['type']?.toString().tr() ?? '',
+                          item['type'].values.first?.toString().tr() ?? '',
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                       ],
