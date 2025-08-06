@@ -15,7 +15,7 @@ class MobileBookingDataScreen extends StatelessWidget {
       appBar: MobileAppbar(title: 'booking_summary'.tr()),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           child: Column(
             children: [
               _buildInfoCard(context, 'assets/icons/name.png', 'name'.tr(),
@@ -47,7 +47,7 @@ class MobileBookingDataScreen extends StatelessWidget {
               _buildInfoCard(context, 'assets/icons/detail.png', 'Status',
                   bookingData['status']),
               const SizedBox(height: 40),
-              ButtonUtils.backwardButton(double.infinity, 'back'.tr(),
+              ButtonUtils.backwardButton(context, double.infinity, 'back'.tr(),
                   () => Navigator.pop(context), 17),
             ],
           ),
@@ -71,7 +71,7 @@ class MobileBookingDataScreen extends StatelessWidget {
       ),
       trailing: Stack(
         children: [
-          ButtonUtils.forwardButton(150, 'menu'.tr(), () {
+          ButtonUtils.forwardButton(context, 150, 'menu'.tr(), () {
             Navigator.push(context, MaterialPageRoute(builder: (context) {
               return AdminMenuListScreen(bookingData: bookingData);
             }));

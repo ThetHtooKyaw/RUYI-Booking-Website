@@ -25,7 +25,7 @@ class _MobileAdminMenuListScreenState extends State<MobileAdminMenuListScreen> {
     return Scaffold(
       appBar: MobileAppbar(title: 'cart_title'.tr()),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         child: ListView.builder(
           padding: const EdgeInsets.only(bottom: 160),
           itemCount: bookingData['menu_list'].length,
@@ -156,7 +156,8 @@ class _MobileAdminMenuListScreenState extends State<MobileAdminMenuListScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Expanded(
-                  child: ButtonUtils.forwardButton(220, 'confirm'.tr(), () {
+                  child: ButtonUtils.forwardButton(context, 220, 'confirm'.tr(),
+                      () {
                     Navigator.pop(context);
                   }, 17),
                 )

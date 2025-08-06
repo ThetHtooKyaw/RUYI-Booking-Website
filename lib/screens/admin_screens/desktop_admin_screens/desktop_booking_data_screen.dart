@@ -50,8 +50,8 @@ class DesktopBookingDataScreen extends StatelessWidget {
                 _buildInfoCard(context, 'assets/icons/detail.png', 'Status',
                     bookingData['status']),
                 const SizedBox(height: 20),
-                ButtonUtils.backwardButton(double.infinity, 'back'.tr(),
-                    () => Navigator.pop(context), 17),
+                ButtonUtils.backwardButton(context, double.infinity,
+                    'back'.tr(), () => Navigator.pop(context), 17),
               ],
             ),
           ),
@@ -75,7 +75,7 @@ class DesktopBookingDataScreen extends StatelessWidget {
       ),
       trailing: Stack(
         children: [
-          ButtonUtils.forwardButton(150, 'menu'.tr(), () {
+          ButtonUtils.forwardButton(context, 150, 'menu'.tr(), () {
             Navigator.push(context, MaterialPageRoute(builder: (context) {
               return AdminMenuListScreen(bookingData: bookingData);
             }));

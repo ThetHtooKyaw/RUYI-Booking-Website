@@ -33,13 +33,18 @@ class _ImageSliderState extends State<ImageSlider> {
             itemCount: images.length,
             itemBuilder: (context, index, realIndex) {
               return Container(
-                margin: const EdgeInsets.symmetric(horizontal: 20),
+                margin: const EdgeInsets.symmetric(horizontal: 14),
                 width: maxWidth,
-                child: Image.asset(
-                  images[index],
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                  height: 300,
+                decoration:
+                    BoxDecoration(borderRadius: BorderRadius.circular(10)),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.asset(
+                    images[index],
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                    height: 300,
+                  ),
                 ),
               );
             },

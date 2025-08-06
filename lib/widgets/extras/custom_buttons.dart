@@ -3,6 +3,7 @@ import 'package:ruyi_booking/utils/colors.dart';
 
 class ButtonUtils {
   static Widget forwardButton(
+    BuildContext context,
     double width,
     String text,
     VoidCallback onPressed,
@@ -17,7 +18,9 @@ class ButtonUtils {
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           elevation: 5,
-          padding: const EdgeInsets.symmetric(vertical: 20),
+          padding: EdgeInsets.symmetric(
+              vertical:
+                  (MediaQuery.of(context).size.width * 0.04).clamp(14.0, 24.0)),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
         ),
         child: Text(
@@ -29,6 +32,7 @@ class ButtonUtils {
   }
 
   static Widget backwardButton(
+    BuildContext context,
     double width,
     String text,
     VoidCallback onPressed,
@@ -47,7 +51,9 @@ class ButtonUtils {
         child: OutlinedButton(
           onPressed: onPressed,
           style: OutlinedButton.styleFrom(
-            padding: const EdgeInsets.symmetric(vertical: 20),
+            padding: EdgeInsets.symmetric(
+                vertical: (MediaQuery.of(context).size.width * 0.045)
+                    .clamp(12.0, 24.0)),
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
           ),

@@ -160,7 +160,8 @@ class _DesktopAdminMenuListScreenState
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Expanded(
-                  child: ButtonUtils.forwardButton(220, 'confirm'.tr(), () {
+                  child: ButtonUtils.forwardButton(context, 220, 'confirm'.tr(),
+                      () {
                     Navigator.pop(context);
                   }, 17),
                 )

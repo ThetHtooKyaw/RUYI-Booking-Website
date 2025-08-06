@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ruyi_booking/providers/admin_auth_provider.dart';
-import 'package:ruyi_booking/screens/admin_screens/admin_auth_screens/desktop_signup_screen.dart';
+import 'package:ruyi_booking/screens/admin_screens/admin_auth_screens/desktop_admin_auth_screens/desktop_signup_screen.dart';
 import 'package:ruyi_booking/utils/colors.dart';
 import 'package:ruyi_booking/widgets/extras/custom_buttons.dart';
 import 'package:ruyi_booking/widgets/extras/custom_icon.dart';
@@ -68,8 +68,8 @@ class _DesktopEditAdminScreenState extends State<DesktopEditAdminScreen> {
                                           double.infinity),
                                     ),
                                     const SizedBox(width: 20),
-                                    ButtonUtils.forwardButton(100, 'done'.tr(),
-                                        () async {
+                                    ButtonUtils.forwardButton(
+                                        context, 100, 'done'.tr(), () async {
                                       await adminAuthData
                                           .updateAdminName(context);
                                     }, 17),
@@ -102,7 +102,8 @@ class _DesktopEditAdminScreenState extends State<DesktopEditAdminScreen> {
                                       double.infinity),
                                   const SizedBox(height: 5),
                                   ButtonUtils.forwardButton(
-                                      double.infinity, 'done'.tr(), () async {
+                                      context, double.infinity, 'done'.tr(),
+                                      () async {
                                     await adminAuthData.updateEmail(context);
                                   }, 17),
                                 ],
@@ -133,12 +134,13 @@ class _DesktopEditAdminScreenState extends State<DesktopEditAdminScreen> {
                                   const SizedBox(height: 5),
                                   const SizedBox(height: 10),
                                   ButtonUtils.forwardButton(
-                                      double.infinity, 'done'.tr(), () async {
+                                      context, double.infinity, 'done'.tr(),
+                                      () async {
                                     await adminAuthData.updatePassword(context);
                                   }, 17),
                                 ],
                               )
-                            : ButtonUtils.forwardButton(
+                            : ButtonUtils.forwardButton(context,
                                 double.infinity, 'change_password'.tr(), () {
                                 setState(() {
                                   adminAuthData.setPasswordEdit(true);
@@ -148,7 +150,7 @@ class _DesktopEditAdminScreenState extends State<DesktopEditAdminScreen> {
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 20),
                           child: ButtonUtils.backwardButton(
-                              double.infinity, 'cancel'.tr(), () {
+                              context, double.infinity, 'cancel'.tr(), () {
                             adminAuthData.setNameEdit(false);
                             adminAuthData.setEmailEdit(false);
                             adminAuthData.setPasswordEdit(false);

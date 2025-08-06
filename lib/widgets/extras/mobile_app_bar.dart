@@ -2,10 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:ruyi_booking/utils/colors.dart';
 import 'package:ruyi_booking/widgets/cores/main_logo.dart';
 
+enum MobileAppBarType { withBtn, withoudBtn }
+
 class MobileAppbar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
-  const MobileAppbar(
-      {super.key, required this.title});
+  final MobileAppBarType type;
+  const MobileAppbar({
+    super.key,
+    required this.title,
+    this.type = MobileAppBarType.withBtn,
+  });
 
   @override
   Size get preferredSize => const Size.fromHeight(60);
@@ -17,16 +23,18 @@ class MobileAppbar extends StatelessWidget implements PreferredSizeWidget {
       toolbarHeight: 60,
       leadingWidth: 70,
       backgroundColor: Colors.white,
-      leading: GestureDetector(
-        onTap: () {
-          Navigator.pop(context);
-        },
-        child: Icon(
-          Icons.keyboard_arrow_left_rounded,
-          size: 40,
-          color: Theme.of(context).iconTheme.color,
-        ),
-      ),
+      leading: type == MobileAppBarType.withBtn
+          ? GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Icon(
+                Icons.keyboard_arrow_left_rounded,
+                size: 40,
+                color: Theme.of(context).iconTheme.color,
+              ),
+            )
+          : const SizedBox(),
       title: Text(
         title,
         style: Theme.of(context).textTheme.bodyLarge?.copyWith(

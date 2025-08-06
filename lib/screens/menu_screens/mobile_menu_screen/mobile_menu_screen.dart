@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ruyi_booking/classes/category.dart';
 import 'package:ruyi_booking/providers/menu_data_provider.dart';
-import 'package:ruyi_booking/screens/menu_screens/mobile_add_to_cart_screen.dart';
-import 'package:ruyi_booking/screens/view_menu_screens/mobile_view_menu_fav_screen.dart';
+import 'package:ruyi_booking/screens/menu_screens/mobile_menu_screen/mobile_add_to_cart_screen.dart';
+import 'package:ruyi_booking/screens/view_menu_screens/mobile_menu_view/mobile_view_menu_fav_screen.dart';
 import 'package:ruyi_booking/utils/colors.dart';
 import 'package:ruyi_booking/widgets/cores/item_counter.dart';
 import 'package:ruyi_booking/widgets/cores/menu_type_picker.dart';
@@ -25,11 +25,12 @@ class _MobileMenuScreenState extends State<MobileMenuScreen> {
   Widget build(BuildContext context) {
     var menuData = Provider.of<MenuDataProvider>(context);
     final filteredItems = menuData.getFilteredItems(selectedCategory);
+    final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
       appBar: MobileAppbar(title: 'menu'.tr()),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -86,21 +87,23 @@ class _MobileMenuScreenState extends State<MobileMenuScreen> {
                               ),
                             Container(
                               padding: const EdgeInsets.symmetric(vertical: 10),
-                              height: 178,
+                              height: (screenWidth * 0.45).clamp(130.0, 178.0),
                               child: Row(
                                 children: [
                                   ClipRRect(
                                     borderRadius: BorderRadius.circular(5),
                                     child: SizedBox(
-                                      height: 160,
-                                      width: 170,
+                                      height: (screenWidth * 0.38)
+                                          .clamp(100.0, 160.0),
+                                      width: (screenWidth * 0.36)
+                                          .clamp(110.0, 170.0),
                                       child: Image.asset(
                                         item['image'],
                                         fit: BoxFit.cover,
                                       ),
                                     ),
                                   ),
-                                  const SizedBox(width: 15),
+                                  SizedBox(width: screenWidth < 430 ? 10 : 15),
                                   foodInfo(
                                       context, menuData, item, uniqueKey, type),
                                 ],
@@ -126,18 +129,18 @@ class _MobileMenuScreenState extends State<MobileMenuScreen> {
               child: Stack(
                 alignment: Alignment.centerRight,
                 children: [
-                  ButtonUtils.forwardButton(double.infinity, 'view_cart'.tr(),
-                      () {
+                  ButtonUtils.forwardButton(
+                      context, double.infinity, 'view_cart'.tr(), () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
                       return const MobileAddToCartScreen();
                     }));
-                  }, 14),
+                  }, screenWidth < 430 ? 12.0 : 14.0),
                   Positioned(
                     right: 5,
                     child: Container(
-                      height: 35,
-                      width: 35,
+                      height: screenWidth < 430 ? 30.0 : 32.0,
+                      width: screenWidth < 430 ? 30.0 : 35.0,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(5),
@@ -164,6 +167,7 @@ class _MobileMenuScreenState extends State<MobileMenuScreen> {
   Widget foodInfo(BuildContext context, MenuDataProvider menuData,
       Map<String, dynamic> item, String uniqueKey, String type) {
     int qty = menuData.itemQty[uniqueKey] ?? 0;
+    final screenWidth = MediaQuery.of(context).size.width;
 
     return Expanded(
       child: Column(
@@ -171,6 +175,8 @@ class _MobileMenuScreenState extends State<MobileMenuScreen> {
         children: [
           Text(
             item['name'].toString().tr(),
+            overflow: TextOverflow.ellipsis,
+            softWrap: false,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                   color: AppColors.appAccent,
@@ -258,18 +264,27 @@ class _MobileMenuScreenState extends State<MobileMenuScreen> {
                     qty = 1;
                     menuData.onQuantityChanged(uniqueKey, qty);
                   }
-                  menuData.addToCart(uniqueKey, item, menuData.priceKey(item),
-                      menuData.typeKey(item), qty);
+                  menuData.addToCart(
+                    uniqueKey,
+                    item,
+                    menuData.priceKey(item),
+                    menuData.typeKey(item),
+                    qty,
+                  );
                 },
                 style: ElevatedButton.styleFrom(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 20, horizontal: 5),
+                  padding: EdgeInsets.symmetric(
+                    vertical: (screenWidth * 0.04).clamp(6.0, 20.0),
+                    horizontal: (screenWidth * 0.02).clamp(4.0, 10.0),
+                  ),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5)),
                 ),
                 child: Text(
                   'cart'.tr(),
-                  style: const TextStyle(fontSize: 14),
+                  style: TextStyle(
+                      fontSize:
+                          MediaQuery.of(context).size.width < 430 ? 12 : 14),
                 ),
               ),
             ],

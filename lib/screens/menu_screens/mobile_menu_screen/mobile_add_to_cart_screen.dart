@@ -18,11 +18,12 @@ class _MobileAddToCartScreenState extends State<MobileAddToCartScreen> {
   @override
   Widget build(BuildContext context) {
     var menuData = Provider.of<MenuDataProvider>(context);
+    final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
       appBar: MobileAppbar(title: 'cart_title'.tr()),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         child: menuData.cartedItems.isEmpty
             ? cartEmpty(context)
             : ListView.builder(
@@ -39,7 +40,7 @@ class _MobileAddToCartScreenState extends State<MobileAddToCartScreen> {
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                           vertical: 10, horizontal: 10),
-                      height: 150,
+                      height: (screenWidth * 0.45).clamp(110.0, 150.0),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(10),
@@ -49,92 +50,16 @@ class _MobileAddToCartScreenState extends State<MobileAddToCartScreen> {
                           ClipRRect(
                             borderRadius: BorderRadius.circular(5),
                             child: SizedBox(
-                              height: 130,
-                              width: 160,
+                              height: (screenWidth * 0.38).clamp(70.0, 130.0),
+                              width: (screenWidth * 0.36).clamp(100.0, 160.0),
                               child: Image.asset(
                                 item['itemImage'],
                                 fit: BoxFit.cover,
                               ),
                             ),
                           ),
-                          const SizedBox(width: 15),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  item['itemName'].toString().tr(),
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyMedium
-                                      ?.copyWith(
-                                        fontWeight: FontWeight.bold,
-                                        color: AppColors.appAccent,
-                                      ),
-                                ),
-                                const SizedBox(height: 5),
-                                item['selectedType'] != null &&
-                                        item['selectedType']
-                                            .toString()
-                                            .isNotEmpty
-                                    ? Row(
-                                        children: [
-                                          Image.asset(
-                                            'assets/icons/cooking.png',
-                                            width: 17,
-                                            height: 17,
-                                            color: Theme.of(context)
-                                                .iconTheme
-                                                .color,
-                                          ),
-                                          const SizedBox(width: 8),
-                                          Text(
-                                            item['selectedType']
-                                                .toString()
-                                                .tr(),
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyMedium,
-                                          ),
-                                        ],
-                                      )
-                                    : const SizedBox(),
-                                const SizedBox(height: 5),
-                                Row(
-                                  children: [
-                                    Image.asset(
-                                      'assets/icons/price.png',
-                                      width: 17,
-                                      height: 17,
-                                      color: Theme.of(context).iconTheme.color,
-                                    ),
-                                    const SizedBox(width: 10),
-                                    Text(
-                                      menuData.onGetCartPrice(item),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium,
-                                    ),
-                                  ],
-                                ),
-                                const Spacer(),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    ItemCounter(
-                                      quantity: item['quantity'],
-                                      onQuantityChanged: (newQty) {
-                                        menuData.onCartItemQuantityChanged(
-                                            itemKey, newQty);
-                                      },
-                                      onZeroQuantityReached: () =>
-                                          menuData.removeFromCart(itemKey),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          )
+                          SizedBox(width: screenWidth < 430 ? 10 : 15),
+                          _foodInfo(item, context, menuData, itemKey)
                         ],
                       ),
                     ),
@@ -173,13 +98,15 @@ class _MobileAddToCartScreenState extends State<MobileAddToCartScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Expanded(
-                  child: ButtonUtils.backwardButton(220, 'back'.tr(), () {
+                  child:
+                      ButtonUtils.backwardButton(context, 220, 'back'.tr(), () {
                     Navigator.pop(context);
                   }, 17),
                 ),
                 const SizedBox(width: 20),
                 Expanded(
-                  child: ButtonUtils.forwardButton(220, 'confirm'.tr(), () {
+                  child: ButtonUtils.forwardButton(context, 220, 'confirm'.tr(),
+                      () {
                     int count = 0;
                     Navigator.popUntil(context, (route) => count++ == 2);
                   }, 17),
@@ -188,6 +115,74 @@ class _MobileAddToCartScreenState extends State<MobileAddToCartScreen> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Expanded _foodInfo(Map<String, dynamic> item, BuildContext context,
+      MenuDataProvider menuData, String itemKey) {
+    return Expanded(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            item['itemName'].toString().tr(),
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.appAccent,
+                ),
+            overflow: TextOverflow.ellipsis,
+            softWrap: false,
+          ),
+          const SizedBox(height: 5),
+          item['selectedType'] != null &&
+                  item['selectedType'].toString().isNotEmpty
+              ? Row(
+                  children: [
+                    Image.asset(
+                      'assets/icons/cooking.png',
+                      width: 17,
+                      height: 17,
+                      color: Theme.of(context).iconTheme.color,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      item['selectedType'].toString().tr(),
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                  ],
+                )
+              : const SizedBox(),
+          const SizedBox(height: 5),
+          Row(
+            children: [
+              Image.asset(
+                'assets/icons/price.png',
+                width: 17,
+                height: 17,
+                color: Theme.of(context).iconTheme.color,
+              ),
+              const SizedBox(width: 10),
+              Text(
+                menuData.onGetCartPrice(item),
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+            ],
+          ),
+          const Spacer(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              ItemCounter(
+                quantity: item['quantity'],
+                onQuantityChanged: (newQty) {
+                  menuData.onCartItemQuantityChanged(itemKey, newQty);
+                },
+                onZeroQuantityReached: () => menuData.removeFromCart(itemKey),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

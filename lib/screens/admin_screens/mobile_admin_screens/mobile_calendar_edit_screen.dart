@@ -33,8 +33,8 @@ class _MobileCalendarEditScreenState extends State<MobileCalendarEditScreen> {
                 child: CalendarRules(),
               ),
               const SizedBox(height: 20),
-              ButtonUtils.forwardButton(double.infinity, 'disable'.tr(),
-                  () async {
+              ButtonUtils.forwardButton(
+                  context, double.infinity, 'disable'.tr(), () async {
                 DateTime? selectedDate = await showDatePicker(
                   context: context,
                   initialDate: DateTime.now(),
@@ -56,8 +56,8 @@ class _MobileCalendarEditScreenState extends State<MobileCalendarEditScreen> {
                   }
                 }
               }, 17),
-              ButtonUtils.backwardButton(double.infinity, 'remove'.tr(),
-                  () async {
+              ButtonUtils.backwardButton(
+                  context, double.infinity, 'remove'.tr(), () async {
                 DateTime? selectedDate = await showDatePicker(
                   context: context,
                   initialDate: DateTime.now(),

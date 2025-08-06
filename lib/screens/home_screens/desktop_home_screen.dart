@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:ruyi_booking/screens/admin_screens/admin_auth_screens/admin_auth_screen.dart';
 import 'package:ruyi_booking/screens/admin_screens/admin_screen.dart';
 import 'package:ruyi_booking/screens/booking_screens/booking_screen.dart';
-import 'package:ruyi_booking/screens/view_menu_screens/desktop_view_menu_screen.dart';
+import 'package:ruyi_booking/screens/view_menu_screens/deskstop_menu_view/desktop_view_menu_screen.dart';
 import 'package:ruyi_booking/utils/colors.dart';
 import 'package:ruyi_booking/widgets/extras/custom_buttons.dart';
 import 'package:ruyi_booking/widgets/extras/image_slider.dart';
@@ -90,7 +90,8 @@ class _DesktopHomeScreenState extends State<DesktopHomeScreen> {
                 const SizedBox(height: 20),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 90),
-                  child: ButtonUtils.forwardButton(400, 'reserve'.tr(), () {
+                  child: ButtonUtils.forwardButton(context, 400, 'reserve'.tr(),
+                      () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
                       return const BookingScreen();
@@ -99,7 +100,8 @@ class _DesktopHomeScreenState extends State<DesktopHomeScreen> {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 90),
-                  child: ButtonUtils.backwardButton(400, 'view_menu'.tr(), () {
+                  child: ButtonUtils.backwardButton(
+                      context, 400, 'view_menu'.tr(), () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
                       return const DesktopViewMenuScreen();

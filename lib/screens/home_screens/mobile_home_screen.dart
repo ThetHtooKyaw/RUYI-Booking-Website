@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:ruyi_booking/screens/admin_screens/admin_auth_screens/admin_auth_screen.dart';
 import 'package:ruyi_booking/screens/admin_screens/admin_screen.dart';
 import 'package:ruyi_booking/screens/booking_screens/booking_screen.dart';
-import 'package:ruyi_booking/screens/view_menu_screens/mobile_view_menu_screen.dart';
+import 'package:ruyi_booking/screens/view_menu_screens/mobile_menu_view/mobile_view_menu_screen.dart';
 import 'package:ruyi_booking/utils/colors.dart';
 import 'package:ruyi_booking/widgets/extras/custom_buttons.dart';
 import 'package:ruyi_booking/widgets/extras/custom_divider.dart';
@@ -23,19 +23,21 @@ class MobileHomeScreen extends StatefulWidget {
 class _MobileHomeScreenState extends State<MobileHomeScreen> {
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       drawer: _buildDrawer(context),
-      appBar: _buildAppBar(),
+      appBar: _buildAppBar(screenWidth),
       body: ListView(
         children: [
-          _buildHeader(context),
+          _buildHeader(context, screenWidth),
           const SizedBox(height: 30),
           Center(
             child: Text(
               'shop_name'.tr(),
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                   fontFamily: 'PlayfairDisplay',
-                  fontSize: 27,
+                  fontSize: screenWidth < 430 ? 22 : 27,
                   color: AppColors.appAccent),
             ),
           ),
@@ -43,13 +45,16 @@ class _MobileHomeScreenState extends State<MobileHomeScreen> {
           Center(
             child: Text(
               'sub_title'.tr(),
-              style: Theme.of(context).textTheme.bodyMedium,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyMedium
+                  ?.copyWith(fontSize: screenWidth < 430 ? 12 : 14),
             ),
           ),
           const SizedBox(height: 20),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 90),
-            child: ButtonUtils.forwardButton(100, 'reserve'.tr(), () {
+            child: ButtonUtils.forwardButton(context, 100, 'reserve'.tr(), () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
                 return const BookingScreen();
               }));
@@ -57,7 +62,8 @@ class _MobileHomeScreenState extends State<MobileHomeScreen> {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 90),
-            child: ButtonUtils.backwardButton(100, 'view_menu'.tr(), () {
+            child:
+                ButtonUtils.backwardButton(context, 100, 'view_menu'.tr(), () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
                 return const MobileViewMenuScreen();
               }));
@@ -66,29 +72,38 @@ class _MobileHomeScreenState extends State<MobileHomeScreen> {
           const SizedBox(height: 40),
           const ImageSlider(),
           const SizedBox(height: 30),
-          InfoTile(
-              icon: Icons.access_time_filled_rounded,
-              title: 'open_hour'.tr(),
-              content: 'Daily : 9 AM - 10 PM'),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 14),
+            child: InfoTile(
+                icon: Icons.access_time_filled_rounded,
+                title: 'open_hour'.tr(),
+                content: 'Daily : 9 AM - 10 PM'),
+          ),
           const SizedBox(height: 20),
-          InfoTile(
-              icon: Icons.location_on_rounded,
-              title: 'location'.tr(),
-              content:
-                  'Address : No.(1A/2B+2kha/2H), Mindama Street, (3)Ward Mayangone Township, Yangon'),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 14),
+            child: InfoTile(
+                icon: Icons.location_on_rounded,
+                title: 'location'.tr(),
+                content:
+                    'Address : No.(1A/2B+2kha/2H), Mindama Street, (3)Ward Mayangone Township, Yangon'),
+          ),
           const SizedBox(height: 20),
-          InfoTile(
-              icon: Icons.phone,
-              title: 'contact_us'.tr(),
-              content:
-                  'Phone Number : 09-986619999, 09-986629999\nEmail : yinli5027770@gmail.com'),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 14),
+            child: InfoTile(
+                icon: Icons.phone,
+                title: 'contact_us'.tr(),
+                content:
+                    'Phone Number : 09-986619999, 09-986629999\nEmail : yinli5027770@gmail.com'),
+          ),
           const SizedBox(height: 20),
         ],
       ),
     );
   }
 
-  SizedBox _buildHeader(BuildContext context) {
+  SizedBox _buildHeader(BuildContext context, double screenWidth) {
     return SizedBox(
       height: 450,
       width: double.infinity,
@@ -114,7 +129,7 @@ class _MobileHomeScreenState extends State<MobileHomeScreen> {
                   'home_title'.tr(),
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                         fontFamily: 'PlayfairDisplay',
-                        fontSize: 27,
+                        fontSize: screenWidth < 430 ? 22 : 27,
                         color: Colors.white,
                       ),
                 ),
@@ -122,10 +137,9 @@ class _MobileHomeScreenState extends State<MobileHomeScreen> {
                 Text(
                   'home_sub_title'.tr(),
                   textAlign: TextAlign.center,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium
-                      ?.copyWith(color: Colors.white),
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: Colors.white,
+                      fontSize: screenWidth < 430 ? 12 : 14),
                 ),
               ],
             ),
@@ -135,14 +149,14 @@ class _MobileHomeScreenState extends State<MobileHomeScreen> {
     );
   }
 
-  AppBar _buildAppBar() {
+  AppBar _buildAppBar(double screenWidth) {
     return AppBar(
       centerTitle: true,
       backgroundColor: Colors.white,
       title: const MainLogo(height: 45, width: 45, isClickable: true),
       actions: [
         Padding(
-          padding: const EdgeInsets.only(right: 12),
+          padding: EdgeInsets.only(right: screenWidth < 430 ? 4 : 10),
           child: ElevatedButton(
             onPressed: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -150,12 +164,17 @@ class _MobileHomeScreenState extends State<MobileHomeScreen> {
               }));
             },
             style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 20),
+              padding: EdgeInsets.symmetric(
+                horizontal: (screenWidth * 0.03).clamp(7.0, 14.0),
+                vertical: (screenWidth * 0.038).clamp(6.0, 22.0),
+              ),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5)),
             ),
-            child: const Text(
+            child: Text(
               'BOOK NOW',
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  color: Colors.white, fontSize: screenWidth < 430 ? 12 : 14),
             ),
           ),
         )

@@ -2,33 +2,38 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ruyi_booking/providers/admin_auth_provider.dart';
+import 'package:ruyi_booking/screens/home_screens/home_screen.dart';
 import 'package:ruyi_booking/utils/colors.dart';
 import 'package:ruyi_booking/widgets/extras/custom_buttons.dart';
 import 'package:ruyi_booking/widgets/extras/custom_icon.dart';
 import 'package:ruyi_booking/widgets/extras/custom_textfields.dart';
 import 'package:ruyi_booking/widgets/extras/mobile_app_bar.dart';
 
-class MobileSignUpScreen extends StatefulWidget {
-  const MobileSignUpScreen({super.key});
+class MobileAuthScreen extends StatefulWidget {
+  const MobileAuthScreen({super.key});
 
   @override
-  State<MobileSignUpScreen> createState() => _MobileSignUpScreenState();
+  State<MobileAuthScreen> createState() => _MobileAuthScreenState();
 }
 
-class _MobileSignUpScreenState extends State<MobileSignUpScreen> {
+class _MobileAuthScreenState extends State<MobileAuthScreen> {
   @override
   Widget build(BuildContext context) {
     var adminAuthData = Provider.of<AdminAuthProvider>(context);
     return Scaffold(
-      appBar: MobileAppbar(title: 'admin_signup'.tr()),
+      resizeToAvoidBottomInset: true,
+      appBar: MobileAppbar(
+        title: 'admin_login'.tr(),
+        type: MobileAppBarType.withoudBtn,
+      ),
       body: adminAuthData.isLoading
           ? const Center(
               child: CircularProgressIndicator(),
             )
-          : SingleChildScrollView(
-              child: Form(
-                key: adminAuthData.signUpFormKey,
-                child: Padding(
+          : Form(
+              key: adminAuthData.loginFormKey,
+              child: SafeArea(
+                child: SingleChildScrollView(
                   padding: const EdgeInsets.all(20),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -57,44 +62,36 @@ class _MobileSignUpScreenState extends State<MobileSignUpScreen> {
                       const SizedBox(height: 8),
                       Center(
                         child: Text(
-                          'signup_title'.tr(),
+                          'login_title'.tr(),
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                       ),
                       const SizedBox(height: 20),
-                      _buildTitle(context, 'username'.tr()),
-                      TextFieldUtils.nameTextField(
-                          adminAuthData.signUpNameController,
-                          'Enter admin username',
-                          double.infinity),
-                      const SizedBox(height: 5),
                       _buildTitle(context, 'email'.tr()),
                       TextFieldUtils.emailTextField(
-                          adminAuthData.signUpEmailController,
-                          'Enter admin username',
+                          adminAuthData.loginEmailController,
+                          'Enter admin email',
                           double.infinity),
                       const SizedBox(height: 5),
                       _buildTitle(context, 'password'.tr()),
                       TextFieldUtils.passwordTextField(
-                          adminAuthData.signUpPasswordController,
+                          adminAuthData.loginPasswordController,
                           'Enter admin password',
                           double.infinity),
-                      const SizedBox(height: 5),
-                      _buildTitle(context, 'confirm_password'.tr()),
-                      TextFieldUtils.confirmPasswordTextField(
-                          adminAuthData.signUpConfirmPasswordController,
-                          adminAuthData.signUpPasswordController,
-                          'Enter admin confirm password',
-                          double.infinity),
                       const SizedBox(height: 60),
-                      ButtonUtils.forwardButton(double.infinity, 'signup'.tr(),
-                          () {
+                      ButtonUtils.forwardButton(
+                          context, double.infinity, 'login'.tr(), () {
                         if (!adminAuthData.isLoading) {
-                          adminAuthData.adminSignUp(context);
+                          adminAuthData.adminLogin(context);
                         }
                       }, 17),
-                      ButtonUtils.backwardButton(double.infinity, 'back'.tr(),
-                          () => Navigator.pop(context), 17),
+                      ButtonUtils.backwardButton(
+                          context, double.infinity, 'back'.tr(), () {
+                        Navigator.pushReplacement(context,
+                            MaterialPageRoute(builder: (context) {
+                          return const HomeScreen();
+                        }));
+                      }, 17),
                     ],
                   ),
                 ),

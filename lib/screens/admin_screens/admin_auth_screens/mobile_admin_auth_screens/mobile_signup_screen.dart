@@ -2,40 +2,38 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ruyi_booking/providers/admin_auth_provider.dart';
-import 'package:ruyi_booking/screens/home_screens/home_screen.dart';
 import 'package:ruyi_booking/utils/colors.dart';
 import 'package:ruyi_booking/widgets/extras/custom_buttons.dart';
 import 'package:ruyi_booking/widgets/extras/custom_icon.dart';
 import 'package:ruyi_booking/widgets/extras/custom_textfields.dart';
-import 'package:ruyi_booking/widgets/extras/desktop_app_bar.dart';
+import 'package:ruyi_booking/widgets/extras/mobile_app_bar.dart';
 
-class DesktopAuthScreen extends StatefulWidget {
-  const DesktopAuthScreen({super.key});
+class MobileSignUpScreen extends StatefulWidget {
+  const MobileSignUpScreen({super.key});
 
   @override
-  State<DesktopAuthScreen> createState() => _DesktopAuthScreenState();
+  State<MobileSignUpScreen> createState() => _MobileSignUpScreenState();
 }
 
-class _DesktopAuthScreenState extends State<DesktopAuthScreen> {
+class _MobileSignUpScreenState extends State<MobileSignUpScreen> {
   @override
   Widget build(BuildContext context) {
     var adminAuthData = Provider.of<AdminAuthProvider>(context);
     return Scaffold(
-      appBar: DesktopAppBar(title: 'admin_login'.tr(), isClickable: false),
+      appBar: MobileAppbar(title: 'admin_signup'.tr()),
       body: adminAuthData.isLoading
           ? const Center(
               child: CircularProgressIndicator(),
             )
-          : Form(
-              key: adminAuthData.loginFormKey,
-              child: Center(
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.35,
+          : SingleChildScrollView(
+              child: Form(
+                key: adminAuthData.signUpFormKey,
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(height: 20),
                       const Center(
                         child: CustomIcon(
                           iconImage: Icons.admin_panel_settings_rounded,
@@ -59,36 +57,44 @@ class _DesktopAuthScreenState extends State<DesktopAuthScreen> {
                       const SizedBox(height: 8),
                       Center(
                         child: Text(
-                          'login_title'.tr(),
+                          'signup_title'.tr(),
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                       ),
                       const SizedBox(height: 20),
+                      _buildTitle(context, 'username'.tr()),
+                      TextFieldUtils.nameTextField(
+                          adminAuthData.signUpNameController,
+                          'Enter admin username',
+                          double.infinity),
+                      const SizedBox(height: 5),
                       _buildTitle(context, 'email'.tr()),
                       TextFieldUtils.emailTextField(
-                          adminAuthData.loginEmailController,
-                          'Enter admin email',
+                          adminAuthData.signUpEmailController,
+                          'Enter admin username',
                           double.infinity),
                       const SizedBox(height: 5),
                       _buildTitle(context, 'password'.tr()),
                       TextFieldUtils.passwordTextField(
-                          adminAuthData.loginPasswordController,
+                          adminAuthData.signUpPasswordController,
                           'Enter admin password',
                           double.infinity),
-                      const Spacer(),
-                      ButtonUtils.forwardButton(double.infinity, 'login'.tr(),
-                          () {
+                      const SizedBox(height: 5),
+                      _buildTitle(context, 'confirm_password'.tr()),
+                      TextFieldUtils.confirmPasswordTextField(
+                          adminAuthData.signUpConfirmPasswordController,
+                          adminAuthData.signUpPasswordController,
+                          'Enter admin confirm password',
+                          double.infinity),
+                      const SizedBox(height: 60),
+                      ButtonUtils.forwardButton(
+                          context, double.infinity, 'signup'.tr(), () {
                         if (!adminAuthData.isLoading) {
-                          adminAuthData.adminLogin(context);
+                          adminAuthData.adminSignUp(context);
                         }
                       }, 17),
-                      ButtonUtils.backwardButton(double.infinity, 'back'.tr(),
-                          () {
-                        Navigator.pushReplacement(context,
-                            MaterialPageRoute(builder: (context) {
-                          return const HomeScreen();
-                        }));
-                      }, 17),
+                      ButtonUtils.backwardButton(context, double.infinity,
+                          'back'.tr(), () => Navigator.pop(context), 17),
                     ],
                   ),
                 ),

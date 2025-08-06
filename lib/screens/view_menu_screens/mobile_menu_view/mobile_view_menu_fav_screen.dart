@@ -18,10 +18,12 @@ class _MobileViewMenuFavScreenState extends State<MobileViewMenuFavScreen> {
   @override
   Widget build(BuildContext context) {
     var menuData = Provider.of<MenuDataProvider>(context);
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: MobileAppbar(title: 'favorite'.tr()),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         child: menuData.favItems.isEmpty
             ? cartEmpty(context)
             : ListView.builder(
@@ -39,7 +41,7 @@ class _MobileViewMenuFavScreenState extends State<MobileViewMenuFavScreen> {
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                           vertical: 10, horizontal: 10),
-                      height: 150,
+                      height: (screenWidth * 0.45).clamp(110.0, 150.0),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(10),
@@ -49,8 +51,8 @@ class _MobileViewMenuFavScreenState extends State<MobileViewMenuFavScreen> {
                           ClipRRect(
                             borderRadius: BorderRadius.circular(5),
                             child: SizedBox(
-                              height: 130,
-                              width: 160,
+                              height: (screenWidth * 0.38).clamp(70.0, 130.0),
+                              width: (screenWidth * 0.36).clamp(100.0, 160.0),
                               child: Image.asset(
                                 item['itemImage'],
                                 fit: BoxFit.cover,
@@ -158,7 +160,7 @@ class _MobileViewMenuFavScreenState extends State<MobileViewMenuFavScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Expanded(
-              child: ButtonUtils.forwardButton(220, 'back'.tr(), () {
+              child: ButtonUtils.forwardButton(context, 220, 'back'.tr(), () {
                 Navigator.pop(context);
               }, 17),
             ),

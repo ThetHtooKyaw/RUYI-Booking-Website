@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ruyi_booking/classes/category.dart';
 import 'package:ruyi_booking/providers/menu_data_provider.dart';
-import 'package:ruyi_booking/screens/view_menu_screens/mobile_view_menu_fav_screen.dart';
+import 'package:ruyi_booking/screens/view_menu_screens/mobile_menu_view/mobile_view_menu_fav_screen.dart';
 import 'package:ruyi_booking/utils/colors.dart';
 import 'package:ruyi_booking/widgets/cores/menu_type_picker.dart';
 import 'package:ruyi_booking/widgets/extras/mobile_app_bar.dart';
@@ -22,11 +22,12 @@ class _MobileViewMenuScreenState extends State<MobileViewMenuScreen> {
   Widget build(BuildContext context) {
     var menuData = Provider.of<MenuDataProvider>(context);
     final filteredItems = menuData.getFilteredItems(selectedCategory);
+    final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
       appBar: MobileAppbar(title: 'menu'.tr()),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -83,14 +84,17 @@ class _MobileViewMenuScreenState extends State<MobileViewMenuScreen> {
                               ),
                             Container(
                               padding: const EdgeInsets.symmetric(vertical: 10),
-                              height: 178,
+                              height: (screenWidth * 0.45).clamp(130.0, 178.0),
                               child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   ClipRRect(
                                     borderRadius: BorderRadius.circular(5),
                                     child: SizedBox(
-                                      height: 160,
-                                      width: 170,
+                                      height: (screenWidth * 0.38)
+                                          .clamp(100.0, 160.0),
+                                      width: (screenWidth * 0.36)
+                                          .clamp(110.0, 170.0),
                                       child: Image.asset(
                                         item['image'],
                                         fit: BoxFit.cover,

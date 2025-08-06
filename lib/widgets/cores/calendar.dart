@@ -17,7 +17,7 @@ class Calendar extends StatelessWidget {
     return Container(
       width: 550,
       height: 550,
-      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
@@ -42,11 +42,11 @@ class Calendar extends StatelessWidget {
         },
         daysOfWeekHeight: 60,
         rowHeight: 60,
-        headerStyle: const HeaderStyle(
+        headerStyle: HeaderStyle(
           formatButtonVisible: false,
           titleCentered: true,
           titleTextStyle: TextStyle(
-            fontSize: 30,
+            fontSize: MediaQuery.of(context).size.width < 430 ? 20 : 30,
             fontWeight: FontWeight.bold,
           ),
         ),

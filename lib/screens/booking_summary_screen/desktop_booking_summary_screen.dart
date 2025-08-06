@@ -62,13 +62,14 @@ class _DesktopBookingSummaryScreenState
                     'pre_order'.tr(), '${menuData.cartedItems.length} item(s)'),
                 const SizedBox(height: 20),
                 ButtonUtils.forwardButton(
+                    context,
                     double.infinity,
                     'confirm'.tr(),
                     () => bookingData.savingBooking(
                         context, menuData.cartedItems),
                     17),
-                ButtonUtils.backwardButton(double.infinity, 'back'.tr(),
-                    () => Navigator.pop(context), 17),
+                ButtonUtils.backwardButton(context, double.infinity,
+                    'back'.tr(), () => Navigator.pop(context), 17),
               ],
             ),
           ),

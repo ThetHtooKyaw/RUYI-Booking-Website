@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ruyi_booking/providers/admin_auth_provider.dart';
-import 'package:ruyi_booking/screens/admin_screens/mobile_admin_edit_menu_screens/mobile_admin_update_menu_screens.dart';
+import 'package:ruyi_booking/screens/admin_screens/mobile_admin_screens/mobile_admin_edit_menu_screens/mobile_admin_update_menu_screens.dart';
 import 'package:ruyi_booking/screens/admin_screens/mobile_admin_screens/mobile_booking_list_screen.dart';
 import 'package:ruyi_booking/screens/admin_screens/mobile_admin_screens/mobile_calendar_edit_screen.dart';
 import 'package:ruyi_booking/screens/admin_screens/mobile_admin_screens/mobile_edit_admin_screen.dart';

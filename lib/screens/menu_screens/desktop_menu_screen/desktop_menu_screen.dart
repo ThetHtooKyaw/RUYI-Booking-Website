@@ -3,19 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ruyi_booking/classes/category.dart';
 import 'package:ruyi_booking/providers/menu_data_provider.dart';
-import 'package:ruyi_booking/screens/view_menu_screens/desktop_view_menu_second_layer.dart';
-import 'package:ruyi_booking/screens/view_menu_screens/desktop_view_menu_third_layer.dart';
+import 'package:ruyi_booking/screens/menu_screens/desktop_menu_screen/desktop_menu_second_layer.dart';
+import 'package:ruyi_booking/screens/menu_screens/desktop_menu_screen/desktop_menu_third_layer.dart';
+import 'package:ruyi_booking/screens/view_menu_screens/deskstop_menu_view/desktop_view_menu_third_layer.dart';
 import 'package:ruyi_booking/utils/colors.dart';
-import 'package:ruyi_booking/widgets/extras/desktop_app_bar.dart';
+import 'package:ruyi_booking/widgets/cores/main_logo.dart';
 
-class DesktopViewMenuScreen extends StatefulWidget {
-  const DesktopViewMenuScreen({super.key});
+class DesktopMenuScreen extends StatefulWidget {
+  const DesktopMenuScreen({super.key});
 
   @override
-  State<DesktopViewMenuScreen> createState() => _DesktopViewMenuScreenState();
+  State<DesktopMenuScreen> createState() => _DesktopMenuScreenState();
 }
 
-class _DesktopViewMenuScreenState extends State<DesktopViewMenuScreen> {
+class _DesktopMenuScreenState extends State<DesktopMenuScreen> {
   int selectedCategory = 0;
 
   @override
@@ -23,15 +24,52 @@ class _DesktopViewMenuScreenState extends State<DesktopViewMenuScreen> {
     var menuData = Provider.of<MenuDataProvider>(context);
     final filteredItems = menuData.getFilteredItems(selectedCategory);
     return Scaffold(
-      appBar: DesktopAppBar(title: 'menu'.tr(), isClickable: true),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        toolbarHeight: 85,
+        leadingWidth: 200,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 40),
+          child: Center(
+            child: Row(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Icon(
+                    Icons.keyboard_arrow_left_rounded,
+                    size: 55,
+                    color: Theme.of(context).iconTheme.color,
+                  ),
+                ),
+                const SizedBox(width: 20),
+                const MainLogo(
+                  height: 55,
+                  width: 55,
+                  isClickable: false,
+                ),
+              ],
+            ),
+          ),
+        ),
+        title: Text(
+          'menu'.tr(),
+          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                fontSize: 30,
+                color: AppColors.appAccent,
+                fontFamily: 'PlayfairDisplay',
+              ),
+        ),
+      ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
+        padding: const EdgeInsets.only(top: 10, left: 10),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10),
-              width: 350,
+              width: 300,
               height: double.infinity,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,12 +86,17 @@ class _DesktopViewMenuScreenState extends State<DesktopViewMenuScreen> {
                 ],
               ),
             ),
-            DesktopViewMenuSecondLayer(
-                filteredItems: filteredItems,
-                selectedCategory: selectedCategory),
-            menuData.favItems.isNotEmpty
-                ? const DesktopViewMenuThirdLayer()
-                : const SizedBox(),
+            DesktopMenuSecondLayer(
+              filteredItems: filteredItems,
+              selectedCategory: selectedCategory,
+            ),
+            menuData.isClicked
+                ? menuData.favItems.isNotEmpty
+                    ? const DesktopViewMenuThirdLayer()
+                    : const SizedBox()
+                : menuData.cartedItems.isNotEmpty
+                    ? const DesktopMenuThirdLayer()
+                    : const SizedBox(),
           ],
         ),
       ),

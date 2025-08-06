@@ -34,7 +34,7 @@ class _MobileBookingScreenState extends State<MobileBookingScreen> {
         child: ListView(
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -113,7 +113,8 @@ class _MobileBookingScreenState extends State<MobileBookingScreen> {
                             context, 'pre_order'.tr(), 'assets/icons/cart.png'),
                         const Spacer(),
                         Stack(children: [
-                          ButtonUtils.forwardButton(150, 'menu'.tr(), () {
+                          ButtonUtils.forwardButton(context, 150, 'menu'.tr(),
+                              () {
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
                               return const MenuScreen();
@@ -151,6 +152,7 @@ class _MobileBookingScreenState extends State<MobileBookingScreen> {
                       children: [
                         Expanded(
                           child: ButtonUtils.backwardButton(
+                              context,
                               220,
                               'cancel'.tr(),
                               () => bookingData.resetForm(
@@ -159,8 +161,12 @@ class _MobileBookingScreenState extends State<MobileBookingScreen> {
                         ),
                         const SizedBox(width: 20),
                         Expanded(
-                          child: ButtonUtils.forwardButton(220, 'continue'.tr(),
-                              () => bookingData.continueBooking(context), 17),
+                          child: ButtonUtils.forwardButton(
+                              context,
+                              220,
+                              'continue'.tr(),
+                              () => bookingData.continueBooking(context),
+                              17),
                         ),
                       ],
                     ),

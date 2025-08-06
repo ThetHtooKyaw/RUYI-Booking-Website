@@ -88,13 +88,13 @@ class _DesktopSignUpScreenState extends State<DesktopSignUpScreen> {
                             'Enter admin confirm password',
                             double.infinity),
                         const SizedBox(height: 60),
-                        ButtonUtils.forwardButton(
+                        ButtonUtils.forwardButton(context,
                             double.infinity, 'signup'.tr(), () {
                           if (!adminAuthData.isLoading) {
                             adminAuthData.adminSignUp(context);
                           }
                         }, 17),
-                        ButtonUtils.backwardButton(double.infinity, 'back'.tr(),
+                        ButtonUtils.backwardButton(context,double.infinity, 'back'.tr(),
                             () => Navigator.pop(context), 17),
                         const SizedBox(height: 20),
                       ],

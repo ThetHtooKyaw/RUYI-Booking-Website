@@ -16,9 +16,10 @@ class ItemCounter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 120,
+      width: 140,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisSize: MainAxisSize.min,
         children: [
           _buildButton(Icons.remove_rounded, () {
             if (quantity < 2) {
@@ -27,10 +28,12 @@ class ItemCounter extends StatelessWidget {
               onQuantityChanged(quantity - 1);
             }
           }),
-          Text(
-            quantity.toString(),
-            style:
-                Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 18),
+          Flexible(
+            child: Text(
+              quantity.toString(),
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  fontSize: MediaQuery.of(context).size.width < 430 ? 14 : 18),
+            ),
           ),
           _buildButton(Icons.add, () {
             onQuantityChanged(quantity + 1);
@@ -49,6 +52,8 @@ class ItemCounter extends StatelessWidget {
         borderRadius: BorderRadius.circular(5),
       ),
       child: IconButton(
+        padding: EdgeInsets.zero,
+        constraints: const BoxConstraints(),
         onPressed: onPressed,
         icon: Icon(icon, size: 25, color: Colors.white),
       ),

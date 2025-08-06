@@ -25,7 +25,7 @@ class _MobileBookingSummaryScreenState
       appBar: MobileAppbar(title: 'booking_summary'.tr()),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           child: Column(
             children: [
               _buildInfoCard(context, 'assets/icons/name.png', 'name'.tr(),
@@ -59,12 +59,13 @@ class _MobileBookingSummaryScreenState
                   '${menuData.cartedItems.length} item(s)'),
               const SizedBox(height: 40),
               ButtonUtils.forwardButton(
+                  context,
                   double.infinity,
                   'confirm'.tr(),
                   () =>
                       bookingData.savingBooking(context, menuData.cartedItems),
                   17),
-              ButtonUtils.backwardButton(double.infinity, 'back'.tr(),
+              ButtonUtils.backwardButton(context, double.infinity, 'back'.tr(),
                   () => Navigator.pop(context), 17),
             ],
           ),

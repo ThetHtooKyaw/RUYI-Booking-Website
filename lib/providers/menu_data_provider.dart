@@ -3,28 +3,48 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:ruyi_booking/classes/category.dart';
+import 'package:ruyi_booking/services/menu_data_service.dart';
+import 'package:ruyi_booking/utils/asset_loader.dart';
 import 'package:ruyi_booking/utils/menu_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MenuDataProvider extends ChangeNotifier {
+  final MenuDataService _menuDataService = MenuDataService();
+
   final TextEditingController searchController = TextEditingController();
+  late TextEditingController nameEnController = TextEditingController();
+  late TextEditingController nameMyController = TextEditingController();
+  late TextEditingController nameZhController = TextEditingController();
+
+  late TextEditingController typeEnController = TextEditingController();
+  late TextEditingController typeMyController = TextEditingController();
+  late TextEditingController typeZhController = TextEditingController();
+
+  late TextEditingController priceController = TextEditingController();
+  late TextEditingController priceEnController = TextEditingController();
+  late TextEditingController priceZhController = TextEditingController();
+  late TextEditingController priceMyController = TextEditingController();
+
+  late TextEditingController categoryEnController = TextEditingController();
+  late TextEditingController categoryMyController = TextEditingController();
+  late TextEditingController categoryZhController = TextEditingController();
+
+  bool isLoadingType = false;
+  bool isLoadingPrice = false;
+
   Map<String, int> itemQty = {};
   Map<String, String> itemType = {};
   Map<String, Map<String, dynamic>> favItems = {};
   Map<String, Map<String, dynamic>> cartedItems = {};
   final Set<String> clickedItems = {};
   bool isClicked = false;
-
-  void isClickedIcon() {
-    isClicked = !isClicked;
-    notifyListeners();
-  }
+  bool isLoading = false;
 
   MenuDataProvider() {
     Future.microtask(() => loadFavItemToLocalStorage());
   }
 
-  bool isClickedItem(String uniqueKey) => clickedItems.contains(uniqueKey);
+  // Shared Menu
 
   void refreshOnLanguageChange() {
     notifyListeners();
@@ -65,66 +85,56 @@ class MenuDataProvider extends ChangeNotifier {
     return false;
   }
 
-  String onGetPrice(Map<String, dynamic> item) {
-    final itemID = item['id'];
-    final unit = getPriceUnit(itemID);
+  void onOptionChanged(String itemID, String option) {
+    itemType[itemID] = option;
+    notifyListeners();
+  }
 
-    final typesMap =
-        item['type'] is Map ? Map<String, dynamic>.from(item['type']) : {};
-    final priceMap =
-        item['price'] is Map ? Map<String, dynamic>.from(item['price']) : {};
+  String? getSelectedTypeKey(Map<String, dynamic> itemDetail) {
+    final typesMap = itemDetail['type'] is Map
+        ? Map<String, dynamic>.from(itemDetail['type'])
+        : {};
 
-    if (typesMap.isEmpty && priceMap.length == 1) {
-      final firstValue = priceMap.entries.first.value;
-      if (firstValue is int) return 'Ks. ${formatPrice(firstValue)} $unit';
-      if (firstValue is String) return '${firstValue.tr()} $unit';
-    }
-
-    final selectedLabel = itemType[itemID]?.toString().tr();
+    final selectedLabel = itemType[itemDetail['id']]?.toString().tr();
     final defaultLabel =
         typesMap.isNotEmpty ? typesMap.values.first.toString().tr() : '';
     final effectiveLabel = selectedLabel ?? defaultLabel;
 
     String? matchKey;
-    typesMap.forEach(
-      (key, value) {
-        if (value.toString().tr() == effectiveLabel) matchKey = key;
-      },
-    );
-    if (matchKey != null && priceMap.containsKey(matchKey)) {
-      final price = priceMap[matchKey];
-
-      if (itemID == '46' || itemID == '47') {
-        return matchKey == '0'
-            ? 'Ks. ${formatPrice(price)} ${'price_unit6'.tr()}'
-            : '${price.toString().tr()} ${'price_unit1'.tr()}';
+    typesMap.forEach((key, value) {
+      if (value.toString().tr() == effectiveLabel) {
+        matchKey = key;
       }
+    });
 
-      return 'Ks. ${formatPrice(price)} $unit';
+    return matchKey;
+  }
+
+  String? typeKey(Map<String, dynamic> item) {
+    final typesMap = item['type'];
+    return itemType[item['id']] ?? typesMap?['0'];
+  }
+
+  dynamic priceKey(Map<String, dynamic> item) {
+    final typesMap = item['type'];
+    final priceMap = item['price'];
+
+    if ((typesMap == null || typesMap.isEmpty) &&
+        (priceMap != null && priceMap.isNotEmpty)) {
+      final firstValue = priceMap.values.first;
+      if (firstValue is String || firstValue is int) {
+        return firstValue;
+      }
+    }
+
+    final selectedType = itemType[item['id']] ?? typesMap?['0'];
+    for (final key in typesMap.keys) {
+      if (typesMap[key] == selectedType) {
+        return priceMap[key];
+      }
     }
 
     return 'N/A';
-  }
-
-  String onGetCartPrice(Map<String, dynamic> item) {
-    final itemID = item['itemId'];
-    final unit = getPriceUnit(itemID);
-    final price = item['selectedPrice'];
-
-    if (price is String) return '${price.tr()} $unit';
-    if (item['selectedType'] == null || price is int) {
-      return 'Ks. ${formatPrice(price)} $unit';
-    }
-
-    return 'N/A';
-  }
-
-  String formatPrice(dynamic price) {
-    if (price is int) {
-      return NumberFormat('#,###').format(price);
-    } else {
-      return price.toString().tr();
-    }
   }
 
   String getPriceUnit(String itemID) {
@@ -158,36 +168,56 @@ class MenuDataProvider extends ChangeNotifier {
     return '';
   }
 
-  String? typeKey(Map<String, dynamic> item) {
-    final typesMap = item['type'];
-    return itemType[item['id']] ?? typesMap?['0'];
+  String formatPrice(dynamic price) {
+    if (price is int) {
+      return NumberFormat('#,###').format(price);
+    } else {
+      return price.toString().tr();
+    }
   }
 
-  dynamic priceKey(Map<String, dynamic> item) {
-    final typesMap = item['type'];
-    final priceMap = item['price'];
+  // Main Menu
 
-    if ((typesMap == null || typesMap.isEmpty) &&
-        (priceMap != null && priceMap.isNotEmpty)) {
-      final firstValue = priceMap.values.first;
-      if (firstValue is String || firstValue is int) {
-        return firstValue;
-      }
+  String onGetPrice(Map<String, dynamic> item) {
+    final itemID = item['id'];
+    final unit = getPriceUnit(itemID);
+
+    final typesMap =
+        item['type'] is Map ? Map<String, dynamic>.from(item['type']) : {};
+    final priceMap =
+        item['price'] is Map ? Map<String, dynamic>.from(item['price']) : {};
+
+    if (typesMap.isEmpty && priceMap.length == 1) {
+      final firstValue = priceMap.entries.first.value;
+      if (firstValue is int) return 'Ks. ${formatPrice(firstValue)} $unit';
+      if (firstValue is String) return '${firstValue.tr()} $unit';
     }
 
-    final selectedType = itemType[item['id']] ?? typesMap?['0'];
-    for (final key in typesMap.keys) {
-      if (typesMap[key] == selectedType) {
-        return priceMap[key];
+    final selectedLabel = itemType[itemID]?.toString().tr();
+    final defaultLabel =
+        typesMap.isNotEmpty ? typesMap.values.first.toString().tr() : '';
+    final effectiveLabel = selectedLabel ?? defaultLabel;
+
+    String? matchKey;
+    typesMap.forEach(
+      (key, value) {
+        if (value.toString().tr() == effectiveLabel) matchKey = key;
+      },
+    );
+
+    if (matchKey != null && priceMap.containsKey(matchKey)) {
+      final price = priceMap[matchKey];
+
+      if (itemID == '46' || itemID == '47') {
+        return matchKey == '0'
+            ? 'Ks. ${formatPrice(price)} ${'price_unit6'.tr()}'
+            : '${price.toString().tr()} ${'price_unit1'.tr()}';
       }
+
+      return 'Ks. ${formatPrice(price)} $unit';
     }
 
     return 'N/A';
-  }
-
-  void onOptionChanged(String itemID, String option) {
-    itemType[itemID] = option;
-    notifyListeners();
   }
 
   void onQuantityChanged(String itemID, int qty) {
@@ -197,12 +227,55 @@ class MenuDataProvider extends ChangeNotifier {
     }
   }
 
+  // Cart Menu
+
+  String onGetCartPrice(Map<String, dynamic> item) {
+    final itemID = item['itemId'];
+    final unit = getPriceUnit(itemID);
+    final price = item['selectedPrice'];
+
+    if (price is String) return '${price.tr()} $unit';
+    if (item['selectedType'] == null || price is int) {
+      return 'Ks. ${formatPrice(price)} $unit';
+    }
+
+    return 'N/A';
+  }
+
   void onCartItemQuantityChanged(String itemKey, int newQty) {
     if (cartedItems[itemKey] != null) {
       cartedItems[itemKey]!['quantity'] = newQty;
       itemQty[itemKey] = newQty;
       notifyListeners();
     }
+  }
+
+  void addToCart(
+    String uniqueKey,
+    Map<String, dynamic> item,
+    dynamic itemPrice,
+    String? itemType,
+    int itemQTY,
+  ) {
+    if (itemQTY > 0) {
+      cartedItems[uniqueKey] = {
+        'itemId': item['id'],
+        'itemImage': item['image'],
+        'itemName': item['name'],
+        'selectedPrice': itemPrice,
+        'selectedType': itemType,
+        'quantity': itemQTY,
+      };
+    } else {
+      cartedItems.remove(uniqueKey);
+    }
+    notifyListeners();
+  }
+
+  void removeFromCart(String itemKey) {
+    cartedItems.remove(itemKey);
+    itemQty[itemKey] = 0;
+    notifyListeners();
   }
 
   Future<void> updateCartItemQty(
@@ -277,31 +350,12 @@ class MenuDataProvider extends ChangeNotifier {
     }
   }
 
-  void addToCart(
-    String uniqueKey,
-    Map<String, dynamic> item,
-    dynamic itemPrice,
-    String? itemType,
-    int itemQTY,
-  ) {
-    if (itemQTY > 0) {
-      cartedItems[uniqueKey] = {
-        'itemId': item['id'],
-        'itemImage': item['image'],
-        'itemName': item['name'],
-        'selectedPrice': itemPrice,
-        'selectedType': itemType,
-        'quantity': itemQTY,
-      };
-    } else {
-      cartedItems.remove(uniqueKey);
-    }
-    notifyListeners();
-  }
+  // Fav Menu
 
-  void removeFromCart(String itemKey) {
-    cartedItems.remove(itemKey);
-    itemQty[itemKey] = 0;
+  bool isClickedItem(String uniqueKey) => clickedItems.contains(uniqueKey);
+
+  void isClickedIcon() {
+    isClicked = !isClicked;
     notifyListeners();
   }
 
@@ -368,9 +422,127 @@ class MenuDataProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Admin Menu
+
+  void setLoadingState({bool type = false, bool price = false}) {
+    isLoadingType = type;
+    isLoadingPrice = price;
+    notifyListeners();
+  }
+
+  Future<void> loadTranslations(Map<String, dynamic> itemDetail) async {
+    try {
+      setLoadingState(type: true, price: true);
+
+      const loader = LocalAssetLoader();
+      final nameKey = itemDetail['name'];
+
+      final typesMap = itemDetail['type'] is Map
+          ? Map<String, dynamic>.from(itemDetail['type'])
+          : {};
+      String typeText = '';
+
+      final priceMap = itemDetail['price'] is Map
+          ? Map<String, dynamic>.from(itemDetail['price'])
+          : {};
+      String priceText = '';
+      String? priceKey;
+
+      if (typesMap.isEmpty && priceMap.length == 1) {
+        final firstValue = priceMap.values.first;
+        if (firstValue is int) {
+          priceText = firstValue.toString();
+        } else if (firstValue is String) {
+          priceKey = firstValue.toString();
+        }
+      } else if (typesMap.isNotEmpty && priceMap.isNotEmpty) {
+        final matchKey = getSelectedTypeKey(itemDetail);
+        if (matchKey != null && priceMap.containsKey(matchKey)) {
+          final price = priceMap[matchKey];
+          if (price is int) {
+            priceText = price.toString();
+          } else if (price is String) {
+            priceKey = price.toString();
+          }
+          typeText = typesMap[matchKey];
+        }
+      }
+
+      final categoryKey = itemDetail['category'];
+
+      final en = await loader.load('translations', const Locale('en'));
+      final zh = await loader.load('translations', const Locale('zh'));
+      final my = await loader.load('translations', const Locale('my'));
+
+      nameEnController.text = en[nameKey] ?? '';
+      nameZhController.text = zh[nameKey] ?? '';
+      nameMyController.text = my[nameKey] ?? '';
+
+      typeEnController.text = en[typeText] ?? 'Loading...';
+      typeZhController.text = zh[typeText] ?? 'Loading...';
+      typeMyController.text = my[typeText] ?? 'Loading...';
+
+      priceController.text = priceText;
+      priceEnController.text = en[priceKey] ?? 'Loading...';
+      priceZhController.text = zh[priceKey] ?? 'Loading...';
+      priceMyController.text = my[priceKey] ?? 'Loading...';
+
+      categoryEnController.text = en[categoryKey] ?? '';
+      categoryZhController.text = zh[categoryKey] ?? '';
+      categoryMyController.text = my[categoryKey] ?? '';
+    } catch (e) {
+      debugPrint("Error loading language files: $e");
+    } finally {
+      setLoadingState(type: false, price: false);
+    }
+  }
+
+  bool onShowPriceString(Map<String, dynamic> item) {
+    final priceMap = item['price'] as Map;
+    final selectedKey = getSelectedTypeKey(item);
+
+    if (selectedKey != null && priceMap[selectedKey] is String) {
+      return true;
+    }
+    return false;
+  }
+
+  Future<List<Map<String, dynamic>>> loadMenuData() async {
+    try {
+      isLoading = true;
+      notifyListeners();
+
+      final menuData = MenuDataService.fetchAdminData();
+      return menuData;
+    } catch (e) {
+      debugPrint('Error loading menu data: $e');
+      rethrow;
+    } finally {
+      isLoading = false;
+      notifyListeners();
+    }
+  }
+
   @override
   void dispose() {
     searchController.dispose();
+
+    nameEnController.dispose();
+    nameMyController.dispose();
+    nameZhController.dispose();
+
+    typeEnController.dispose();
+    typeMyController.dispose();
+    typeZhController.dispose();
+
+    priceController.dispose();
+    priceEnController.dispose();
+    priceZhController.dispose();
+    priceMyController.dispose();
+
+    categoryEnController.dispose();
+    categoryMyController.dispose();
+    categoryZhController.dispose();
     super.dispose();
   }
 }

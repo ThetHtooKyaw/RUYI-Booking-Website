@@ -38,6 +38,7 @@ class _GuestCounterState extends State<GuestCounter> {
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisSize: MainAxisSize.min,
         children: [
           _buildButton(context, Icons.remove_rounded, () {
             if (bookingData.guestCounter > 1) {
@@ -47,10 +48,12 @@ class _GuestCounterState extends State<GuestCounter> {
               widget.onGuestNumberChanged(bookingData.guestCounter);
             }
           }),
-          Text(
-            '${bookingData.guestCounter} Guest${bookingData.guestCounter != 1 ? 's' : ''}',
-            style:
-                Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 18),
+          Flexible(
+            child: Text(
+              '${bookingData.guestCounter} Guest${bookingData.guestCounter != 1 ? 's' : ''}',
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  fontSize: MediaQuery.of(context).size.width < 430 ? 14 : 18),
+            ),
           ),
           _buildButton(context, Icons.add, () {
             if (bookingData.guestCounter < 20) {
@@ -75,6 +78,8 @@ class _GuestCounterState extends State<GuestCounter> {
         borderRadius: BorderRadius.circular(12),
       ),
       child: IconButton(
+        padding: EdgeInsets.zero,
+        constraints: const BoxConstraints(),
         onPressed: onPressed,
         icon: Icon(
           icon,

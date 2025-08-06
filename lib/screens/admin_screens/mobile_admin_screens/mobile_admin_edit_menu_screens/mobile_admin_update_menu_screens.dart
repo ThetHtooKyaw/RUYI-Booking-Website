@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ruyi_booking/providers/menu_data_provider.dart';
-import 'package:ruyi_booking/screens/admin_screens/mobile_admin_edit_menu_screens/mobile_menu_detail.dart';
+import 'package:ruyi_booking/screens/admin_screens/mobile_admin_screens/mobile_admin_edit_menu_screens/mobile_menu_detail.dart';
 import 'package:ruyi_booking/utils/colors.dart';
 import 'package:ruyi_booking/widgets/cores/food_category.dart';
 
@@ -22,10 +22,11 @@ class _MobileAdminUpdateMenuScreensState
   Widget build(BuildContext context) {
     var menuData = Provider.of<MenuDataProvider>(context);
     final filteredItems = menuData.getFilteredItems(selectedCategory);
+    final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Column(
           children: [
             Padding(
@@ -89,7 +90,7 @@ class _MobileAdminUpdateMenuScreensState
                                         top: Radius.circular(10)),
                                     child: SizedBox(
                                       width: double.infinity,
-                                      height: 160,
+                                      height: screenWidth * 0.3,
                                       child: Hero(
                                         tag: 'hero-image-${item['image']}',
                                         child: Image.asset(

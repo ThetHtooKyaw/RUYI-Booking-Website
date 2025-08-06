@@ -19,17 +19,6 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await EasyLocalization.ensureInitialized();
   await FirebaseAuth.instance.setPersistence(Persistence.LOCAL);
-  try {
-    final storageRef = FirebaseStorage.instance.ref();
-
-    menuItems = (json.decode(utf8.decode(
-                (await storageRef.child('menu/menu_data_v2.json').getData())!))
-            as List)
-        .map((e) => e as Map<String, dynamic>)
-        .toList();
-  } catch (e) {
-    print(e);
-  }
   runApp(
     EasyLocalization(
       supportedLocales: const [Locale('en'), Locale('zh'), Locale('my')],
@@ -40,7 +29,8 @@ void main() async {
         providers: [
           ChangeNotifierProvider(create: (context) => BookingDataProvider()),
           ChangeNotifierProvider(create: (context) => AdminAuthProvider()),
-          ChangeNotifierProvider(create: (context) => MenuDataProvider()),
+          ChangeNotifierProvider(
+              create: (context) => MenuDataProvider()..loadMenuData()),
         ],
         child: const MyApp(),
       ),

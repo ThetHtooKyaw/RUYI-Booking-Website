@@ -18,31 +18,27 @@ class InfoTile extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 18),
-          child: ListTile(
-            leading: CustomIcon(
+        Row(
+          children: [
+            CustomIcon(
               iconImage: icon,
               size: 30,
               borderRadius: 20,
               thickness: 2,
             ),
-            title: Text(
+            const SizedBox(width: 20),
+            Text(
               title,
               style: Theme.of(context)
                   .textTheme
                   .bodyLarge
                   ?.copyWith(fontFamily: 'PlayfairDisplay'),
             ),
-          ),
+          ],
         ),
-        const Divider(
-          indent: 30,
-          endIndent: 30,
-          height: 20,
-        ),
+        const Divider(height: 20),
         Padding(
-          padding: const EdgeInsets.only(left: 40, right: 20),
+          padding: const EdgeInsets.only(left: 10, right: 15),
           child: Text(
             content,
             style: Theme.of(context).textTheme.bodyMedium,

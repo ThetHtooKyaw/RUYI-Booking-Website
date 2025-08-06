@@ -118,8 +118,8 @@ class _DesktopBookingScreenState extends State<DesktopBookingScreen> {
                                   'assets/icons/cart.png'),
                               Stack(
                                 children: [
-                                  ButtonUtils.forwardButton(150, 'menu'.tr(),
-                                      () {
+                                  ButtonUtils.forwardButton(
+                                      context, 150, 'menu'.tr(), () {
                                     Navigator.push(context,
                                         MaterialPageRoute(builder: (context) {
                                       return const MenuScreen();
@@ -165,12 +165,13 @@ class _DesktopBookingScreenState extends State<DesktopBookingScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ButtonUtils.backwardButton(
+                    context,
                     400,
                     'cancel'.tr(),
                     () => bookingData.resetForm(context, menuData.cartedItems),
                     17),
                 const SizedBox(width: 20),
-                ButtonUtils.forwardButton(400, 'continue'.tr(),
+                ButtonUtils.forwardButton(context, 400, 'continue'.tr(),
                     () => bookingData.continueBooking(context), 17),
               ],
             ),

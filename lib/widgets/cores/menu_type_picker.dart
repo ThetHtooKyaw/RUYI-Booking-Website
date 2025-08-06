@@ -7,15 +7,22 @@ import 'package:ruyi_booking/utils/colors.dart';
 class MenuTypePicker extends StatefulWidget {
   final String itemId;
   final Map<String, dynamic> itemType;
-  const MenuTypePicker(
-      {super.key, required this.itemId, required this.itemType});
+  final Map<String, dynamic>? itemDetail;
+  final bool fromAdminMenuDetail;
+  const MenuTypePicker({
+    super.key,
+    required this.itemId,
+    required this.itemType,
+    this.itemDetail,
+    this.fromAdminMenuDetail = false,
+  });
 
   @override
   State<MenuTypePicker> createState() => _MenuTypePickerState();
 }
 
 class _MenuTypePickerState extends State<MenuTypePicker> {
-  late String selectedOption;
+  String? selectedOption;
 
   @override
   void initState() {
@@ -26,7 +33,7 @@ class _MenuTypePickerState extends State<MenuTypePicker> {
 
   @override
   Widget build(BuildContext context) {
-    var menuData = Provider.of<MenuDataProvider>(context);
+    final menuData = Provider.of<MenuDataProvider>(context);
     final typeOptions = (widget.itemType as Map).values.cast<String>().toList();
 
     return SizedBox(
@@ -37,7 +44,10 @@ class _MenuTypePickerState extends State<MenuTypePicker> {
           if (newValue != null) {
             setState(() {
               selectedOption = newValue;
-              menuData.onOptionChanged(widget.itemId, selectedOption);
+              menuData.onOptionChanged(widget.itemId, selectedOption!);
+              if (widget.fromAdminMenuDetail && widget.itemDetail != null) {
+                menuData.loadTranslations(widget.itemDetail!);
+              }
             });
           }
         },
