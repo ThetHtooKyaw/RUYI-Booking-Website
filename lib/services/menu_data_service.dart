@@ -3,7 +3,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/services.dart';
 
 class MenuDataService {
-  static Future<List<Map<String, dynamic>>> fetchAdminData() async {
+  Future<List<Map<String, dynamic>>> fetchMenuData() async {
     try {
       final storageRef =
           FirebaseStorage.instance.ref().child("menu/menu_data_v2.json");
@@ -20,4 +20,8 @@ class MenuDataService {
       return (json.decode(localJson) as List).cast<Map<String, dynamic>>();
     }
   }
+
+  // Future<void> updateMenuData() async {
+  //   final storageRef = FirebaseStorage.instance.ref().child('');
+  // }
 }

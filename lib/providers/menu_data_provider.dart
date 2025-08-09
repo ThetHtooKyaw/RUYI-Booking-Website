@@ -512,7 +512,7 @@ class MenuDataProvider extends ChangeNotifier {
       isLoading = true;
       notifyListeners();
 
-      final menuData = MenuDataService.fetchAdminData();
+      final menuData = _menuDataService.fetchMenuData();
       return menuData;
     } catch (e) {
       debugPrint('Error loading menu data: $e');
