@@ -636,6 +636,12 @@
     "my": "ကြက်သွန်ဖြူငါးကင်"
   },
   {
+    "id": "menu47",
+    "en": "Spicy And Signature Grilled Sea Bass",
+    "zh": "香辣味特色烤鲈鱼",
+    "my": "မွှေးစပ်ငါးကင်"
+  },
+  {
     "id": "menu48",
     "en": "Homemade Fresh Meat Filling With Morel Mushrooms",
     "zh": "自制鲜肉馅羊肚菌",
@@ -964,6 +970,12 @@
     "en": "Dry Pot Thousand Pages Tofu",
     "zh": "干锅干页豆腐",
     "my": "တို့ဟူးကြော်နှပ်"
+  },
+  {
+    "id": "menu101",
+    "en": "Crab Tofu",
+    "zh": "蟹黄豆腐",
+    "my": "ဆားငံဥ တို့ဟူး"
   },
   {
     "id": "menu102",

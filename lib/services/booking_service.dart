@@ -31,7 +31,7 @@ class BookingService {
         "status": "Pending",
         "timestamp": FieldValue.serverTimestamp(),
       });
-      debugPrint('Booking added successfully');
+      debugPrint('Booking added successfully!');
     } catch (e) {
       debugPrint('Error adding booking to Firestore: $e');
     }
@@ -39,10 +39,7 @@ class BookingService {
 
   Future<void> updateBookingStatus(String bookingId, String newStatus) async {
     try {
-      if (bookingId.isEmpty) {
-        debugPrint("Error: Booking ID is empty");
-        return;
-      }
+      if (bookingId.isEmpty) throw Exception("Error: Booking ID is empty!");
 
       await db
           .collection('bookings')
@@ -52,6 +49,8 @@ class BookingService {
       if (newStatus == 'Confirmed') {
         await sendEmail(bookingId);
       }
+
+      debugPrint('Booking updated successfully!');
     } catch (e) {
       debugPrint('Error updating booking to Firestore: $e');
     }
@@ -62,10 +61,7 @@ class BookingService {
       DocumentSnapshot bookingSnapshot =
           await db.collection('bookings').doc(bookingId).get();
 
-      if (!bookingSnapshot.exists) {
-        debugPrint('Booking not found!');
-        return;
-      }
+      if (!bookingSnapshot.exists) throw Exception('Error: Booking not found!');
 
       await db.collection("emails").add({
         "from": {
@@ -98,7 +94,7 @@ class BookingService {
         <strong>The RUYI Chinese Cuisine</strong><br>
         """,
       });
-      debugPrint('Send email to user successfully');
+      debugPrint('Email successfully sent to user!');
     } catch (e) {
       debugPrint('Error sending email to user: $e');
     }
@@ -237,10 +233,9 @@ class BookingService {
       DocumentSnapshot docShnapshot =
           await db.collection('bookings').doc(bookingIndex).get();
 
-      if (!docShnapshot.exists) {
-        debugPrint('Error: Booking document does not exist');
-        return;
-      }
+      if (!docShnapshot.exists)
+        throw Exception('Error: Booking document does not exist!');
+
       await db.collection('bookings').doc(bookingIndex).delete();
     } catch (e) {
       debugPrint('Error deleting booking data from Firestore: $e');

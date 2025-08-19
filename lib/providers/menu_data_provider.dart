@@ -22,8 +22,6 @@ class MenuDataProvider extends ChangeNotifier {
 
   late TextEditingController priceController = TextEditingController();
   late TextEditingController priceEnController = TextEditingController();
-  late TextEditingController priceZhController = TextEditingController();
-  late TextEditingController priceMyController = TextEditingController();
 
   late TextEditingController categoryEnController = TextEditingController();
   late TextEditingController categoryMyController = TextEditingController();
@@ -70,19 +68,6 @@ class MenuDataProvider extends ChangeNotifier {
 
       return categoryMatches;
     }).toList();
-  }
-
-  bool onShowPicker(Map<String, dynamic> item) {
-    final id = int.tryParse(item['id']);
-    if ((item['category'].toString().tr() == 'category2'.tr() &&
-            item['id'] != '15') ||
-        item['category'].toString().tr() == 'category4'.tr() ||
-        item['category'].toString().tr() == 'category6'.tr() ||
-        item['category'].toString().tr() == 'category10'.tr() ||
-        [27, 136, 138].contains(id)) {
-      return true;
-    }
-    return false;
   }
 
   void onOptionChanged(String itemID, String option) {
@@ -181,32 +166,41 @@ class MenuDataProvider extends ChangeNotifier {
   String onGetPrice(Map<String, dynamic> item) {
     final itemID = item['id'];
     final unit = getPriceUnit(itemID);
+    print(item['options']);
+    final optionsMap = item['options'] is Map
+        ? Map<String, dynamic>.from(item['options'])
+        : {};
+    print(optionsMap);
+    if (optionsMap.isEmpty) return 'N/A';
 
-    final typesMap =
-        item['type'] is Map ? Map<String, dynamic>.from(item['type']) : {};
-    final priceMap =
-        item['price'] is Map ? Map<String, dynamic>.from(item['price']) : {};
-
-    if (typesMap.isEmpty && priceMap.length == 1) {
-      final firstValue = priceMap.entries.first.value;
-      if (firstValue is int) return 'Ks. ${formatPrice(firstValue)} $unit';
-      if (firstValue is String) return '${firstValue.tr()} $unit';
+    // Handle single price case (no variants)
+    if (optionsMap.length == 1) {
+      final firstOptions = optionsMap.values.first;
+      final price = firstOptions['price'];
+      if (price is int) return 'Ks. ${formatPrice(price)} $unit';
+      if (price is String) return '${price.tr()} $unit';
+      return 'N/A';
     }
 
+    // Handle multiple options case
     final selectedLabel = itemType[itemID]?.toString().tr();
-    final defaultLabel =
-        typesMap.isNotEmpty ? typesMap.values.first.toString().tr() : '';
-    final effectiveLabel = selectedLabel ?? defaultLabel;
-
     String? matchKey;
-    typesMap.forEach(
-      (key, value) {
-        if (value.toString().tr() == effectiveLabel) matchKey = key;
+
+    // Find the matching option
+    optionsMap.forEach(
+      (key, option) {
+        if (option['type']?.toString().tr() == selectedLabel) matchKey = key;
       },
     );
 
-    if (matchKey != null && priceMap.containsKey(matchKey)) {
-      final price = priceMap[matchKey];
+    // If no match found, use the first option as default
+    if (matchKey == null && optionsMap.isNotEmpty) {
+      matchKey = optionsMap.keys.first;
+    }
+
+    if (matchKey != null && optionsMap.containsKey(matchKey)) {
+      final option = optionsMap[matchKey];
+      final price = option['price'];
 
       if (itemID == '46' || itemID == '47') {
         return matchKey == '0'
@@ -424,6 +418,56 @@ class MenuDataProvider extends ChangeNotifier {
 
   // Admin Menu
 
+  Future<List<Map<String, dynamic>>> loadMenuData() async {
+    try {
+      isLoading = true;
+      notifyListeners();
+
+      final menuData = _menuDataService.fetchMenuData();
+      return menuData;
+    } catch (e) {
+      debugPrint('Error loading menu data: $e');
+      rethrow;
+    } finally {
+      isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> saveMenuData(Map<String, dynamic> itemDetail) async {
+    try {
+      final updatedMenuData = {
+        'id': itemDetail['id'],
+        'price': int.tryParse(priceController.text.trim()) ?? 0,
+      };
+
+      final updatedMenuLang = [
+        {
+          'id': itemDetail['name'],
+          'en': nameEnController.text.trim(),
+          'zh': nameZhController.text.trim(),
+          'my': nameMyController.text.trim(),
+        },
+        {
+          'id': itemDetail['type'],
+          'en': typeEnController.text.trim(),
+          'zh': typeZhController.text.trim(),
+          'my': typeMyController.text.trim(),
+        },
+        {
+          'id': itemDetail['category'],
+          'en': categoryEnController.text.trim(),
+          'zh': categoryZhController.text.trim(),
+          'my': categoryMyController.text.trim(),
+        }
+      ];
+
+      await _menuDataService.updateMenuData(updatedMenuLang, updatedMenuData);
+    } catch (e) {
+      debugPrint("Error updating menu data: $e");
+    }
+  }
+
   void setLoadingState({bool type = false, bool price = false}) {
     isLoadingType = type;
     isLoadingPrice = price;
@@ -484,8 +528,6 @@ class MenuDataProvider extends ChangeNotifier {
 
       priceController.text = priceText;
       priceEnController.text = en[priceKey] ?? 'Loading...';
-      priceZhController.text = zh[priceKey] ?? 'Loading...';
-      priceMyController.text = my[priceKey] ?? 'Loading...';
 
       categoryEnController.text = en[categoryKey] ?? '';
       categoryZhController.text = zh[categoryKey] ?? '';
@@ -507,22 +549,6 @@ class MenuDataProvider extends ChangeNotifier {
     return false;
   }
 
-  Future<List<Map<String, dynamic>>> loadMenuData() async {
-    try {
-      isLoading = true;
-      notifyListeners();
-
-      final menuData = _menuDataService.fetchMenuData();
-      return menuData;
-    } catch (e) {
-      debugPrint('Error loading menu data: $e');
-      rethrow;
-    } finally {
-      isLoading = false;
-      notifyListeners();
-    }
-  }
-
   @override
   void dispose() {
     searchController.dispose();
@@ -537,8 +563,6 @@ class MenuDataProvider extends ChangeNotifier {
 
     priceController.dispose();
     priceEnController.dispose();
-    priceZhController.dispose();
-    priceMyController.dispose();
 
     categoryEnController.dispose();
     categoryMyController.dispose();

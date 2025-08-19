@@ -58,14 +58,16 @@ class _MobileViewMenuScreenState extends State<MobileViewMenuScreen> {
                       ),
                       itemCount: filteredItems.length,
                       itemBuilder: (context, index) {
-                        final item = filteredItems[index];
-                        String type = menuData.itemType[item['id']] ??
-                            (item['type'] is Map
-                                ? item['type'].isEmpty
-                                    ? ''
-                                    : item['type']['0']
-                                : 'N/A');
-                        String uniqueKey = '${item['id']}-$type';
+                        final items = filteredItems[index];
+                        final options =
+                            (items['options'] as Map<String, dynamic>?) ?? {};
+                        String type = options.isNotEmpty
+                            ? options.values.first['type'] ?? ''
+                            : '';
+
+                        print('Parent: $items');
+
+                        String uniqueKey = '${items['id']}-$type';
                         menuData.itemQty.putIfAbsent(uniqueKey, () => 0);
 
                         return Column(
@@ -96,13 +98,13 @@ class _MobileViewMenuScreenState extends State<MobileViewMenuScreen> {
                                       width: (screenWidth * 0.36)
                                           .clamp(110.0, 170.0),
                                       child: Image.asset(
-                                        item['image'],
+                                        items['image'],
                                         fit: BoxFit.cover,
                                       ),
                                     ),
                                   ),
                                   const SizedBox(width: 15),
-                                  foodInfo(context, menuData, item, uniqueKey),
+                                  foodInfo(context, menuData, items, uniqueKey),
                                 ],
                               ),
                             ),
@@ -124,7 +126,8 @@ class _MobileViewMenuScreenState extends State<MobileViewMenuScreen> {
     String uniqueKey,
   ) {
     bool isclicked = menuData.isClickedItem(uniqueKey);
-
+    final options = item['options'] as Map<String, dynamic>? ?? {};
+    print('Parent: $item');
     return Expanded(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -137,56 +140,7 @@ class _MobileViewMenuScreenState extends State<MobileViewMenuScreen> {
                 ),
           ),
           const SizedBox(height: 5),
-          menuData.onShowPicker(item)
-              ? Row(
-                  children: [
-                    Image.asset(
-                      'assets/icons/cooking.png',
-                      width: 20,
-                      height: 20,
-                      color: Theme.of(context).iconTheme.color,
-                    ),
-                    const SizedBox(width: 8),
-                    MenuTypePicker(
-                      itemId: item['id'],
-                      itemType: item['type'],
-                      key: ObjectKey(item['id']),
-                    ),
-                  ],
-                )
-              : (item['type'].length == 1)
-                  ? Row(
-                      children: [
-                        Image.asset(
-                          'assets/icons/cooking.png',
-                          width: 17,
-                          height: 17,
-                          color: Theme.of(context).iconTheme.color,
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          item['type'].values.first?.toString().tr() ?? '',
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                      ],
-                    )
-                  : item['id'] == '22'
-                      ? Row(
-                          children: [
-                            Image.asset(
-                              'assets/icons/detail.png',
-                              width: 17,
-                              height: 17,
-                              color: Theme.of(context).iconTheme.color,
-                            ),
-                            const SizedBox(width: 8),
-                            Text(
-                              item['detail']?.toString().tr() ?? '',
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                          ],
-                        )
-                      : const SizedBox(),
+          buildTypeSection(context, item, options),
           const SizedBox(height: 5),
           Row(
             children: [
@@ -223,6 +177,66 @@ class _MobileViewMenuScreenState extends State<MobileViewMenuScreen> {
         ],
       ),
     );
+  }
+
+  Widget buildTypeSection(BuildContext context, Map<String, dynamic> item,
+      Map<String, dynamic> options) {
+    if (options.length > 1) {
+      return Row(
+        children: [
+          Image.asset(
+            'assets/icons/cooking.png',
+            width: 20,
+            height: 20,
+            color: Theme.of(context).iconTheme.color,
+          ),
+          const SizedBox(width: 8),
+          MenuTypePicker(
+            itemId: item['id'],
+            itemOptions: options,
+            key: ObjectKey(item['id']),
+          ),
+        ],
+      );
+    }
+
+    if (options.isNotEmpty && options.values.first['type'] != null) {
+      return Row(
+        children: [
+          Image.asset(
+            'assets/icons/cooking.png',
+            width: 17,
+            height: 17,
+            color: Theme.of(context).iconTheme.color,
+          ),
+          const SizedBox(width: 8),
+          Text(
+            options.values.first['type']?.toString().tr() ?? 'N/A',
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+        ],
+      );
+    }
+
+    if (item['id'] == '22') {
+      return Row(
+        children: [
+          Image.asset(
+            'assets/icons/detail.png',
+            width: 17,
+            height: 17,
+            color: Theme.of(context).iconTheme.color,
+          ),
+          const SizedBox(width: 8),
+          Text(
+            item['detail']?.toString().tr() ?? 'N/A',
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+        ],
+      );
+    }
+
+    return const SizedBox();
   }
 
   Widget searchBar(controller) {

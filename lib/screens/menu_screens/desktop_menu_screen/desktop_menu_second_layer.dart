@@ -46,14 +46,13 @@ class _DesktopMenuSecondLayerState extends State<DesktopMenuSecondLayer> {
                       ),
                       itemCount: widget.filteredItems.length,
                       itemBuilder: (context, index) {
-                        final item = widget.filteredItems[index];
-                        String type = menuData.itemType[item['id']] ??
-                            (item['type'] is Map
-                                ? item['type'].isEmpty
-                                    ? ''
-                                    : item['type']['0']
-                                : item['type'] ?? '');
-                        String uniqueKey = '${item['id']}-$type';
+                        final items = widget.filteredItems[index];
+                        final options =
+                            (items['options'] as Map<String, dynamic>?) ?? {};
+                        String type = options.isNotEmpty
+                            ? options.values.first['type'] ?? 'N/A'
+                            : 'N/A';
+                        String uniqueKey = '${items['id']}-$type';
                         menuData.itemQty.putIfAbsent(uniqueKey, () => 0);
 
                         return Column(
@@ -81,14 +80,14 @@ class _DesktopMenuSecondLayerState extends State<DesktopMenuSecondLayer> {
                                       height: 160,
                                       width: 200,
                                       child: Image.asset(
-                                        item['image'],
+                                        items['image'],
                                         fit: BoxFit.cover,
                                       ),
                                     ),
                                   ),
                                   const SizedBox(width: 15),
-                                  foodInfo(
-                                      context, menuData, item, uniqueKey, type),
+                                  foodInfo(context, menuData, items, uniqueKey,
+                                      type),
                                 ],
                               ),
                             ),
@@ -106,6 +105,7 @@ class _DesktopMenuSecondLayerState extends State<DesktopMenuSecondLayer> {
   Widget foodInfo(BuildContext context, MenuDataProvider menuData,
       Map<String, dynamic> item, String uniqueKey, String type) {
     int qty = menuData.itemQty[uniqueKey] ?? 0;
+    final options = item['options'] as Map<String, dynamic>? ?? {};
 
     return Expanded(
       child: Column(
@@ -119,7 +119,7 @@ class _DesktopMenuSecondLayerState extends State<DesktopMenuSecondLayer> {
                 ),
           ),
           const SizedBox(height: 5),
-          menuData.onShowPicker(item)
+          options.length > 1
               ? Row(
                   children: [
                     Image.asset(
@@ -131,12 +131,12 @@ class _DesktopMenuSecondLayerState extends State<DesktopMenuSecondLayer> {
                     const SizedBox(width: 8),
                     MenuTypePicker(
                       itemId: item['id'],
-                      itemType: item['type'],
+                      itemOptions: options,
                       key: ObjectKey(item['id']),
                     ),
                   ],
                 )
-              : (item['type'].length == 1)
+              : (options.values.first['type'] != null && options.length == 1)
                   ? Row(
                       children: [
                         Image.asset(
@@ -147,7 +147,8 @@ class _DesktopMenuSecondLayerState extends State<DesktopMenuSecondLayer> {
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          item['type'].values.first?.toString().tr() ?? '',
+                          options.values.first['type']?.toString().tr() ??
+                              'N/A',
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                       ],

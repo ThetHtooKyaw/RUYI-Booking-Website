@@ -6,13 +6,13 @@ import 'package:ruyi_booking/utils/colors.dart';
 
 class MenuTypePicker extends StatefulWidget {
   final String itemId;
-  final Map<String, dynamic> itemType;
+  final Map<String, dynamic> itemOptions;
   final Map<String, dynamic>? itemDetail;
   final bool fromAdminMenuDetail;
   const MenuTypePicker({
     super.key,
     required this.itemId,
-    required this.itemType,
+    required this.itemOptions,
     this.itemDetail,
     this.fromAdminMenuDetail = false,
   });
@@ -27,14 +27,21 @@ class _MenuTypePickerState extends State<MenuTypePicker> {
   @override
   void initState() {
     super.initState();
-    final defaultOption = widget.itemType['0'] as String;
-    selectedOption = defaultOption;
+    final defaultOption = widget.itemOptions.values.first;
+    selectedOption = defaultOption['type']?.toString();
   }
 
   @override
   Widget build(BuildContext context) {
     final menuData = Provider.of<MenuDataProvider>(context);
-    final typeOptions = (widget.itemType as Map).values.cast<String>().toList();
+    final options = widget.itemOptions.values
+        .map<String>((option) => option['type']?.toString() ?? '')
+        .where((type) => type.isNotEmpty)
+        .toList();
+
+    if (options.isEmpty) {
+      return const SizedBox();
+    }
 
     return SizedBox(
       width: 150,
@@ -51,7 +58,7 @@ class _MenuTypePickerState extends State<MenuTypePicker> {
             });
           }
         },
-        items: typeOptions.map((value) {
+        items: options.map((value) {
           return DropdownMenuItem<String>(
             value: value,
             child: Container(
@@ -69,7 +76,7 @@ class _MenuTypePickerState extends State<MenuTypePicker> {
           );
         }).toList(),
         selectedItemBuilder: (BuildContext context) {
-          return typeOptions.map<Widget>((String value) {
+          return options.map<Widget>((String value) {
             return SizedBox(
               width: 90,
               child: Text(

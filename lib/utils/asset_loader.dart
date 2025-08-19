@@ -1,7 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-
 import 'dart:convert';
 
 class LocalAssetLoader extends AssetLoader {
@@ -30,9 +29,6 @@ class LocalAssetLoader extends AssetLoader {
       };
       final mergedTranslations = {...uiTranslations, ...menuTranslations};
       return mergedTranslations;
-      // return json.decode(utf8.decode((await storageRef
-      //     .child('$path/${locale.toLanguageTag()}.json')
-      //     .getData())!));
     } catch (e) {
       debugPrint('Error loading translations: $e');
       return {};

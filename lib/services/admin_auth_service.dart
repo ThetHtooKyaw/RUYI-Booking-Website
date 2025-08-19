@@ -32,13 +32,13 @@ class AdminAuthService {
     try {
       User? user = FirebaseAuth.instance.currentUser;
       if (user == null) {
-        handleError(context, "Unauthorized: No admin is currently logged in.");
+        handleError(context, "Unauthorized: No admin is currently logged in!");
         return false;
       }
 
       final adminRole = await db.collection('admins').doc(user.uid).get();
       if (!adminRole.exists || adminRole.data()?['role'] != 'admin') {
-        handleError(context, "You are not authorized to create a new admin.");
+        handleError(context, "You are not authorized to create a new admin!");
         return false;
       }
 
@@ -54,7 +54,7 @@ class AdminAuthService {
         });
         return true;
       }
-      debugPrint('Admin account added successfully');
+      debugPrint('Admin account added successfully!');
     } catch (e) {
       debugPrint('Error signning up: $e');
       return false;

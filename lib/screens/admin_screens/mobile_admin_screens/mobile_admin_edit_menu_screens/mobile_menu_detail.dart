@@ -84,7 +84,7 @@ class _MobileMenuDetailState extends State<MobileMenuDetail> {
                               220,
                               'confirm'.tr(),
                               () {
-                                Navigator.pop(context);
+                                menuData.saveMenuData(item);
                               },
                               17,
                             ),
@@ -262,7 +262,7 @@ class _MobileMenuDetailState extends State<MobileMenuDetail> {
               children: [
                 MenuTypePicker(
                   itemId: item['id'],
-                  itemType: item['type'],
+                  itemOptions: item['type'],
                   itemDetail: widget.itemDetail,
                   fromAdminMenuDetail: true,
                   key: ObjectKey(item['id']),
@@ -308,73 +308,44 @@ class _MobileMenuDetailState extends State<MobileMenuDetail> {
     final bool onShowPriceString = menuData.onShowPriceString(item);
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      child: Row(
         children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 10, bottom: 15),
-            child: Row(
-              children: [
-                Text(
-                  "Menu Price:",
+          Text(
+            "Menu Price:",
+            style:
+                Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 18),
+          ),
+          const SizedBox(width: 10),
+          onShowPriceString
+              ? Text(
+                  menuData.priceEnController.text,
                   style: Theme.of(context)
                       .textTheme
                       .bodyMedium
                       ?.copyWith(fontSize: 18),
-                ),
-                const SizedBox(width: 10),
-                onShowPriceString
-                    ? buildTextField(
-                        controller: menuData.priceEnController,
-                        labelText: "English",
-                        isLoading: menuData.isLoadingPrice,
-                      )
-                    : Expanded(
-                        child: TextField(
-                          controller: menuData.priceController,
-                          keyboardType: TextInputType.name,
-                          decoration: InputDecoration(
-                            suffixIcon: menuData.isLoadingPrice
-                                ? const Padding(
-                                    padding: EdgeInsets.all(10),
-                                    child: SizedBox(
-                                      height: 18,
-                                      width: 18,
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 2,
-                                        color: AppColors.appAccent,
-                                      ),
-                                    ),
-                                  )
-                                : null,
-                          ),
-                        ),
-                      ),
-              ],
-            ),
-          ),
-          onShowPriceString
-              ? Padding(
-                  padding: const EdgeInsets.only(bottom: 5),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      buildTextField(
-                        controller: menuData.priceZhController,
-                        labelText: "Chinese",
-                        isLoading: menuData.isLoadingPrice,
-                      ),
-                      const SizedBox(width: 10),
-                      buildTextField(
-                        controller: menuData.priceMyController,
-                        labelText: "Myanmar",
-                        isLoading: menuData.isLoadingPrice,
-                      ),
-                    ],
-                  ),
                 )
-              : const SizedBox(),
+              : Expanded(
+                  child: TextField(
+                    controller: menuData.priceController,
+                    keyboardType: TextInputType.name,
+                    decoration: InputDecoration(
+                      suffixIcon: menuData.isLoadingPrice
+                          ? const Padding(
+                              padding: EdgeInsets.all(10),
+                              child: SizedBox(
+                                height: 18,
+                                width: 18,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  color: AppColors.appAccent,
+                                ),
+                              ),
+                            )
+                          : null,
+                    ),
+                  ),
+                ),
         ],
       ),
     );

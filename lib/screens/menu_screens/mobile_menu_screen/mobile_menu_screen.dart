@@ -61,14 +61,13 @@ class _MobileMenuScreenState extends State<MobileMenuScreen> {
                       ),
                       itemCount: filteredItems.length,
                       itemBuilder: (context, index) {
-                        final item = filteredItems[index];
-                        String type = menuData.itemType[item['id']] ??
-                            (item['type'] is Map
-                                ? item['type'].isEmpty
-                                    ? ''
-                                    : item['type']['0']
-                                : item['type'] ?? '');
-                        String uniqueKey = '${item['id']}-$type';
+                        final items = filteredItems[index];
+                        final options =
+                            (items['options'] as Map<String, dynamic>?) ?? {};
+                        String type = options.isNotEmpty
+                            ? options.values.first['type'] ?? 'N/A'
+                            : 'N/A';
+                        String uniqueKey = '${items['id']}-$type';
                         menuData.itemQty.putIfAbsent(uniqueKey, () => 0);
 
                         return Column(
@@ -98,14 +97,14 @@ class _MobileMenuScreenState extends State<MobileMenuScreen> {
                                       width: (screenWidth * 0.36)
                                           .clamp(110.0, 170.0),
                                       child: Image.asset(
-                                        item['image'],
+                                        items['image'],
                                         fit: BoxFit.cover,
                                       ),
                                     ),
                                   ),
                                   SizedBox(width: screenWidth < 430 ? 10 : 15),
-                                  foodInfo(
-                                      context, menuData, item, uniqueKey, type),
+                                  foodInfo(context, menuData, items, uniqueKey,
+                                      type),
                                 ],
                               ),
                             ),
@@ -168,6 +167,7 @@ class _MobileMenuScreenState extends State<MobileMenuScreen> {
       Map<String, dynamic> item, String uniqueKey, String type) {
     int qty = menuData.itemQty[uniqueKey] ?? 0;
     final screenWidth = MediaQuery.of(context).size.width;
+    final options = item['options'] as Map<String, dynamic>? ?? {};
 
     return Expanded(
       child: Column(
@@ -183,7 +183,7 @@ class _MobileMenuScreenState extends State<MobileMenuScreen> {
                 ),
           ),
           const SizedBox(height: 5),
-          menuData.onShowPicker(item)
+          options.length > 1
               ? Row(
                   children: [
                     Image.asset(
@@ -195,12 +195,12 @@ class _MobileMenuScreenState extends State<MobileMenuScreen> {
                     const SizedBox(width: 8),
                     MenuTypePicker(
                       itemId: item['id'],
-                      itemType: item['type'],
+                      itemOptions: options,
                       key: ObjectKey(item['id']),
                     ),
                   ],
                 )
-              : (item['type'].length == 1)
+              : (options.values.first['type'] != null && options.length == 1)
                   ? Row(
                       children: [
                         Image.asset(
@@ -211,7 +211,8 @@ class _MobileMenuScreenState extends State<MobileMenuScreen> {
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          item['type'].values.first?.toString().tr() ?? '',
+                          options.values.first['type']?.toString().tr() ??
+                              'N/A',
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                       ],
@@ -227,7 +228,7 @@ class _MobileMenuScreenState extends State<MobileMenuScreen> {
                             ),
                             const SizedBox(width: 8),
                             Text(
-                              item['detail']?.toString().tr() ?? '',
+                              item['detail']?.toString().tr() ?? 'N/A',
                               style: Theme.of(context).textTheme.bodyMedium,
                             ),
                           ],
