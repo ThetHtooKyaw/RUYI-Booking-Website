@@ -418,13 +418,13 @@ class MenuDataProvider extends ChangeNotifier {
 
   // Admin Menu
 
-  Future<List<Map<String, dynamic>>> loadMenuData() async {
+  Future<void> loadMenuData() async {
     try {
       isLoading = true;
       notifyListeners();
 
-      final menuData = _menuDataService.fetchMenuData();
-      return menuData;
+      menuItems = await _menuDataService.fetchMenuData();
+      // return menuData;
     } catch (e) {
       debugPrint('Error loading menu data: $e');
       rethrow;
@@ -463,6 +463,7 @@ class MenuDataProvider extends ChangeNotifier {
       ];
 
       await _menuDataService.updateMenuData(updatedMenuLang, updatedMenuData);
+      await loadMenuData();
     } catch (e) {
       debugPrint("Error updating menu data: $e");
     }
