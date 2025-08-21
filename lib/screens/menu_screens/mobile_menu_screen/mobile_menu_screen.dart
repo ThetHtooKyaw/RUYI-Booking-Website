@@ -7,7 +7,7 @@ import 'package:ruyi_booking/screens/menu_screens/mobile_menu_screen/mobile_add_
 import 'package:ruyi_booking/screens/view_menu_screens/mobile_menu_view/mobile_view_menu_fav_screen.dart';
 import 'package:ruyi_booking/utils/colors.dart';
 import 'package:ruyi_booking/widgets/cores/item_counter.dart';
-import 'package:ruyi_booking/widgets/cores/menu_type_picker.dart';
+import 'package:ruyi_booking/widgets/cores/type_section.dart';
 import 'package:ruyi_booking/widgets/extras/custom_buttons.dart';
 import 'package:ruyi_booking/widgets/extras/mobile_app_bar.dart';
 
@@ -62,12 +62,8 @@ class _MobileMenuScreenState extends State<MobileMenuScreen> {
                       itemCount: filteredItems.length,
                       itemBuilder: (context, index) {
                         final items = filteredItems[index];
-                        final options =
-                            (items['options'] as Map<String, dynamic>?) ?? {};
-                        String type = options.isNotEmpty
-                            ? options.values.first['type'] ?? 'N/A'
-                            : 'N/A';
-                        String uniqueKey = '${items['id']}-$type';
+                        String selectedType = menuData.typeKey(items) ?? 'N/A';
+                        String uniqueKey = '${items['id']}-$selectedType';
                         menuData.itemQty.putIfAbsent(uniqueKey, () => 0);
 
                         return Column(
@@ -103,8 +99,7 @@ class _MobileMenuScreenState extends State<MobileMenuScreen> {
                                     ),
                                   ),
                                   SizedBox(width: screenWidth < 430 ? 10 : 15),
-                                  foodInfo(context, menuData, items, uniqueKey,
-                                      type),
+                                  foodInfo(context, menuData, items, uniqueKey),
                                 ],
                               ),
                             ),
@@ -164,7 +159,7 @@ class _MobileMenuScreenState extends State<MobileMenuScreen> {
   }
 
   Widget foodInfo(BuildContext context, MenuDataProvider menuData,
-      Map<String, dynamic> item, String uniqueKey, String type) {
+      Map<String, dynamic> item, String uniqueKey) {
     int qty = menuData.itemQty[uniqueKey] ?? 0;
     final screenWidth = MediaQuery.of(context).size.width;
     final options = item['options'] as Map<String, dynamic>? ?? {};
@@ -183,57 +178,7 @@ class _MobileMenuScreenState extends State<MobileMenuScreen> {
                 ),
           ),
           const SizedBox(height: 5),
-          options.length > 1
-              ? Row(
-                  children: [
-                    Image.asset(
-                      'assets/icons/cooking.png',
-                      width: 20,
-                      height: 20,
-                      color: Theme.of(context).iconTheme.color,
-                    ),
-                    const SizedBox(width: 8),
-                    MenuTypePicker(
-                      itemId: item['id'],
-                      itemOptions: options,
-                      key: ObjectKey(item['id']),
-                    ),
-                  ],
-                )
-              : (options.values.first['type'] != null && options.length == 1)
-                  ? Row(
-                      children: [
-                        Image.asset(
-                          'assets/icons/cooking.png',
-                          width: 17,
-                          height: 17,
-                          color: Theme.of(context).iconTheme.color,
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          options.values.first['type']?.toString().tr() ??
-                              'N/A',
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                      ],
-                    )
-                  : item['id'] == '22'
-                      ? Row(
-                          children: [
-                            Image.asset(
-                              'assets/icons/detail.png',
-                              width: 17,
-                              height: 17,
-                              color: Theme.of(context).iconTheme.color,
-                            ),
-                            const SizedBox(width: 8),
-                            Text(
-                              item['detail']?.toString().tr() ?? 'N/A',
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                          ],
-                        )
-                      : const SizedBox(),
+          TypeSection(item: item, options: options),
           const SizedBox(height: 5),
           Row(
             children: [

@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 class MenuDataService {
   final storageMenuRef =
@@ -53,8 +52,9 @@ class MenuDataService {
 
       final menuIndex =
           menuData.indexWhere((item) => item['id'] == updatedMenuData['id']);
-      if (menuIndex == -1)
+      if (menuIndex == -1) {
         throw Exception("Menu item not found: ${updatedMenuData['id']}");
+      }
 
       // Menu Data Update
       if (updatedMenuData['price'] case final price as Map<String, dynamic>) {

@@ -5,7 +5,8 @@ import 'package:ruyi_booking/classes/category.dart';
 import 'package:ruyi_booking/providers/menu_data_provider.dart';
 import 'package:ruyi_booking/screens/view_menu_screens/mobile_menu_view/mobile_view_menu_fav_screen.dart';
 import 'package:ruyi_booking/utils/colors.dart';
-import 'package:ruyi_booking/widgets/cores/menu_type_picker.dart';
+
+import 'package:ruyi_booking/widgets/cores/type_section.dart';
 import 'package:ruyi_booking/widgets/extras/mobile_app_bar.dart';
 
 class MobileViewMenuScreen extends StatefulWidget {
@@ -59,15 +60,8 @@ class _MobileViewMenuScreenState extends State<MobileViewMenuScreen> {
                       itemCount: filteredItems.length,
                       itemBuilder: (context, index) {
                         final items = filteredItems[index];
-                        final options =
-                            (items['options'] as Map<String, dynamic>?) ?? {};
-                        String type = options.isNotEmpty
-                            ? options.values.first['type'] ?? ''
-                            : '';
-
-                        print('Parent: $items');
-
-                        String uniqueKey = '${items['id']}-$type';
+                        String selectedType = menuData.typeKey(items) ?? 'N/A';
+                        String uniqueKey = '${items['id']}-$selectedType';
                         menuData.itemQty.putIfAbsent(uniqueKey, () => 0);
 
                         return Column(
@@ -127,7 +121,7 @@ class _MobileViewMenuScreenState extends State<MobileViewMenuScreen> {
   ) {
     bool isclicked = menuData.isClickedItem(uniqueKey);
     final options = item['options'] as Map<String, dynamic>? ?? {};
-    print('Parent: $item');
+
     return Expanded(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -140,7 +134,7 @@ class _MobileViewMenuScreenState extends State<MobileViewMenuScreen> {
                 ),
           ),
           const SizedBox(height: 5),
-          buildTypeSection(context, item, options),
+          TypeSection(item: item, options: options),
           const SizedBox(height: 5),
           Row(
             children: [
@@ -177,66 +171,6 @@ class _MobileViewMenuScreenState extends State<MobileViewMenuScreen> {
         ],
       ),
     );
-  }
-
-  Widget buildTypeSection(BuildContext context, Map<String, dynamic> item,
-      Map<String, dynamic> options) {
-    if (options.length > 1) {
-      return Row(
-        children: [
-          Image.asset(
-            'assets/icons/cooking.png',
-            width: 20,
-            height: 20,
-            color: Theme.of(context).iconTheme.color,
-          ),
-          const SizedBox(width: 8),
-          MenuTypePicker(
-            itemId: item['id'],
-            itemOptions: options,
-            key: ObjectKey(item['id']),
-          ),
-        ],
-      );
-    }
-
-    if (options.isNotEmpty && options.values.first['type'] != null) {
-      return Row(
-        children: [
-          Image.asset(
-            'assets/icons/cooking.png',
-            width: 17,
-            height: 17,
-            color: Theme.of(context).iconTheme.color,
-          ),
-          const SizedBox(width: 8),
-          Text(
-            options.values.first['type']?.toString().tr() ?? 'N/A',
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-        ],
-      );
-    }
-
-    if (item['id'] == '22') {
-      return Row(
-        children: [
-          Image.asset(
-            'assets/icons/detail.png',
-            width: 17,
-            height: 17,
-            color: Theme.of(context).iconTheme.color,
-          ),
-          const SizedBox(width: 8),
-          Text(
-            item['detail']?.toString().tr() ?? 'N/A',
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-        ],
-      );
-    }
-
-    return const SizedBox();
   }
 
   Widget searchBar(controller) {

@@ -5,7 +5,7 @@ import 'package:ruyi_booking/classes/category.dart';
 import 'package:ruyi_booking/providers/menu_data_provider.dart';
 import 'package:ruyi_booking/utils/colors.dart';
 import 'package:ruyi_booking/widgets/cores/item_counter.dart';
-import 'package:ruyi_booking/widgets/cores/menu_type_picker.dart';
+import 'package:ruyi_booking/widgets/cores/type_section.dart';
 
 class DesktopMenuSecondLayer extends StatefulWidget {
   final int selectedCategory;
@@ -47,12 +47,8 @@ class _DesktopMenuSecondLayerState extends State<DesktopMenuSecondLayer> {
                       itemCount: widget.filteredItems.length,
                       itemBuilder: (context, index) {
                         final items = widget.filteredItems[index];
-                        final options =
-                            (items['options'] as Map<String, dynamic>?) ?? {};
-                        String type = options.isNotEmpty
-                            ? options.values.first['type'] ?? 'N/A'
-                            : 'N/A';
-                        String uniqueKey = '${items['id']}-$type';
+                        String selectedType = menuData.typeKey(items) ?? 'N/A';
+                        String uniqueKey = '${items['id']}-$selectedType';
                         menuData.itemQty.putIfAbsent(uniqueKey, () => 0);
 
                         return Column(
@@ -86,8 +82,7 @@ class _DesktopMenuSecondLayerState extends State<DesktopMenuSecondLayer> {
                                     ),
                                   ),
                                   const SizedBox(width: 15),
-                                  foodInfo(context, menuData, items, uniqueKey,
-                                      type),
+                                  foodInfo(context, menuData, items, uniqueKey),
                                 ],
                               ),
                             ),
@@ -103,7 +98,7 @@ class _DesktopMenuSecondLayerState extends State<DesktopMenuSecondLayer> {
   }
 
   Widget foodInfo(BuildContext context, MenuDataProvider menuData,
-      Map<String, dynamic> item, String uniqueKey, String type) {
+      Map<String, dynamic> item, String uniqueKey) {
     int qty = menuData.itemQty[uniqueKey] ?? 0;
     final options = item['options'] as Map<String, dynamic>? ?? {};
 
@@ -119,57 +114,7 @@ class _DesktopMenuSecondLayerState extends State<DesktopMenuSecondLayer> {
                 ),
           ),
           const SizedBox(height: 5),
-          options.length > 1
-              ? Row(
-                  children: [
-                    Image.asset(
-                      'assets/icons/cooking.png',
-                      width: 20,
-                      height: 20,
-                      color: Theme.of(context).iconTheme.color,
-                    ),
-                    const SizedBox(width: 8),
-                    MenuTypePicker(
-                      itemId: item['id'],
-                      itemOptions: options,
-                      key: ObjectKey(item['id']),
-                    ),
-                  ],
-                )
-              : (options.values.first['type'] != null && options.length == 1)
-                  ? Row(
-                      children: [
-                        Image.asset(
-                          'assets/icons/cooking.png',
-                          width: 17,
-                          height: 17,
-                          color: Theme.of(context).iconTheme.color,
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          options.values.first['type']?.toString().tr() ??
-                              'N/A',
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                      ],
-                    )
-                  : item['id'] == '22'
-                      ? Row(
-                          children: [
-                            Image.asset(
-                              'assets/icons/detail.png',
-                              width: 17,
-                              height: 17,
-                              color: Theme.of(context).iconTheme.color,
-                            ),
-                            const SizedBox(width: 8),
-                            Text(
-                              item['detail']?.toString().tr() ?? '',
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                          ],
-                        )
-                      : const SizedBox(),
+          TypeSection(item: item, options: options),
           const SizedBox(height: 5),
           Row(
             children: [

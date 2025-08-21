@@ -75,51 +75,38 @@ class MenuDataProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  String? getSelectedTypeKey(Map<String, dynamic> itemDetail) {
-    final typesMap = itemDetail['type'] is Map
-        ? Map<String, dynamic>.from(itemDetail['type'])
-        : {};
-
-    final selectedLabel = itemType[itemDetail['id']]?.toString().tr();
-    final defaultLabel =
-        typesMap.isNotEmpty ? typesMap.values.first.toString().tr() : '';
-    final effectiveLabel = selectedLabel ?? defaultLabel;
-
-    String? matchKey;
-    typesMap.forEach((key, value) {
-      if (value.toString().tr() == effectiveLabel) {
-        matchKey = key;
-      }
-    });
-
-    return matchKey;
-  }
-
   String? typeKey(Map<String, dynamic> item) {
-    final typesMap = item['type'];
-    return itemType[item['id']] ?? typesMap?['0'];
+    final options = item['options'] is Map
+        ? Map<String, dynamic>.from(item['options'])
+        : <String, dynamic>{};
+
+    final storedType = itemType[item['id']];
+    if (storedType != null) {
+      return storedType;
+    }
+    final firstKey = options.keys.first;
+    final firstOption = options[firstKey] as Map<String, dynamic>?;
+    return firstOption?['type']?.toString();
   }
 
   dynamic priceKey(Map<String, dynamic> item) {
-    final typesMap = item['type'];
-    final priceMap = item['price'];
+    final options = item['options'] is Map
+        ? Map<String, dynamic>.from(item['options'])
+        : <String, dynamic>{};
 
-    if ((typesMap == null || typesMap.isEmpty) &&
-        (priceMap != null && priceMap.isNotEmpty)) {
-      final firstValue = priceMap.values.first;
-      if (firstValue is String || firstValue is int) {
-        return firstValue;
+    final storedType = itemType[item['id']];
+    if (storedType != null) {
+      for (final key in options.keys) {
+        final option = options[key] as Map<String, dynamic>?;
+        if (option != null && option['type'] == storedType) {
+          return option['price'];
+        }
       }
     }
 
-    final selectedType = itemType[item['id']] ?? typesMap?['0'];
-    for (final key in typesMap.keys) {
-      if (typesMap[key] == selectedType) {
-        return priceMap[key];
-      }
-    }
-
-    return 'N/A';
+    final firstKey = options.keys.first;
+    final firstOption = options[firstKey] as Map<String, dynamic>?;
+    return firstOption?['price'] ?? 'N/A';
   }
 
   String getPriceUnit(String itemID) {
@@ -166,49 +153,21 @@ class MenuDataProvider extends ChangeNotifier {
   String onGetPrice(Map<String, dynamic> item) {
     final itemID = item['id'];
     final unit = getPriceUnit(itemID);
-    print(item['options']);
+
     final optionsMap = item['options'] is Map
         ? Map<String, dynamic>.from(item['options'])
-        : {};
-    print(optionsMap);
-    if (optionsMap.isEmpty) return 'N/A';
+        : <String, dynamic>{};
 
-    // Handle single price case (no variants)
-    if (optionsMap.length == 1) {
-      final firstOptions = optionsMap.values.first;
-      final price = firstOptions['price'];
-      if (price is int) return 'Ks. ${formatPrice(price)} $unit';
-      if (price is String) return '${price.tr()} $unit';
-      return 'N/A';
-    }
+    if (optionsMap.isNotEmpty) {
+      final selectedOptions = findSelectedOption(item, optionsMap);
 
-    // Handle multiple options case
-    final selectedLabel = itemType[itemID]?.toString().tr();
-    String? matchKey;
+      if (selectedOptions != null) {
+        final price = selectedOptions['price'];
 
-    // Find the matching option
-    optionsMap.forEach(
-      (key, option) {
-        if (option['type']?.toString().tr() == selectedLabel) matchKey = key;
-      },
-    );
-
-    // If no match found, use the first option as default
-    if (matchKey == null && optionsMap.isNotEmpty) {
-      matchKey = optionsMap.keys.first;
-    }
-
-    if (matchKey != null && optionsMap.containsKey(matchKey)) {
-      final option = optionsMap[matchKey];
-      final price = option['price'];
-
-      if (itemID == '46' || itemID == '47') {
-        return matchKey == '0'
-            ? 'Ks. ${formatPrice(price)} ${'price_unit6'.tr()}'
-            : '${price.toString().tr()} ${'price_unit1'.tr()}';
+        if (price is int) return 'Ks. ${formatPrice(price)} $unit';
+        if (price is String) return '${price.tr()} $unit';
+        return 'N/A';
       }
-
-      return 'Ks. ${formatPrice(price)} $unit';
     }
 
     return 'N/A';
@@ -481,39 +440,28 @@ class MenuDataProvider extends ChangeNotifier {
 
       const loader = LocalAssetLoader();
       final nameKey = itemDetail['name'];
+      final categoryKey = itemDetail['category'];
 
-      final typesMap = itemDetail['type'] is Map
-          ? Map<String, dynamic>.from(itemDetail['type'])
-          : {};
+      final optionsMap = itemDetail['options'] is Map
+          ? Map<String, dynamic>.from(itemDetail['options'])
+          : <String, dynamic>{};
+
       String typeText = '';
-
-      final priceMap = itemDetail['price'] is Map
-          ? Map<String, dynamic>.from(itemDetail['price'])
-          : {};
       String priceText = '';
-      String? priceKey;
+      String? priceTranslationKey;
 
-      if (typesMap.isEmpty && priceMap.length == 1) {
-        final firstValue = priceMap.values.first;
-        if (firstValue is int) {
-          priceText = firstValue.toString();
-        } else if (firstValue is String) {
-          priceKey = firstValue.toString();
-        }
-      } else if (typesMap.isNotEmpty && priceMap.isNotEmpty) {
-        final matchKey = getSelectedTypeKey(itemDetail);
-        if (matchKey != null && priceMap.containsKey(matchKey)) {
-          final price = priceMap[matchKey];
-          if (price is int) {
-            priceText = price.toString();
-          } else if (price is String) {
-            priceKey = price.toString();
-          }
-          typeText = typesMap[matchKey];
+      if (optionsMap.isNotEmpty) {
+        final selectedOptions = findSelectedOption(itemDetail, optionsMap);
+
+        if (selectedOptions != null) {
+          final type = selectedOptions['type'];
+          final price = selectedOptions['price'];
+
+          if (type != null) typeText = type.toString().tr();
+          if (price is int) priceText = formatPrice(price);
+          if (price is String) priceTranslationKey = price.tr();
         }
       }
-
-      final categoryKey = itemDetail['category'];
 
       final en = await loader.load('translations', const Locale('en'));
       final zh = await loader.load('translations', const Locale('zh'));
@@ -528,7 +476,7 @@ class MenuDataProvider extends ChangeNotifier {
       typeMyController.text = my[typeText] ?? 'Loading...';
 
       priceController.text = priceText;
-      priceEnController.text = en[priceKey] ?? 'Loading...';
+      priceEnController.text = en[priceTranslationKey] ?? 'Loading...';
 
       categoryEnController.text = en[categoryKey] ?? '';
       categoryZhController.text = zh[categoryKey] ?? '';
@@ -540,11 +488,35 @@ class MenuDataProvider extends ChangeNotifier {
     }
   }
 
-  bool onShowPriceString(Map<String, dynamic> item) {
-    final priceMap = item['price'] as Map;
-    final selectedKey = getSelectedTypeKey(item);
+  Map<String, dynamic>? findSelectedOption(
+      Map<String, dynamic> itemDetail, Map<String, dynamic> optionsMap) {
+    if (optionsMap.length == 1) {
+      return optionsMap.values.first;
+    } else {
+      final selectedType = itemType[itemDetail['id']]?.toString();
 
-    if (selectedKey != null && priceMap[selectedKey] is String) {
+      if (selectedType == null) return optionsMap.values.first;
+
+      for (final option in optionsMap.values) {
+        if (option['type']?.toString() == selectedType) {
+          return option;
+        }
+      }
+    }
+
+    return optionsMap.values.first;
+  }
+
+  bool onShowPriceString(Map<String, dynamic> item) {
+    final optionsMap = item['options'] is Map
+        ? Map<String, dynamic>.from(item['options'])
+        : <String, dynamic>{};
+
+    final selectedOptions = findSelectedOption(optionsMap, optionsMap);
+
+    final price = selectedOptions!['price'];
+
+    if (price != null && price is String) {
       return true;
     }
     return false;
