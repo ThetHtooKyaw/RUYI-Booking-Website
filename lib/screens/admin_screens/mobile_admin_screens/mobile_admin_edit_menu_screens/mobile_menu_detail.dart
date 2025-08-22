@@ -36,6 +36,12 @@ class _MobileMenuDetailState extends State<MobileMenuDetail> {
   Widget build(BuildContext context) {
     final menuData = Provider.of<MenuDataProvider>(context, listen: false);
     final item = widget.itemDetail;
+    final options = item['options'] as Map<String, dynamic>?;
+    final hasOptionType = options != null &&
+        options.values.any((option) {
+          final optionsMap = option as Map<String, dynamic>?;
+          return optionsMap?['type'] != null;
+        });
 
     return Scaffold(
       body: menuData.isLoading
@@ -54,10 +60,11 @@ class _MobileMenuDetailState extends State<MobileMenuDetail> {
                       menuData.nameMyController,
                     ),
                     buildDivider(),
-                    (item['type'] != null && item['type'].isNotEmpty)
+                    hasOptionType
                         ? Column(
                             children: [
-                              buildTypeSection(context, item, menuData),
+                              buildTypeSection(
+                                  context, item, options, menuData),
                               buildDivider(),
                             ],
                           )
@@ -239,6 +246,7 @@ class _MobileMenuDetailState extends State<MobileMenuDetail> {
   Widget buildTypeSection(
     BuildContext context,
     Map<String, dynamic> item,
+    Map<String, dynamic> options,
     MenuDataProvider menuData,
   ) {
     return Padding(
@@ -262,7 +270,7 @@ class _MobileMenuDetailState extends State<MobileMenuDetail> {
               children: [
                 MenuTypePicker(
                   itemId: item['id'],
-                  itemOptions: item['type'],
+                  itemOptions: options,
                   itemDetail: widget.itemDetail,
                   fromAdminMenuDetail: true,
                   key: ObjectKey(item['id']),

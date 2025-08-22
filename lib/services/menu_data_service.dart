@@ -26,7 +26,7 @@ class MenuDataService {
     }
   }
 
-  Future<List<Map<String, String>>> fetchMenuDataLanguage() async {
+  Future<List<Map<String, dynamic>>> fetchMenuDataLanguage() async {
     try {
       final bytes =
           await storageMenuLangRef.getData(5 * 1024 * 1024); // 5 MB Limit
@@ -34,39 +34,50 @@ class MenuDataService {
       if (bytes == null) throw Exception("Error: menu_lang.json is empty!");
 
       final jsonString = utf8.decode(bytes);
-      return (json.decode(jsonString) as List).cast<Map<String, String>>();
+      return (json.decode(jsonString) as List).cast<Map<String, dynamic>>();
     } catch (e) {
       debugPrint(
           'Error fetching menu languages data from Firestore Storage: $e');
       final lcoalString =
           await rootBundle.loadString('assets/lang/menu_lang.json');
-      return (json.decode(lcoalString) as List).cast<Map<String, String>>();
+      return (json.decode(lcoalString) as List).cast<Map<String, dynamic>>();
     }
   }
 
   Future<void> updateMenuData(List<Map<String, dynamic>> updatedMenuLang,
-      Map<String, dynamic> updatedMenuData) async {
+      Map<String, dynamic>? updatedMenuData) async {
     try {
       final menuData = await fetchMenuData();
       final menuLangData = await fetchMenuDataLanguage();
 
-      final menuIndex =
-          menuData.indexWhere((item) => item['id'] == updatedMenuData['id']);
-      if (menuIndex == -1) {
-        throw Exception("Menu item not found: ${updatedMenuData['id']}");
-      }
-
       // Menu Data Update
-      if (updatedMenuData['price'] case final price as Map<String, dynamic>) {
-        menuData[menuIndex]
-            ['price'] = {...menuData[menuIndex]['price'], ...price};
+      if (updatedMenuData == null) {
+        debugPrint('No menu data to update, only updating language data');
+      } else {
+        final menuIndex =
+            menuData.indexWhere((item) => item['id'] == updatedMenuData['id']);
+        if (menuIndex == -1) {
+          throw Exception("Menu item not found: ${updatedMenuData['id']}");
+        }
+
+        if (updatedMenuData['options'] case final option as Map) {
+          final existingOptions =
+              Map<String, dynamic>.from(menuData[menuIndex]['options'] as Map);
+
+          menuData[menuIndex]['options'] = {...existingOptions, ...option};
+        }
       }
 
       // Menu Language Data Update
       for (final menuLang in updatedMenuLang) {
-        final lang = menuLangData.indexWhere((l) => l['id'] == menuLang['id']);
-        if (lang != -1) {
-          menuLangData[lang] = {...menuLangData[lang], ...menuLang};
+        final langIndex = menuLangData.indexWhere((l) {
+          return l['id'] == menuLang['id'];
+        });
+        if (langIndex != -1) {
+          final existingLang =
+              Map<String, dynamic>.from(menuLangData[langIndex] as Map);
+
+          menuLangData[langIndex] = {...existingLang, ...menuLang};
         }
       }
 

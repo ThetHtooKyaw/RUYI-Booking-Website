@@ -158,8 +158,8 @@ class MenuDataProvider extends ChangeNotifier {
         ? Map<String, dynamic>.from(item['options'])
         : <String, dynamic>{};
 
-    if (optionsMap.isNotEmpty) {
-      final selectedOptions = findSelectedOption(item, optionsMap);
+    if (optionsMap.isNotEmpty && optionsMap.isNotEmpty) {
+      final selectedOptions = findSelectedOptionValues(item, optionsMap);
 
       if (selectedOptions != null) {
         final price = selectedOptions['price'];
@@ -377,6 +377,12 @@ class MenuDataProvider extends ChangeNotifier {
 
   // Admin Menu
 
+  void setLoadingState({bool type = false, bool price = false}) {
+    isLoadingType = type;
+    isLoadingPrice = price;
+    notifyListeners();
+  }
+
   Future<void> loadMenuData() async {
     try {
       isLoading = true;
@@ -395,12 +401,32 @@ class MenuDataProvider extends ChangeNotifier {
 
   Future<void> saveMenuData(Map<String, dynamic> itemDetail) async {
     try {
-      final updatedMenuData = {
-        'id': itemDetail['id'],
-        'price': int.tryParse(priceController.text.trim()) ?? 0,
-      };
+      final optionsMap = itemDetail['options'] as Map<String, dynamic>?;
+      String selectedOptionsKeys = '';
+      String typeID = '';
 
-      final updatedMenuLang = [
+      if (optionsMap != null && optionsMap.isNotEmpty) {
+        final selectedOptions =
+            findSelectedOptionValues(itemDetail, optionsMap);
+        if (selectedOptions != null) {
+          typeID = selectedOptions['type'].toString();
+          for (final key in optionsMap.keys) {
+            final option = optionsMap[key] as Map<String, dynamic>?;
+            if (option == selectedOptions) {
+              selectedOptionsKeys = key;
+              break;
+            }
+          }
+        }
+
+        if (selectedOptionsKeys.isEmpty) {
+          selectedOptionsKeys = optionsMap.keys.first;
+        }
+      }
+
+      // Update Menu Data Languages (Name, Type, Category)
+
+      final List<Map<String, dynamic>> updatedMenuLang = [
         {
           'id': itemDetail['name'],
           'en': nameEnController.text.trim(),
@@ -408,7 +434,7 @@ class MenuDataProvider extends ChangeNotifier {
           'my': nameMyController.text.trim(),
         },
         {
-          'id': itemDetail['type'],
+          'id': typeID,
           'en': typeEnController.text.trim(),
           'zh': typeZhController.text.trim(),
           'my': typeMyController.text.trim(),
@@ -421,17 +447,39 @@ class MenuDataProvider extends ChangeNotifier {
         }
       ];
 
+      // Update Menu Data Price
+
+      Map<String, dynamic>? updatedMenuData;
+      final priceText = priceController.text.trim();
+
+      if (priceText.isNotEmpty &&
+          selectedOptionsKeys.isNotEmpty &&
+          optionsMap != null) {
+        final updatedOptions = Map<String, dynamic>.from(optionsMap);
+
+        updatedOptions.forEach((key, value) {
+          if (key == selectedOptionsKeys) {
+            final selectedOption =
+                updatedOptions[selectedOptionsKeys] as Map<String, dynamic>;
+
+            selectedOption['price'] = int.tryParse(priceText) ?? priceText;
+            updatedOptions[key] = selectedOption;
+          } else {
+            updatedOptions[key] = value;
+          }
+        });
+
+        updatedMenuData = {
+          'id': itemDetail['id'],
+          'options': updatedOptions,
+        };
+      }
+
       await _menuDataService.updateMenuData(updatedMenuLang, updatedMenuData);
       await loadMenuData();
     } catch (e) {
       debugPrint("Error updating menu data: $e");
     }
-  }
-
-  void setLoadingState({bool type = false, bool price = false}) {
-    isLoadingType = type;
-    isLoadingPrice = price;
-    notifyListeners();
   }
 
   Future<void> loadTranslations(Map<String, dynamic> itemDetail) async {
@@ -450,16 +498,17 @@ class MenuDataProvider extends ChangeNotifier {
       String priceText = '';
       String? priceTranslationKey;
 
-      if (optionsMap.isNotEmpty) {
-        final selectedOptions = findSelectedOption(itemDetail, optionsMap);
+      if (optionsMap.isNotEmpty && optionsMap.isNotEmpty) {
+        final selectedOptions =
+            findSelectedOptionValues(itemDetail, optionsMap);
 
         if (selectedOptions != null) {
           final type = selectedOptions['type'];
           final price = selectedOptions['price'];
 
-          if (type != null) typeText = type.toString().tr();
-          if (price is int) priceText = formatPrice(price);
-          if (price is String) priceTranslationKey = price.tr();
+          if (type != null) typeText = type.toString();
+          if (price is int) priceText = price.toString();
+          if (price is String) priceTranslationKey = price;
         }
       }
 
@@ -488,7 +537,7 @@ class MenuDataProvider extends ChangeNotifier {
     }
   }
 
-  Map<String, dynamic>? findSelectedOption(
+  Map<String, dynamic>? findSelectedOptionValues(
       Map<String, dynamic> itemDetail, Map<String, dynamic> optionsMap) {
     if (optionsMap.length == 1) {
       return optionsMap.values.first;
@@ -512,7 +561,7 @@ class MenuDataProvider extends ChangeNotifier {
         ? Map<String, dynamic>.from(item['options'])
         : <String, dynamic>{};
 
-    final selectedOptions = findSelectedOption(optionsMap, optionsMap);
+    final selectedOptions = findSelectedOptionValues(optionsMap, optionsMap);
 
     final price = selectedOptions!['price'];
 
