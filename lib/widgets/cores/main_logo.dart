@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ruyi_booking/providers/booking_data_provider.dart';
 import 'package:ruyi_booking/providers/menu_data_provider.dart';
-import 'package:ruyi_booking/screens/home_screens/home_screen.dart';
-import 'package:ruyi_booking/utils/colors.dart';
+import 'package:ruyi_booking/screens/home/home_screen.dart';
+import 'package:ruyi_booking/utils/constants.dart';
 
 class MainLogo extends StatelessWidget {
   final double height;

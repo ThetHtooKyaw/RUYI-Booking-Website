@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:ruyi_booking/screens/booking_summary_screen/booking_summary_screen.dart';
-import 'package:ruyi_booking/screens/home_screens/home_screen.dart';
+import 'package:ruyi_booking/screens/bookings/booking_detail/booking_detail_screen.dart';
+import 'package:ruyi_booking/screens/home/home_screen.dart';
 import 'package:ruyi_booking/services/booking_service.dart';
 import 'package:ruyi_booking/widgets/extras/custom_dialog.dart';
 
@@ -190,7 +190,8 @@ class BookingDataProvider extends ChangeNotifier {
     }
   }
 
-  void resetForm(BuildContext context, Map<String, Map<String, dynamic>> menuData) {
+  void resetForm(
+      BuildContext context, Map<String, Map<String, dynamic>> menuData) {
     selectedDate = DateTime.now();
     formattedDate = DateFormat('MM-dd-yyyy').format(DateTime.now());
     dateErrorText = null;
@@ -210,7 +211,7 @@ class BookingDataProvider extends ChangeNotifier {
     if (formKey.currentState != null && formKey.currentState!.validate()) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const BookingSummaryScreen()),
+        MaterialPageRoute(builder: (context) => const BookingDetailScreen()),
       );
     }
   }

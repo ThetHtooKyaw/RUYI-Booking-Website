@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ruyi_booking/utils/colors.dart';
+import 'package:ruyi_booking/utils/constants.dart';
 
 class DialogUtils {
   static void showBookingConfirmationDialog(
@@ -14,8 +14,8 @@ class DialogUtils {
             title,
             style: Theme.of(context)
                 .textTheme
-                .bodyLarge
-                ?.copyWith(fontSize: 20, fontWeight: FontWeight.bold),
+                .titleLarge
+                ?.copyWith(fontWeight: FontWeight.bold),
           ),
           content: SizedBox(
             width: 300,
@@ -30,10 +30,7 @@ class DialogUtils {
                     onPressed: () => Navigator.pop(context),
                     child: Text(
                       'Cancel',
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyLarge
-                          ?.copyWith(fontSize: 18),
+                      style: Theme.of(context).textTheme.titleSmall,
                     ),
                   )
                 : const SizedBox(),
@@ -41,10 +38,7 @@ class DialogUtils {
               onPressed: onTap,
               child: Text(
                 'OK',
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyLarge
-                    ?.copyWith(fontSize: 18),
+                style: Theme.of(context).textTheme.titleSmall,
               ),
             ),
           ],
@@ -61,10 +55,8 @@ class DialogUtils {
           backgroundColor: AppColors.appBackground,
           title: Text(
             'Error',
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                fontSize: 20,
-                color: AppColors.appAccent,
-                fontWeight: FontWeight.bold),
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                color: AppColors.appAccent, fontWeight: FontWeight.bold),
           ),
           content: Text(
             errorMessage,

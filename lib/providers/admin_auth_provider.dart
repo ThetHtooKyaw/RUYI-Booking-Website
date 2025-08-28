@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:ruyi_booking/screens/admin_screens/admin_screen.dart';
-import 'package:ruyi_booking/screens/home_screens/home_screen.dart';
+import 'package:ruyi_booking/screens/admins/admin/admin_screen.dart';
+import 'package:ruyi_booking/screens/home/home_screen.dart';
 import 'package:ruyi_booking/services/admin_auth_service.dart';
-import 'package:ruyi_booking/utils/colors.dart';
+import 'package:ruyi_booking/utils/constants.dart';
 import 'package:ruyi_booking/widgets/extras/custom_dialog.dart';
 
 class AdminAuthProvider extends ChangeNotifier {

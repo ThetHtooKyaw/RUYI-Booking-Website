@@ -6,6 +6,7 @@ import 'package:ruyi_booking/classes/category.dart';
 import 'package:ruyi_booking/services/menu_data_service.dart';
 import 'package:ruyi_booking/utils/asset_loader.dart';
 import 'package:ruyi_booking/utils/menu_data.dart';
+import 'package:ruyi_booking/widgets/extras/custom_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MenuDataProvider extends ChangeNotifier {
@@ -399,7 +400,8 @@ class MenuDataProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> saveMenuData(Map<String, dynamic> itemDetail) async {
+  Future<void> updateMenuData(
+      BuildContext context, Map<String, dynamic> itemDetail) async {
     try {
       final optionsMap = itemDetail['options'] as Map<String, dynamic>?;
       String selectedOptionsKeys = '';
@@ -475,7 +477,20 @@ class MenuDataProvider extends ChangeNotifier {
         };
       }
 
-      await _menuDataService.updateMenuData(updatedMenuLang, updatedMenuData);
+      bool menuUpdateSuccess = await _menuDataService.updateMenuData(
+          updatedMenuLang, updatedMenuData);
+
+      if (menuUpdateSuccess) {
+        DialogUtils.showBookingConfirmationDialog(
+          context,
+          'Update Menu Data Successful',
+          'Menu Data has been successfully updated!',
+          () {
+            Navigator.pop(context);
+          },
+          isClickable: false,
+        );
+      }
       await loadMenuData();
     } catch (e) {
       debugPrint("Error updating menu data: $e");

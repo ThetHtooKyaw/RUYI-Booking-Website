@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ruyi_booking/utils/colors.dart';
+import 'package:ruyi_booking/utils/constants.dart';
 
 final ThemeData appTheme = ThemeData(
   fontFamily: 'Noto Sans',
@@ -21,9 +21,15 @@ final ThemeData appTheme = ThemeData(
     color: AppColors.appAccent,
   ),
   textTheme: const TextTheme(
-    bodyLarge: TextStyle(color: AppColors.appText),
-    bodyMedium: TextStyle(color: AppColors.appText),
-    bodySmall: TextStyle(color: AppColors.appText),
+    headlineLarge: TextStyle(color: AppColors.appText, fontSize: 36),
+    headlineMedium: TextStyle(color: AppColors.appText, fontSize: 30),
+    headlineSmall: TextStyle(color: AppColors.appText, fontSize: 26),
+    titleLarge: TextStyle(color: AppColors.appText, fontSize: 22),
+    titleMedium: TextStyle(color: AppColors.appText, fontSize: 20),
+    titleSmall: TextStyle(color: AppColors.appText, fontSize: 18),
+    bodyLarge: TextStyle(color: AppColors.appText, fontSize: 14),
+    bodyMedium: TextStyle(color: AppColors.appText, fontSize: 12),
+    bodySmall: TextStyle(color: AppColors.appText, fontSize: 8),
   ),
   iconTheme: const IconThemeData(color: AppColors.appAccent),
   elevatedButtonTheme: ElevatedButtonThemeData(
@@ -65,18 +71,19 @@ final ThemeData appTheme = ThemeData(
     fillColor: Colors.white,
     prefixIconColor: AppColors.appBackground,
     hintStyle: TextStyle(
+      fontSize: 16,
       color: Colors.grey[500],
     ),
     border: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(10),
+      borderRadius: BorderRadius.circular(AppSize.cardBorderRadius),
       borderSide: BorderSide.none,
     ),
     enabledBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(10),
+      borderRadius: BorderRadius.circular(AppSize.cardBorderRadius),
       borderSide: BorderSide.none,
     ),
     focusedBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(10),
+      borderRadius: BorderRadius.circular(AppSize.cardBorderRadius),
       borderSide: BorderSide.none,
     ),
   ),
@@ -135,7 +142,7 @@ final ThemeData appTheme = ThemeData(
       foregroundColor: WidgetStateProperty.all(Colors.black),
     ),
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(AppSize.cardBorderRadius),
     ),
     dividerColor: AppColors.appAccent,
   ),

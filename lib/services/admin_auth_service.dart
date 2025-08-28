@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:ruyi_booking/utils/colors.dart';
+import 'package:ruyi_booking/utils/constants.dart';
 import 'package:ruyi_booking/widgets/extras/custom_dialog.dart';
 import 'package:universal_html/html.dart' as html;
 

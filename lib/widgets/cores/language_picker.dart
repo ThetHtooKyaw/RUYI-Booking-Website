@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:ruyi_booking/utils/colors.dart';
+import 'package:ruyi_booking/utils/constants.dart';
 import 'package:universal_html/html.dart' as html;
 
 class LanguagePicker extends StatefulWidget {

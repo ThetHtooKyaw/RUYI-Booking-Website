@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ruyi_booking/utils/colors.dart';
+import 'package:ruyi_booking/utils/constants.dart';
 
 class CustomIcon extends StatelessWidget {
   final IconData iconImage;

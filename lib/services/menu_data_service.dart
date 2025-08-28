@@ -44,7 +44,7 @@ class MenuDataService {
     }
   }
 
-  Future<void> updateMenuData(List<Map<String, dynamic>> updatedMenuLang,
+  Future<bool> updateMenuData(List<Map<String, dynamic>> updatedMenuLang,
       Map<String, dynamic>? updatedMenuData) async {
     try {
       final menuData = await fetchMenuData();
@@ -87,10 +87,11 @@ class MenuDataService {
         storageMenuLangRef.putData(utf8.encode(json.encode(menuLangData)),
             SettableMetadata(contentType: 'application/json'))
       ]);
-
       debugPrint('Menu Data updated successfully!');
+      return true;
     } catch (e) {
       debugPrint('Error updateing menu data to Firestore Storage: $e');
+      return false;
     }
   }
 }
