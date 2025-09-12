@@ -154,7 +154,7 @@ class _MobileBookingScreenState extends State<MobileBookingScreen> {
                   ),
                   const SizedBox(height: 40),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
                         child: ButtonUtils.backwardButton(

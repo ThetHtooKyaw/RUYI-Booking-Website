@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ruyi_booking/providers/menu_data_provider.dart';
 import 'package:ruyi_booking/screens/menus/widgets/item_counter.dart';
+import 'package:ruyi_booking/screens/menus/widgets/small_button.dart';
 import 'package:ruyi_booking/screens/menus/widgets/type_section.dart';
 import 'package:ruyi_booking/utils/constants.dart';
 
@@ -65,7 +66,6 @@ class _MenuCardState extends State<MenuCard> {
   Widget _buildFoodInfo(BuildContext context, MenuDataProvider menuData,
       Map<String, dynamic> item, String uniqueKey) {
     int qty = menuData.itemQty[uniqueKey] ?? 0;
-    final screenWidth = MediaQuery.of(context).size.width;
     final options = item['options'] as Map<String, dynamic>? ?? {};
 
     return Expanded(
@@ -108,7 +108,8 @@ class _MenuCardState extends State<MenuCard> {
                 onQuantityChanged: (newQty) =>
                     menuData.onQuantityChanged(uniqueKey, newQty),
               ),
-              ElevatedButton(
+              SmallButton(
+                label: 'cart'.tr(),
                 onPressed: () {
                   if (qty == 0) {
                     qty = 1;
@@ -122,22 +123,6 @@ class _MenuCardState extends State<MenuCard> {
                     qty,
                   );
                 },
-                style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(
-                    vertical: (screenWidth * 0.04).clamp(6.0, 20.0),
-                    horizontal: (screenWidth * 0.02).clamp(4.0, 10.0),
-                  ),
-                  shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(AppSize.smallCardBorderRadius)),
-                ),
-                child: Text(
-                  'cart'.tr(),
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                ),
               ),
             ],
           ),

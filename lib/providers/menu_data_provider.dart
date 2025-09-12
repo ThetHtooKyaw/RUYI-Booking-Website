@@ -12,6 +12,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 class MenuDataProvider extends ChangeNotifier {
   final MenuDataService _menuDataService = MenuDataService();
 
+  final addMethodKey = GlobalKey<FormState>();
+
   final TextEditingController searchController = TextEditingController();
   late TextEditingController nameEnController = TextEditingController();
   late TextEditingController nameMyController = TextEditingController();
@@ -23,21 +25,31 @@ class MenuDataProvider extends ChangeNotifier {
 
   late TextEditingController priceController = TextEditingController();
   late TextEditingController priceEnController = TextEditingController();
+  late TextEditingController addPriceController = TextEditingController();
+  late TextEditingController createPriceController = TextEditingController();
 
   late TextEditingController categoryEnController = TextEditingController();
   late TextEditingController categoryMyController = TextEditingController();
   late TextEditingController categoryZhController = TextEditingController();
 
-  bool isLoadingType = false;
-  bool isLoadingPrice = false;
+  late TextEditingController methodKeyController = TextEditingController();
+  late TextEditingController methodEnController = TextEditingController();
+  late TextEditingController methodMyController = TextEditingController();
+  late TextEditingController methodZhController = TextEditingController();
 
   Map<String, int> itemQty = {};
   Map<String, String> itemType = {};
   Map<String, Map<String, dynamic>> favItems = {};
   Map<String, Map<String, dynamic>> cartedItems = {};
   final Set<String> clickedItems = {};
+  int? clickedIndex;
+
   bool isClicked = false;
-  bool isLoading = false;
+  bool isMenuLangLoading = false;
+  bool isMenuDetailLoading = false;
+  bool isEditMethodLoading = false;
+  bool isDialogLoading = false;
+  bool isConfirmLoading = false;
 
   MenuDataProvider() {
     Future.microtask(() => loadFavItemToLocalStorage());
@@ -378,15 +390,14 @@ class MenuDataProvider extends ChangeNotifier {
 
   // Admin Menu
 
-  void setLoadingState({bool type = false, bool price = false}) {
-    isLoadingType = type;
-    isLoadingPrice = price;
+  void setClickedIndex(int index) {
+    clickedIndex = index;
     notifyListeners();
   }
 
   Future<void> loadMenuData() async {
     try {
-      isLoading = true;
+      isMenuDetailLoading = true;
       notifyListeners();
 
       menuItems = await _menuDataService.fetchMenuData();
@@ -395,7 +406,64 @@ class MenuDataProvider extends ChangeNotifier {
       debugPrint('Error loading menu data: $e');
       rethrow;
     } finally {
-      isLoading = false;
+      isMenuDetailLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> loadTranslations(Map<String, dynamic> itemDetail) async {
+    try {
+      isMenuLangLoading = true;
+      notifyListeners();
+
+      const loader = LocalAssetLoader();
+      final nameKey = itemDetail['name'];
+      final categoryKey = itemDetail['category'];
+
+      final optionsMap = itemDetail['options'] is Map
+          ? Map<String, dynamic>.from(itemDetail['options'])
+          : <String, dynamic>{};
+
+      String typeText = '';
+      String priceText = '';
+      String? priceTranslationKey;
+
+      if (optionsMap.isNotEmpty && optionsMap.isNotEmpty) {
+        final selectedOptions =
+            findSelectedOptionValues(itemDetail, optionsMap);
+
+        if (selectedOptions != null) {
+          final type = selectedOptions['type'];
+          final price = selectedOptions['price'];
+
+          if (type != null) typeText = type.toString();
+          if (price is int) priceText = price.toString();
+          if (price is String) priceTranslationKey = price;
+        }
+      }
+
+      final en = await loader.load('translations', const Locale('en'));
+      final zh = await loader.load('translations', const Locale('zh'));
+      final my = await loader.load('translations', const Locale('my'));
+
+      nameEnController.text = en[nameKey] ?? 'Loading...';
+      nameZhController.text = zh[nameKey] ?? 'Loading...';
+      nameMyController.text = my[nameKey] ?? 'Loading...';
+
+      typeEnController.text = en[typeText] ?? 'Loading...';
+      typeZhController.text = zh[typeText] ?? 'Loading...';
+      typeMyController.text = my[typeText] ?? 'Loading...';
+
+      priceController.text = priceText;
+      priceEnController.text = en[priceTranslationKey] ?? 'Loading...';
+
+      categoryEnController.text = en[categoryKey] ?? 'Loading...';
+      categoryZhController.text = zh[categoryKey] ?? 'Loading...';
+      categoryMyController.text = my[categoryKey] ?? 'Loading...';
+    } catch (e) {
+      debugPrint("Error loading language files: $e");
+    } finally {
+      isMenuLangLoading = false;
       notifyListeners();
     }
   }
@@ -403,6 +471,9 @@ class MenuDataProvider extends ChangeNotifier {
   Future<void> updateMenuData(
       BuildContext context, Map<String, dynamic> itemDetail) async {
     try {
+      isEditMethodLoading = true;
+      notifyListeners();
+
       final optionsMap = itemDetail['options'] as Map<String, dynamic>?;
       String selectedOptionsKeys = '';
       String typeID = '';
@@ -477,79 +548,394 @@ class MenuDataProvider extends ChangeNotifier {
         };
       }
 
-      bool menuUpdateSuccess = await _menuDataService.updateMenuData(
+      bool success = await _menuDataService.updateMenuData(
           updatedMenuLang, updatedMenuData);
 
-      if (menuUpdateSuccess) {
+      if (success) {
         DialogUtils.showBookingConfirmationDialog(
           context,
-          'Update Menu Data Successful',
+          'UPDATE SUCCESSFUL!',
           'Menu Data has been successfully updated!',
           () {
             Navigator.pop(context);
           },
-          isClickable: false,
         );
       }
       await loadMenuData();
     } catch (e) {
       debugPrint("Error updating menu data: $e");
+    } finally {
+      isEditMethodLoading = false;
+      notifyListeners();
     }
   }
 
-  Future<void> loadTranslations(Map<String, dynamic> itemDetail) async {
+  Future<List<Map<String, dynamic>>> fetchMenuMethods() async {
     try {
-      setLoadingState(type: true, price: true);
+      final menuMethods = await _menuDataService.fetchMenuMethods();
+      return menuMethods;
+    } catch (e) {
+      debugPrint("Error fetching menu methods: $e");
+      return [];
+    }
+  }
 
-      const loader = LocalAssetLoader();
-      final nameKey = itemDetail['name'];
-      final categoryKey = itemDetail['category'];
+  Stream<List<Map<String, dynamic>>> fetchMenuMethodsStream() {
+    try {
+      final menuMehtod = _menuDataService.fetchMenuMethodsStream();
+      return menuMehtod;
+    } catch (e) {
+      debugPrint("Error fetching menu methods: $e");
+      return Stream.value([]);
+    }
+  }
 
-      final optionsMap = itemDetail['options'] is Map
-          ? Map<String, dynamic>.from(itemDetail['options'])
-          : <String, dynamic>{};
+  Stream<Map<String, dynamic>> fetchMenuOption(String menuName) {
+    final menu = menuItems.firstWhere(
+      (m) => m['name'] == menuName,
+      orElse: () => {},
+    );
 
-      String typeText = '';
-      String priceText = '';
-      String? priceTranslationKey;
+    if (menu.isEmpty) return const Stream.empty();
 
-      if (optionsMap.isNotEmpty && optionsMap.isNotEmpty) {
-        final selectedOptions =
-            findSelectedOptionValues(itemDetail, optionsMap);
+    return _menuDataService.fetchMenuOption(menu['id']);
+  }
 
-        if (selectedOptions != null) {
-          final type = selectedOptions['type'];
-          final price = selectedOptions['price'];
+  Future<void> createMenuMethod(
+    BuildContext context,
+    String menuName,
+  ) async {
+    try {
+      isDialogLoading = true;
+      notifyListeners();
 
-          if (type != null) typeText = type.toString();
-          if (price is int) priceText = price.toString();
-          if (price is String) priceTranslationKey = price;
-        }
+      final menuMethods = await fetchMenuMethods();
+      final methodKey = methodKeyController.text.trim();
+      final existKey = menuMethods.any((m) => m['id'] == methodKey);
+
+      final menu = menuItems.firstWhere(
+        (m) => m['name'] == menuName,
+        orElse: () => {},
+      );
+
+      if (menu.isEmpty) return;
+
+      // Create Menu Method key and Languages
+
+      if (existKey) {
+        DialogUtils.showBookingConfirmationDialog(
+          context,
+          'DUPLICATE KEY!',
+          'The method key "$methodKey" already exists. Please use another one.',
+          () {
+            Navigator.pop(context);
+          },
+        );
+        return;
       }
 
-      final en = await loader.load('translations', const Locale('en'));
-      final zh = await loader.load('translations', const Locale('zh'));
-      final my = await loader.load('translations', const Locale('my'));
+      final newMenuMethod = {
+        'id': methodKey,
+        'en': methodEnController.text.trim(),
+        'zh': methodZhController.text.trim(),
+        'my': methodMyController.text.trim(),
+      };
 
-      nameEnController.text = en[nameKey] ?? '';
-      nameZhController.text = zh[nameKey] ?? '';
-      nameMyController.text = my[nameKey] ?? '';
+      // Add Menu Method Key
 
-      typeEnController.text = en[typeText] ?? 'Loading...';
-      typeZhController.text = zh[typeText] ?? 'Loading...';
-      typeMyController.text = my[typeText] ?? 'Loading...';
+      final options = Map<String, dynamic>.from(menu['options'] ?? {});
+      final firstIndexKey = options.keys.first;
+      final exisitingOption =
+          Map<String, dynamic>.from(options[firstIndexKey] ?? []);
+      exisitingOption['type'] = methodKey;
+      options[firstIndexKey] = exisitingOption;
+      menu['options'] = options;
 
-      priceController.text = priceText;
-      priceEnController.text = en[priceTranslationKey] ?? 'Loading...';
+      bool success =
+          await _menuDataService.createMenuMethod(newMenuMethod, menu);
 
-      categoryEnController.text = en[categoryKey] ?? '';
-      categoryZhController.text = zh[categoryKey] ?? '';
-      categoryMyController.text = my[categoryKey] ?? '';
+      if (success) {
+        DialogUtils.showBookingConfirmationDialog(
+          context,
+          'CREATION SUCCESSFUL!',
+          'Menu method has been successfully Created!',
+          () {
+            Navigator.pop(context);
+            Navigator.pop(context);
+            methodKeyController.clear();
+            methodEnController.clear();
+            methodZhController.clear();
+            methodMyController.clear();
+          },
+        );
+      }
     } catch (e) {
-      debugPrint("Error loading language files: $e");
+      debugPrint("Error creating menu method: $e");
     } finally {
-      setLoadingState(type: false, price: false);
+      isDialogLoading = false;
+      notifyListeners();
     }
+  }
+
+  Future<void> addMenuMethod(
+    BuildContext context,
+    String menuName,
+    String methodName,
+  ) async {
+    try {
+      isDialogLoading = true;
+      notifyListeners();
+
+      final menu = menuItems.firstWhere(
+        (m) => m['name'] == menuName,
+        orElse: () => {},
+      );
+
+      if (menu.isEmpty) return;
+
+      final options = Map<String, dynamic>.from(menu['options'] ?? {});
+      final firstIndexKey = options.keys.first;
+      final exisitingOption =
+          Map<String, dynamic>.from(options[firstIndexKey] ?? []);
+      exisitingOption['type'] = methodName;
+      options[firstIndexKey] = exisitingOption;
+      menu['options'] = options;
+
+      bool success = await _menuDataService.addMenuMethod(menu);
+
+      if (success && context.mounted) {
+        DialogUtils.showBookingConfirmationDialog(
+          context,
+          'ADDITION SUCCESSFUL!',
+          'Menu method has been successfully Added!',
+          () {
+            Navigator.pop(context);
+            Navigator.pop(context);
+          },
+        );
+      }
+    } catch (e) {
+      debugPrint("Error adding menu method: $e");
+    } finally {
+      isDialogLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> createMenuOption(
+    BuildContext context,
+    String menuName,
+  ) async {
+    try {
+      isDialogLoading = true;
+      notifyListeners();
+
+      final menuMethods = await fetchMenuMethods();
+      final price = createPriceController.text.trim();
+      final methodKey = methodKeyController.text.trim();
+      final existKey = menuMethods.any((m) => m['id'] == methodKey);
+
+      final menu = menuItems.firstWhere(
+        (m) => m['name'] == menuName,
+        orElse: () => {},
+      );
+
+      if (menu.isEmpty) return;
+
+      // Create Menu Method key and Languages
+
+      if (existKey) {
+        DialogUtils.showBookingConfirmationDialog(
+          context,
+          'DUPLICATE KEY!',
+          'The method key "$methodKey" already exists. Please use another one.',
+          () {
+            Navigator.pop(context);
+          },
+        );
+        return;
+      }
+
+      final newMenuMethod = {
+        'id': methodKey,
+        'en': methodEnController.text.trim(),
+        'zh': methodZhController.text.trim(),
+        'my': methodMyController.text.trim(),
+      };
+
+      // Create Menu Method Price
+
+      final options = Map<String, dynamic>.from(menu['options'] ?? {});
+      final newIndex = options.length.toString();
+      options[newIndex] = {'type': methodKey, 'price': int.tryParse(price)};
+      menu['options'] = options;
+
+      bool success =
+          await _menuDataService.createMenuOption(newMenuMethod, menu);
+
+      if (success) {
+        DialogUtils.showBookingConfirmationDialog(
+          context,
+          'CREATION SUCCESSFUL!',
+          'Menu Option has been successfully Created!',
+          () {
+            Navigator.pop(context);
+            Navigator.pop(context);
+            methodKeyController.clear();
+            methodEnController.clear();
+            methodZhController.clear();
+            methodMyController.clear();
+            createPriceController.clear();
+          },
+        );
+      }
+    } catch (e) {
+      debugPrint("Error creating menu option: $e");
+    } finally {
+      isDialogLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> addMenuOption(
+    BuildContext context,
+    String menuName,
+    String methodName,
+  ) async {
+    if (addMethodKey.currentState != null &&
+        addMethodKey.currentState!.validate()) {
+      try {
+        isDialogLoading = true;
+        notifyListeners();
+
+        final priceText = addPriceController.text.trim();
+
+        final menu = menuItems.firstWhere(
+          (m) => m['name'] == menuName,
+          orElse: () => {},
+        );
+
+        if (menu.isEmpty) return;
+
+        final options = Map<String, dynamic>.from(menu['options'] ?? {});
+        final newIndex = options.length.toString();
+        options[newIndex] = {
+          'type': methodName,
+          'price': int.tryParse(priceText)
+        };
+        menu['options'] = options;
+
+        bool success = await _menuDataService.addMenuOption(menu);
+
+        if (success && context.mounted) {
+          addPriceController.clear();
+          clickedIndex = null;
+          notifyListeners();
+
+          DialogUtils.showBookingConfirmationDialog(
+            context,
+            'ADDITION SUCCESSFUL!',
+            'Menu Option has been successfully Added!',
+            () {
+              Navigator.pop(context);
+              Navigator.pop(context);
+            },
+          );
+        }
+      } catch (e) {
+        debugPrint("Error adding menu option: $e");
+      } finally {
+        isDialogLoading = false;
+        notifyListeners();
+      }
+    }
+  }
+
+  Future<void> removeMenuOption(
+    BuildContext context,
+    String menuName,
+    String optionKey,
+  ) async {
+    DialogUtils.showBookingConfirmationDialog(
+      context,
+      'CONFIRM REMOVAL!',
+      'This will remove the menu option permanently.\nAre you sure?',
+      () async {
+        try {
+          isConfirmLoading = true;
+          notifyListeners();
+
+          final menu = menuItems.firstWhere(
+            (m) => m['name'] == menuName,
+            orElse: () => {},
+          );
+
+          if (menu.isEmpty) return;
+
+          final options = Map<String, dynamic>.from(menu['options'] ?? {});
+          if (!options.containsKey(optionKey)) {
+            debugPrint("Option $optionKey not found in ${menu['name']}");
+            return;
+          }
+
+          options.remove(optionKey);
+          menu['options'] = options;
+
+          await _menuDataService.removeMenuOption(menu);
+          Navigator.pop(context);
+        } catch (e) {
+          debugPrint("Error removing menu option: $e");
+        } finally {
+          isConfirmLoading = false;
+          notifyListeners();
+        }
+      },
+      isClickable: true,
+    );
+  }
+
+  Future<void> removeMenuMethod(
+    BuildContext context,
+    String menuName,
+    String methodKey,
+  ) async {
+    DialogUtils.showBookingConfirmationDialog(
+      context,
+      'CONFIRM REMOVAL!',
+      'This will remove the menu method permanently.\nAre you sure?',
+      () async {
+        try {
+          isConfirmLoading = true;
+          notifyListeners();
+
+          final menuMethods = await fetchMenuMethods();
+          final existKey = menuMethods.any((m) => m['id'] == methodKey);
+
+          if (!existKey) {
+            DialogUtils.showBookingConfirmationDialog(
+              context,
+              'KEY DOESN\'T EXIST!',
+              'The method key "$methodKey" does not exist. Please use another one.',
+              () {
+                Navigator.pop(context);
+                Navigator.pop(context);
+              },
+            );
+            return;
+          }
+
+          await _menuDataService.removeMenuMethod(methodKey);
+          Navigator.pop(context);
+          Navigator.pop(context);
+        } catch (e) {
+          debugPrint("Error removing menu methods: $e");
+        } finally {
+          isConfirmLoading = false;
+          notifyListeners();
+        }
+      },
+      isClickable: true,
+    );
   }
 
   Map<String, dynamic>? findSelectedOptionValues(
@@ -600,10 +986,17 @@ class MenuDataProvider extends ChangeNotifier {
 
     priceController.dispose();
     priceEnController.dispose();
+    addPriceController.dispose();
+    createPriceController.dispose();
 
     categoryEnController.dispose();
     categoryMyController.dispose();
     categoryZhController.dispose();
+
+    methodKeyController.dispose();
+    methodEnController.dispose();
+    methodMyController.dispose();
+    methodZhController.dispose();
     super.dispose();
   }
 }

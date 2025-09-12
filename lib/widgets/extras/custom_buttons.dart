@@ -34,6 +34,8 @@ class ButtonUtils {
               child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
                 child: Container(
+                  constraints:
+                      const BoxConstraints(minHeight: 30, maxHeight: 55),
                   decoration: BoxDecoration(
                     color: Colors.white.withOpacity(0.1),
                     border: Border.all(

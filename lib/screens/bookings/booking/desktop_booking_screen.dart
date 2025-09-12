@@ -70,7 +70,6 @@ class _DesktopBookingScreenState extends State<DesktopBookingScreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(height: 10),
                       BookingTitle(
                           label: 'time'.tr(), icon: 'assets/icons/time.png'),
                       const SizedBox(height: 10),

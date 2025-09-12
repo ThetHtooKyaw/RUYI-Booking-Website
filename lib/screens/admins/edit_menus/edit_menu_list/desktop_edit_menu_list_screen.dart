@@ -2,43 +2,59 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ruyi_booking/providers/menu_data_provider.dart';
-import 'package:ruyi_booking/utils/constants.dart';
 import 'package:ruyi_booking/screens/menus/widgets/food_category_bar.dart';
-
+import 'package:ruyi_booking/utils/constants.dart';
 import '../edit_menu_detail/edit_menu_detail_screen.dart';
 
-class MobileEditMenuListScreen extends StatefulWidget {
-  const MobileEditMenuListScreen({super.key});
+class DesktopEditMenuListScreen extends StatefulWidget {
+  const DesktopEditMenuListScreen({super.key});
 
   @override
-  State<MobileEditMenuListScreen> createState() =>
-      _MobileEditMenuListScreenState();
+  State<DesktopEditMenuListScreen> createState() =>
+      _DesktopEditMenuListScreenState();
 }
 
-class _MobileEditMenuListScreenState extends State<MobileEditMenuListScreen> {
+class _DesktopEditMenuListScreenState extends State<DesktopEditMenuListScreen> {
   int selectedCategory = 0;
 
   @override
   Widget build(BuildContext context) {
     var menuData = Provider.of<MenuDataProvider>(context);
     final filteredItems = menuData.getFilteredItems(selectedCategory);
-    final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.fromLTRB(AppSize.screenPadding,
             AppSize.screenPadding, AppSize.screenPadding, 0),
-        child: Column(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            FoodCategoryBar(
-              selectedCategory: selectedCategory,
-              onCategorySelected: (index) {
-                setState(() {
-                  selectedCategory = index;
-                });
-              },
+            SizedBox(
+              width: 350,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'category_title'.tr(),
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                        color: AppColors.appAccent,
+                        fontFamily: 'PlayfairDisplay'),
+                  ),
+                  const SizedBox(height: 10),
+                  Expanded(
+                      child: FoodCategoryBar(
+                    selectedCategory: selectedCategory,
+                    onCategorySelected: (index) {
+                      setState(() {
+                        selectedCategory = index;
+                      });
+                    },
+                    type: FoodCategoryBarType.vAxis,
+                  )),
+                ],
+              ),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(width: AppSize.screenPadding),
             Expanded(
               child: filteredItems.isEmpty
                   ? Center(
@@ -52,7 +68,7 @@ class _MobileEditMenuListScreenState extends State<MobileEditMenuListScreen> {
                   : GridView.builder(
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
+                        crossAxisCount: 5,
                         crossAxisSpacing: AppSize.listViewMargin + 6,
                         mainAxisSpacing: AppSize.listViewMargin + 6,
                       ),
@@ -91,7 +107,7 @@ class _MobileEditMenuListScreenState extends State<MobileEditMenuListScreen> {
                                       AppSize.cardBorderRadius),
                                   child: SizedBox(
                                     width: double.infinity,
-                                    height: screenWidth * 0.3,
+                                    height: 160,
                                     child: Hero(
                                       tag: 'hero-image-${item['image']}',
                                       child: Image.asset(

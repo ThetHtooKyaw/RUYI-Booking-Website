@@ -71,7 +71,7 @@ final ThemeData appTheme = ThemeData(
     fillColor: Colors.white,
     prefixIconColor: AppColors.appBackground,
     hintStyle: TextStyle(
-      fontSize: 16,
+      fontSize: 14,
       color: Colors.grey[500],
     ),
     border: OutlineInputBorder(

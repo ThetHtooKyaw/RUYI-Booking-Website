@@ -5,6 +5,7 @@ import 'package:ruyi_booking/providers/admin_auth_provider.dart';
 import 'package:ruyi_booking/screens/admins/edit_admin_detail/desktop_edit_admin_detail_screen.dart';
 import 'package:ruyi_booking/screens/admins/edit_bookings/edit_booking_list/desktop_edit_booking_list_screen.dart';
 import 'package:ruyi_booking/screens/admins/edit_bookings/edit_calendar/desktop_edit_calendar_screen.dart';
+import 'package:ruyi_booking/screens/admins/edit_menus/edit_menu_list/edit_menu_list_screen.dart';
 import 'package:ruyi_booking/services/admin_auth_service.dart';
 import 'package:ruyi_booking/services/booking_service.dart';
 import 'package:ruyi_booking/utils/constants.dart';
@@ -41,6 +42,10 @@ class _DesktopAdminScreenState extends State<DesktopAdminScreen> {
         case 2:
           _title = 'edit_calendar_title'.tr();
           _currentBody = const DesktopEditCalendarScreen();
+          break;
+        case 3:
+          _title = 'edit_menu_title'.tr();
+          _currentBody = const EditMenuListScreen();
           break;
       }
     });
@@ -110,6 +115,8 @@ class _DesktopAdminScreenState extends State<DesktopAdminScreen> {
         } else if (value == 2) {
           _onMenuItemChange(2);
         } else if (value == 3) {
+          _onMenuItemChange(3);
+        } else if (value == 4) {
           adminAuthService.adminSignOut();
         }
       },
@@ -152,6 +159,18 @@ class _DesktopAdminScreenState extends State<DesktopAdminScreen> {
         ),
         PopupMenuItem(
           value: 3,
+          child: Center(
+            child: Text(
+              'edit_menu'.tr(),
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyLarge
+                  ?.copyWith(color: AppColors.appBackground),
+            ),
+          ),
+        ),
+        PopupMenuItem(
+          value: 4,
           child: Center(
             child: Text(
               'logout'.tr(),

@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ruyi_booking/providers/admin_auth_provider.dart';
-import 'package:ruyi_booking/screens/admins/edit_menus/edit_menu_list/mobile_edit_menu_list_screen.dart';
 import 'package:ruyi_booking/screens/admins/edit_admin_detail/mobile_edit_admin_detail_screen.dart';
 import 'package:ruyi_booking/screens/admins/edit_bookings/edit_booking_list/mobile_edit_booking_list_screen.dart';
 import 'package:ruyi_booking/screens/admins/edit_bookings/edit_calendar/mobile_edit_calendar_screen.dart';
@@ -11,6 +10,8 @@ import 'package:ruyi_booking/utils/constants.dart';
 import 'package:ruyi_booking/widgets/cores/language_picker.dart';
 import 'package:ruyi_booking/widgets/cores/main_logo.dart';
 import 'package:ruyi_booking/widgets/extras/custom_divider.dart';
+
+import '../edit_menus/edit_menu_list/edit_menu_list_screen.dart';
 
 class MobileAdminScreen extends StatefulWidget {
   const MobileAdminScreen({super.key});
@@ -44,7 +45,7 @@ class _MobileAdminScreenState extends State<MobileAdminScreen> {
           break;
         case 3:
           _title = 'edit_menu_title'.tr();
-          _currentBody = const MobileEditMenuListScreen();
+          _currentBody = const EditMenuListScreen();
           break;
       }
     });
