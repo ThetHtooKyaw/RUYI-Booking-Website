@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -5,6 +7,7 @@ import 'package:ruyi_booking/providers/menu_data_provider.dart';
 import 'package:ruyi_booking/screens/admins/edit_menus/edit_menu_detail/widgets/edit_type_section.dart';
 import 'package:ruyi_booking/utils/constants.dart';
 import 'package:ruyi_booking/widgets/cores/desktop_app_bar.dart';
+import '../../../../widgets/cores/custom_network_image.dart';
 import '../../../../widgets/extras/custom_buttons.dart';
 import 'widgets/edit_name_category_section.dart';
 import 'widgets/edit_price_section.dart';
@@ -68,7 +71,7 @@ class _DesktopEditMenuDetailScreenState
                         children: [
                           Expanded(
                             flex: 1,
-                            child: buildHeadImage(context),
+                            child: buildHeadImage(context, menuData),
                           ),
                           const SizedBox(width: 30),
                           Expanded(
@@ -150,7 +153,7 @@ class _DesktopEditMenuDetailScreenState
                   ),
                 ),
               ),
-              if (menuData.isMenuDetailLoading)
+              if (menuData.isMenuDetailLoading || menuData.isEditMethodLoading)
                 Container(
                   color: Colors.black.withOpacity(0.3),
                   child: const Center(
@@ -164,24 +167,97 @@ class _DesktopEditMenuDetailScreenState
     );
   }
 
-  Widget buildHeadImage(BuildContext context) {
-    return Container(
-      width: 550,
-      height: 550,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(AppSize.cardBorderRadius + 10),
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(AppSize.cardBorderRadius + 10),
-        child: Hero(
-          tag: 'hero-image-${widget.itemDetail['image']}',
-          child: Image.asset(
-            widget.itemDetail['image'],
-            fit: BoxFit.cover,
+  Widget buildHeadImage(BuildContext context, MenuDataProvider menuData) {
+    return Stack(
+      alignment: Alignment.centerRight,
+      children: [
+        ClipRRect(
+          borderRadius: BorderRadius.circular(AppSize.cardBorderRadius + 10),
+          child: SizedBox(
+            width: 650,
+            height: 550,
+            child: Hero(
+              tag: 'hero-image-${widget.itemDetail['image']}',
+              child: menuData.selectedImageBytes != null
+                  ? Image.memory(
+                      menuData.selectedImageBytes!,
+                      fit: BoxFit.cover,
+                    )
+                  : _buildMenuImage(widget.itemDetail['image']),
+            ),
           ),
         ),
-      ),
+
+        // Change Image Button
+        Positioned(
+          bottom: 20,
+          right: 20,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(AppSize.cardBorderRadius),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
+              child: Container(
+                height: 52,
+                width: 52,
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.3),
+                  borderRadius: BorderRadius.circular(AppSize.cardBorderRadius),
+                ),
+              ),
+            ),
+          ),
+        ),
+        Positioned(
+          bottom: 29,
+          right: 27,
+          child: GestureDetector(
+            onTap: () async {
+              final success = await menuData.changeImage();
+              if (success) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Image Selected Successfully'),
+                  ),
+                );
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Error Selecting Image'),
+                  ),
+                );
+              }
+            },
+            child: const Icon(
+              Icons.camera_alt_rounded,
+              size: 36,
+              color: AppColors.appAccent,
+            ),
+          ),
+        ),
+      ],
     );
+  }
+
+  Widget _buildMenuImage(String imagePath) {
+    // Check if it's a Firebase Storage URL
+    if (imagePath.startsWith('https://')) {
+      return CustomNetworkImage(imagePath: imagePath);
+    }
+    // It's an asset image
+    else {
+      return Image.asset(
+        imagePath,
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) {
+          debugPrint('Error loading asset image: $error');
+          return const Icon(
+            Icons.broken_image,
+            size: 50,
+            color: Colors.grey,
+          );
+        },
+      );
+    }
   }
 
   Widget buildDivider() {

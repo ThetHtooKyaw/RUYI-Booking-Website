@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ruyi_booking/providers/menu_data_provider.dart';
 import 'package:ruyi_booking/utils/constants.dart';
+import 'package:ruyi_booking/widgets/cores/custom_network_image.dart';
 
 enum FavMenuCardType { mobileSize, desktopSize }
 
@@ -49,10 +50,8 @@ class _FavMenuCardState extends State<FavMenuCard> {
               width: widget.type == FavMenuCardType.mobileSize
                   ? (screenWidth * 0.36).clamp(100.0, 160.0)
                   : 160,
-              child: Image.asset(
-                widget.menuItem['itemImage'],
-                fit: BoxFit.cover,
-              ),
+              child:
+                  CustomNetworkImage(imagePath: widget.menuItem['itemImage']),
             ),
           ),
           SizedBox(width: screenWidth < 430 ? 10 : 15),

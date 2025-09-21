@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:ruyi_booking/providers/menu_data_provider.dart';
 import 'package:ruyi_booking/screens/menus/widgets/food_category_bar.dart';
 import 'package:ruyi_booking/utils/constants.dart';
+import '../../../../widgets/cores/custom_network_image.dart';
 import '../edit_menu_detail/edit_menu_detail_screen.dart';
 
 class DesktopEditMenuListScreen extends StatefulWidget {
@@ -110,10 +111,8 @@ class _DesktopEditMenuListScreenState extends State<DesktopEditMenuListScreen> {
                                     height: 160,
                                     child: Hero(
                                       tag: 'hero-image-${item['image']}',
-                                      child: Image.asset(
-                                        item['image'],
-                                        fit: BoxFit.cover,
-                                      ),
+                                      child: CustomNetworkImage(
+                                          imagePath: item['image']),
                                     ),
                                   ),
                                 ),

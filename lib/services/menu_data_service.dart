@@ -44,23 +44,66 @@ class MenuDataService {
     }
   }
 
+  Future<String?> uploadImage(
+      String menuId, Uint8List selectedImageBytes) async {
+    try {
+      // Create a unique filename with timestamp
+      final timestamp = DateTime.now().millisecondsSinceEpoch;
+      final fileName = 'menu_$menuId.jpg';
+
+      // Create reference to Firebase Storage
+      final storageRef = FirebaseStorage.instance
+          .ref()
+          .child('images/menu_images')
+          .child(fileName);
+
+      // Upload the image
+      final uploadTask = storageRef.putData(
+        selectedImageBytes,
+        SettableMetadata(
+          contentType: 'image/jpeg',
+          customMetadata: {
+            'menuId': menuId,
+            'uploadedAt': timestamp.toString(),
+          },
+        ),
+      );
+
+      // Wait for upload to complete
+      final snapshot = await uploadTask;
+
+      // Get download URL
+      final downloadUrl = await snapshot.ref.getDownloadURL();
+
+      debugPrint('Image uploaded successfully!');
+      return downloadUrl;
+    } catch (e) {
+      debugPrint('Error uploading image to Firebase Storage: $e');
+      return null;
+    }
+  }
+
   Future<bool> updateMenuData(List<Map<String, dynamic>> updatedMenuLang,
-      Map<String, dynamic>? updatedMenuData) async {
+      Map<String, dynamic> updatedMenuData) async {
     try {
       final menuData = await fetchMenuData();
       final menuLangData = await fetchMenuDataLanguage();
 
       // Menu Data Update
 
-      if (updatedMenuData == null) {
-        debugPrint('No menu data to update, only updating language data');
-      } else {
-        final menuIndex =
-            menuData.indexWhere((item) => item['id'] == updatedMenuData['id']);
-        if (menuIndex == -1) {
-          throw Exception("Menu item not found: ${updatedMenuData['id']}");
-        }
+      final menuIndex =
+          menuData.indexWhere((item) => item['id'] == updatedMenuData['id']);
+      if (menuIndex == -1) {
+        throw Exception("Menu item not found: ${updatedMenuData['id']}");
+      }
 
+      if (updatedMenuData.containsKey('image') &&
+          updatedMenuData['image'] != null) {
+        menuData[menuIndex]['image'] = updatedMenuData['image'];
+      }
+
+      if (updatedMenuData.containsKey('options') &&
+          updatedMenuData['options'] != null) {
         if (updatedMenuData['options'] case final option as Map) {
           final existingOptions =
               Map<String, dynamic>.from(menuData[menuIndex]['options'] as Map);

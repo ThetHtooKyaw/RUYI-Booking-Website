@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:ruyi_booking/classes/category.dart';
 import 'package:ruyi_booking/services/menu_data_service.dart';
 import 'package:ruyi_booking/utils/asset_loader.dart';
@@ -13,6 +15,10 @@ class MenuDataProvider extends ChangeNotifier {
   final MenuDataService _menuDataService = MenuDataService();
 
   final addMethodKey = GlobalKey<FormState>();
+
+  final ImagePicker _picker = ImagePicker();
+  Uint8List? _selectedImageBytes;
+  String? _selectedImagePath;
 
   final TextEditingController searchController = TextEditingController();
   late TextEditingController nameEnController = TextEditingController();
@@ -395,6 +401,41 @@ class MenuDataProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Getter for selected image bytes
+  Uint8List? get selectedImageBytes => _selectedImageBytes;
+
+  // Getter for selected image path
+  String? get selectedImagePath => _selectedImagePath;
+
+  Future<bool> changeImage() async {
+    try {
+      final XFile? image = await _picker.pickImage(
+        source: ImageSource.gallery,
+        maxWidth: 1920,
+        maxHeight: 1080,
+        imageQuality: 85,
+      );
+
+      if (image != null) {
+        final Uint8List imageBytes = await image.readAsBytes();
+        _selectedImageBytes = imageBytes;
+        _selectedImagePath = image.path;
+        notifyListeners();
+        return true; // Success
+      }
+      return false; // User cancelled
+    } catch (e) {
+      debugPrint('Error selecting image: $e');
+      return false; // Error occurred
+    }
+  }
+
+  void clearSelectedImage() {
+    _selectedImageBytes = null;
+    _selectedImagePath = null;
+    notifyListeners();
+  }
+
   Future<void> loadMenuData() async {
     try {
       isMenuDetailLoading = true;
@@ -498,7 +539,6 @@ class MenuDataProvider extends ChangeNotifier {
       }
 
       // Update Menu Data Languages (Name, Type, Category)
-
       final List<Map<String, dynamic>> updatedMenuLang = [
         {
           'id': itemDetail['name'],
@@ -520,8 +560,7 @@ class MenuDataProvider extends ChangeNotifier {
         }
       ];
 
-      // Update Menu Data Price
-
+      // Update Menu Data Price and Image
       Map<String, dynamic>? updatedMenuData;
       final priceText = priceController.text.trim();
 
@@ -548,19 +587,51 @@ class MenuDataProvider extends ChangeNotifier {
         };
       }
 
+      // Upload image to Firebase Storage if a new image was selected
+      if (_selectedImageBytes != null) {
+        final imageUrl = await _menuDataService.uploadImage(
+            itemDetail['id'], _selectedImageBytes!);
+        if (imageUrl != null) {
+          updatedMenuData ??= {
+            'id': itemDetail['id'],
+          };
+          updatedMenuData['image'] = imageUrl;
+        } else {
+          DialogUtils.showBookingConfirmationDialog(
+            context,
+            'UPLOAD FAILED!',
+            'Failed to upload image. Please try again.',
+            () {
+              Navigator.pop(context);
+            },
+          );
+          return;
+        }
+      }
+
       bool success = await _menuDataService.updateMenuData(
-          updatedMenuLang, updatedMenuData);
+          updatedMenuLang, updatedMenuData!);
 
       if (success) {
+        final message = _selectedImageBytes != null
+            ? 'Menu Data and Image have been successfully updated!'
+            : 'Menu Data has been successfully updated!';
+
         DialogUtils.showBookingConfirmationDialog(
           context,
           'UPDATE SUCCESSFUL!',
-          'Menu Data has been successfully updated!',
+          message,
           () {
             Navigator.pop(context);
           },
         );
+
+        // Clear selected image since it's now saved
+        if (_selectedImageBytes != null) {
+          clearSelectedImage();
+        }
       }
+
       await loadMenuData();
     } catch (e) {
       debugPrint("Error updating menu data: $e");

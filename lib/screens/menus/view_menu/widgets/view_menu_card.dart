@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:ruyi_booking/providers/menu_data_provider.dart';
 import 'package:ruyi_booking/screens/menus/widgets/type_section.dart';
 import 'package:ruyi_booking/utils/constants.dart';
+import 'package:ruyi_booking/widgets/cores/custom_network_image.dart';
 
 enum ViewMenuCardType { mobileSize, desktopSize }
 
@@ -49,10 +50,7 @@ class _ViewMenuCardState extends State<ViewMenuCard> {
               width: widget.type == ViewMenuCardType.mobileSize
                   ? (screenWidth * 0.36).clamp(110.0, 170.0)
                   : 200,
-              child: Image.asset(
-                widget.menuItem['image'],
-                fit: BoxFit.cover,
-              ),
+              child: CustomNetworkImage(imagePath: widget.menuItem['image']),
             ),
           ),
           const SizedBox(width: 15),

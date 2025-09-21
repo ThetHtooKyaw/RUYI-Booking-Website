@@ -5,6 +5,8 @@ import 'package:ruyi_booking/providers/menu_data_provider.dart';
 import 'package:ruyi_booking/screens/menus/widgets/item_counter.dart';
 import 'package:ruyi_booking/utils/constants.dart';
 
+import '../../../../widgets/cores/custom_network_image.dart';
+
 enum CartMenuCardType { mobileSize, desktopSize }
 
 class CartMenuCard extends StatefulWidget {
@@ -48,10 +50,8 @@ class _CartMenuCardState extends State<CartMenuCard> {
               width: widget.type == CartMenuCardType.mobileSize
                   ? (screenWidth * 0.36).clamp(100.0, 160.0)
                   : 160,
-              child: Image.asset(
-                widget.menuItem['itemImage'],
-                fit: BoxFit.cover,
-              ),
+              child:
+                  CustomNetworkImage(imagePath: widget.menuItem['itemImage']),
             ),
           ),
           SizedBox(width: screenWidth < 430 ? 10 : 15),
