@@ -39,7 +39,7 @@ class ShopContent extends StatelessWidget {
               title: 'contact_us'.tr(),
               content:
                   'Phone Numberc: 09-986619999, 09-986629999\nEmail : yinli5027770@gmail.com'),
-          const SizedBox(height: 20),
+          const SizedBox(height: 10),
         ],
       ),
     );

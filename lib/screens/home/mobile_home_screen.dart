@@ -176,7 +176,7 @@ class _MobileHomeScreenState extends State<MobileHomeScreen> {
     return Drawer(
       child: Column(
         children: [
-          const SizedBox(height: 40),
+          const SizedBox(height: 60),
           const LanguagePicker(
             offset: -35,
             color: Colors.black,

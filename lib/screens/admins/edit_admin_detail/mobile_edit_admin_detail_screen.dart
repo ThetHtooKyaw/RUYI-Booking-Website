@@ -172,7 +172,7 @@ class _MobileEditAdminDetailScreenState
                                 });
                               },
                             ),
-                      const SizedBox(height: 100),
+                      const SizedBox(height: 40),
                       ButtonUtils.backwardButton(
                         context: context,
                         width: double.infinity,
@@ -202,7 +202,7 @@ class _MobileEditAdminDetailScreenState
                           ),
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 10),
                     ],
                   ),
                 ),

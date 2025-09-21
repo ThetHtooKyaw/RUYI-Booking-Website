@@ -1,8 +1,6 @@
-import 'package:device_preview/device_preview.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ruyi_booking/firebase_options.dart';
@@ -19,22 +17,19 @@ void main() async {
   await EasyLocalization.ensureInitialized();
   await FirebaseAuth.instance.setPersistence(Persistence.LOCAL);
   runApp(
-    DevicePreview(
-      enabled: !kDebugMode,
-      builder: (context) => EasyLocalization(
-        supportedLocales: const [Locale('en'), Locale('zh'), Locale('my')],
-        path: 'translations',
-        fallbackLocale: const Locale('en'),
-        assetLoader: const LocalAssetLoader(),
-        child: MultiProvider(
-          providers: [
-            ChangeNotifierProvider(create: (context) => BookingDataProvider()),
-            ChangeNotifierProvider(create: (context) => AdminAuthProvider()),
-            ChangeNotifierProvider(
-                create: (context) => MenuDataProvider()..loadMenuData()),
-          ],
-          child: const MyApp(),
-        ),
+    EasyLocalization(
+      supportedLocales: const [Locale('en'), Locale('zh'), Locale('my')],
+      path: 'translations',
+      fallbackLocale: const Locale('en'),
+      assetLoader: const LocalAssetLoader(),
+      child: MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context) => BookingDataProvider()),
+          ChangeNotifierProvider(create: (context) => AdminAuthProvider()),
+          ChangeNotifierProvider(
+              create: (context) => MenuDataProvider()..loadMenuData()),
+        ],
+        child: const MyApp(),
       ),
     ),
   );

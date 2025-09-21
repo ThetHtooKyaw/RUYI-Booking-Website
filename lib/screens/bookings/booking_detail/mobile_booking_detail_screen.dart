@@ -90,7 +90,7 @@ class _MobileBookingDetailScreenState extends State<MobileBookingDetailScreen> {
                 fontSize: 17,
                 onPressed: () => Navigator.pop(context),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
             ],
           ),
         ),
