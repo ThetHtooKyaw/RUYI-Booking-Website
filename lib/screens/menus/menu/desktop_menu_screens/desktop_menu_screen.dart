@@ -35,7 +35,7 @@ class _DesktopMenuScreenState extends State<DesktopMenuScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
-              width: 350,
+              width: 250,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -47,20 +47,22 @@ class _DesktopMenuScreenState extends State<DesktopMenuScreen> {
                   ),
                   const SizedBox(height: 10),
                   Expanded(
-                      child: FoodCategoryBar(
-                    selectedCategory: selectedCategory,
-                    onCategorySelected: (index) {
-                      setState(() {
-                        selectedCategory = index;
-                      });
-                    },
-                    type: FoodCategoryBarType.vAxis,
-                  )),
+                    child: FoodCategoryBar(
+                      selectedCategory: selectedCategory,
+                      onCategorySelected: (index) {
+                        setState(() {
+                          selectedCategory = index;
+                        });
+                      },
+                      type: FoodCategoryBarType.vAxis,
+                    ),
+                  ),
                 ],
               ),
             ),
             const SizedBox(width: AppSize.screenPadding),
             Expanded(
+              flex: 2,
               child: DesktopMenuSecondLayer(
                 filteredItems: filteredItems,
                 selectedCategory: selectedCategory,
@@ -69,10 +71,10 @@ class _DesktopMenuScreenState extends State<DesktopMenuScreen> {
             const SizedBox(width: AppSize.screenPadding),
             menuData.isClicked
                 ? menuData.favItems.isNotEmpty
-                    ? const DesktopViewMenuThirdLayer()
+                    ? const SizedBox(width: 400, child: DesktopViewMenuThirdLayer())
                     : const SizedBox()
                 : menuData.cartedItems.isNotEmpty
-                    ? const DesktopMenuThirdLayer()
+                    ? const SizedBox(width: 400, child: DesktopMenuThirdLayer())
                     : const SizedBox(),
           ],
         ),

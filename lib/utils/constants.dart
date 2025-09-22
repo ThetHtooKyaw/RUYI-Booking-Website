@@ -11,7 +11,7 @@ class AppColors {
 }
 
 class AppSize {
-  static const double screenPadding = 16;
+  static const double screenPadding = 12;
 
   static const double listViewMargin = 10;
 

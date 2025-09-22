@@ -26,10 +26,15 @@ class BookingTitle extends StatelessWidget {
         const SizedBox(width: 10),
         Text(
           label,
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontFamily: 'PlayfairDisplay',
-                color: AppColors.appAccent,
-              ),
+          style: type == BookingTitleType.mobileSize
+              ? Theme.of(context).textTheme.titleSmall?.copyWith(
+                    fontFamily: 'PlayfairDisplay',
+                    color: AppColors.appAccent,
+                  )
+              : Theme.of(context).textTheme.titleLarge?.copyWith(
+                    fontFamily: 'PlayfairDisplay',
+                    color: AppColors.appAccent,
+                  ),
         ),
       ],
     );

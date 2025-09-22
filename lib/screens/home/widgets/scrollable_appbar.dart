@@ -16,26 +16,14 @@ class ScrollableAppbar extends StatelessWidget {
       floating: true,
       snap: false,
       pinned: true,
-      toolbarHeight: 80,
+      toolbarHeight: 70,
       leadingWidth: 200,
       backgroundColor: Colors.white,
       elevation: 4,
-      leading: Padding(
-        padding: const EdgeInsets.only(left: 40),
-        child: Row(
-          children: [
-            const Padding(
-              padding: EdgeInsets.only(left: 20, right: 20),
-              child: Center(
-                child: MainLogo(height: 55, width: 55),
-              ),
-            ),
-            Container(
-              height: 70,
-              width: 2,
-              color: AppColors.appAccent,
-            ),
-          ],
+      leading: const Padding(
+        padding: EdgeInsets.only(left: 40),
+        child: Center(
+          child: MainLogo(height: 55, width: 55),
         ),
       ),
       title: Row(

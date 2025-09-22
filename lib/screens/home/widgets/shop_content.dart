@@ -67,7 +67,7 @@ class ShopContent extends StatelessWidget {
               title,
               style: Theme.of(context)
                   .textTheme
-                  .titleMedium
+                  .titleSmall
                   ?.copyWith(fontFamily: 'PlayfairDisplay'),
             ),
           ],

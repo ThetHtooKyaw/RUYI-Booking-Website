@@ -31,9 +31,7 @@ class _ViewMenuCardState extends State<ViewMenuCard> {
 
     return Container(
       padding: const EdgeInsets.all(AppSize.cardPadding),
-      height: widget.type == ViewMenuCardType.mobileSize
-          ? (screenWidth * 0.45).clamp(130.0, 178.0)
-          : 175,
+      height: 180,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(AppSize.cardBorderRadius),
@@ -45,10 +43,14 @@ class _ViewMenuCardState extends State<ViewMenuCard> {
             borderRadius: BorderRadius.circular(AppSize.smallCardBorderRadius),
             child: SizedBox(
               height: widget.type == ViewMenuCardType.mobileSize
-                  ? (screenWidth * 0.38).clamp(100.0, 160.0)
+                  ? screenWidth <= 414
+                      ? 150
+                      : 160
                   : 160,
               width: widget.type == ViewMenuCardType.mobileSize
-                  ? (screenWidth * 0.36).clamp(110.0, 170.0)
+                  ? screenWidth <= 414
+                      ? 150
+                      : 160
                   : 200,
               child: CustomNetworkImage(imagePath: widget.menuItem['image']),
             ),

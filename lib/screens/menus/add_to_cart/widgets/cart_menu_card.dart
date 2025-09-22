@@ -32,9 +32,7 @@ class _CartMenuCardState extends State<CartMenuCard> {
 
     return Container(
       padding: const EdgeInsets.all(AppSize.cardPadding),
-      height: widget.type == CartMenuCardType.mobileSize
-          ? (screenWidth * 0.45).clamp(110.0, 150.0)
-          : 150,
+      height: 160,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(AppSize.cardBorderRadius),
@@ -45,11 +43,11 @@ class _CartMenuCardState extends State<CartMenuCard> {
             borderRadius: BorderRadius.circular(AppSize.smallCardBorderRadius),
             child: SizedBox(
               height: widget.type == CartMenuCardType.mobileSize
-                  ? (screenWidth * 0.38).clamp(70.0, 130.0)
-                  : 130,
-              width: widget.type == CartMenuCardType.mobileSize
-                  ? (screenWidth * 0.36).clamp(100.0, 160.0)
+                  ? screenWidth <= 414
+                      ? 150
+                      : 160
                   : 160,
+              width: 150,
               child:
                   CustomNetworkImage(imagePath: widget.menuItem['itemImage']),
             ),

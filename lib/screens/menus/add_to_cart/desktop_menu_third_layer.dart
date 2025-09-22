@@ -35,67 +35,64 @@ class _DesktopMenuThirdLayerState extends State<DesktopMenuThirdLayer> {
   Widget build(BuildContext context) {
     var menuData = Provider.of<MenuDataProvider>(context);
 
-    return SizedBox(
-      width: 450,
-      child: Column(
-        children: [
-          Text(
-            'cart'.tr(),
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                color: AppColors.appAccent, fontFamily: 'PlayfairDisplay'),
-          ),
-          const SizedBox(height: 10),
-          Expanded(
-            child: menuData.cartedItems.isEmpty
-                ? const CartEmptyTitle()
-                : Stack(
-                    children: [
-                      ListView.separated(
-                        controller: _scrollController,
-                        padding: const EdgeInsets.only(bottom: 20),
-                        separatorBuilder: (_, __) =>
-                            const SizedBox(height: AppSize.listViewMargin),
-                        itemCount: menuData.cartedItems.length,
-                        itemBuilder: (context, index) {
-                          final itemKey =
-                              menuData.cartedItems.keys.toList()[index];
-                          final item = menuData.cartedItems[itemKey];
-
-                          if (item == null) return const SizedBox();
-
-                          return CartMenuCard(
-                            menuItem: item,
-                            itemKey: itemKey,
-                            type: CartMenuCardType.desktopSize,
-                          );
+    return Column(
+      children: [
+        Text(
+          'cart'.tr(),
+          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+              color: AppColors.appAccent, fontFamily: 'PlayfairDisplay'),
+        ),
+        const SizedBox(height: 10),
+        Expanded(
+          child: menuData.cartedItems.isEmpty
+              ? const CartEmptyTitle()
+              : Stack(
+                  children: [
+                    ListView.separated(
+                      controller: _scrollController,
+                      padding: const EdgeInsets.only(bottom: 20),
+                      separatorBuilder: (_, __) =>
+                          const SizedBox(height: AppSize.listViewMargin),
+                      itemCount: menuData.cartedItems.length,
+                      itemBuilder: (context, index) {
+                        final itemKey =
+                            menuData.cartedItems.keys.toList()[index];
+                        final item = menuData.cartedItems[itemKey];
+    
+                        if (item == null) return const SizedBox();
+    
+                        return CartMenuCard(
+                          menuItem: item,
+                          itemKey: itemKey,
+                          type: CartMenuCardType.desktopSize,
+                        );
+                      },
+                    ),
+                    ListViewShadow(shadowOpacity: _shadowOpacity),
+                  ],
+                ),
+        ),
+        menuData.cartedItems.isNotEmpty
+            ? CartBottomSheet(
+                cartedItems: menuData.cartedItems,
+                button: Row(
+                  children: [
+                    Expanded(
+                      child: ButtonUtils.forwardButton(
+                        context: context,
+                        width: 220,
+                        label: 'confirm'.tr(),
+                        fontSize: 17,
+                        onPressed: () {
+                          Navigator.pop(context);
                         },
                       ),
-                      ListViewShadow(shadowOpacity: _shadowOpacity),
-                    ],
-                  ),
-          ),
-          menuData.cartedItems.isNotEmpty
-              ? CartBottomSheet(
-                  cartedItems: menuData.cartedItems,
-                  button: Row(
-                    children: [
-                      Expanded(
-                        child: ButtonUtils.forwardButton(
-                          context: context,
-                          width: 220,
-                          label: 'confirm'.tr(),
-                          fontSize: 17,
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-              : const SizedBox(),
-        ],
-      ),
+                    ),
+                  ],
+                ),
+              )
+            : const SizedBox(),
+      ],
     );
   }
 }

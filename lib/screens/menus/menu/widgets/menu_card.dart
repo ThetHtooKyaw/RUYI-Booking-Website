@@ -33,9 +33,7 @@ class _MenuCardState extends State<MenuCard> {
 
     return Container(
       padding: const EdgeInsets.all(AppSize.cardPadding),
-      height: widget.type == MenuCardType.mobileSize
-          ? (screenWidth * 0.45).clamp(130.0, 178.0)
-          : 175,
+      height: 180,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(AppSize.cardBorderRadius),
@@ -46,15 +44,19 @@ class _MenuCardState extends State<MenuCard> {
             borderRadius: BorderRadius.circular(AppSize.smallCardBorderRadius),
             child: SizedBox(
               height: widget.type == MenuCardType.mobileSize
-                  ? (screenWidth * 0.38).clamp(100.0, 160.0)
+                  ? screenWidth <= 414
+                      ? 150
+                      : 160
                   : 160,
               width: widget.type == MenuCardType.mobileSize
-                  ? (screenWidth * 0.36).clamp(110.0, 170.0)
+                  ? screenWidth <= 414
+                      ? 150
+                      : 160
                   : 200,
               child: CustomNetworkImage(imagePath: widget.menuItem['image']),
             ),
           ),
-          SizedBox(width: screenWidth < 430 ? 10 : 15),
+          SizedBox(width: screenWidth <= 414 ? 8 : 12),
           _buildFoodInfo(context, menuData, widget.menuItem, widget.uniqueKey),
         ],
       ),
@@ -91,9 +93,12 @@ class _MenuCardState extends State<MenuCard> {
                 color: Theme.of(context).iconTheme.color,
               ),
               const SizedBox(width: 10),
-              Text(
-                menuData.onGetPrice(item),
-                style: Theme.of(context).textTheme.bodyLarge,
+              Expanded(
+                child: Text(
+                  menuData.onGetPrice(item),
+                  style: Theme.of(context).textTheme.bodyLarge,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             ],
           ),

@@ -18,8 +18,8 @@ class SmallButton extends StatelessWidget {
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         padding: EdgeInsets.symmetric(
-          vertical: (screenWidth * 0.04).clamp(6.0, 20.0),
-          horizontal: (screenWidth * 0.02).clamp(4.0, 10.0),
+          vertical: screenWidth <= 414 ? 6 : 20,
+          horizontal: screenWidth <= 414 ? 4 : 10,
         ),
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AppSize.smallCardBorderRadius)),

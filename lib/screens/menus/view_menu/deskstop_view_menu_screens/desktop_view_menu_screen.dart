@@ -34,7 +34,7 @@ class _DesktopViewMenuScreenState extends State<DesktopViewMenuScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
-              width: 350,
+              width: 250,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -60,13 +60,14 @@ class _DesktopViewMenuScreenState extends State<DesktopViewMenuScreen> {
             ),
             const SizedBox(width: AppSize.screenPadding),
             Expanded(
+              flex: 2,
               child: DesktopViewMenuSecondLayer(
                   filteredItems: filteredItems,
                   selectedCategory: selectedCategory),
             ),
             const SizedBox(width: AppSize.screenPadding),
             menuData.favItems.isNotEmpty
-                ? const DesktopViewMenuThirdLayer()
+                ? const SizedBox(width: 400, child: DesktopViewMenuThirdLayer())
                 : const SizedBox(),
           ],
         ),

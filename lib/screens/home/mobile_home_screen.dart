@@ -8,6 +8,7 @@ import 'package:ruyi_booking/screens/admins/authentication/login/login_screen.da
 import 'package:ruyi_booking/screens/bookings/booking/booking_screen.dart';
 import 'package:ruyi_booking/screens/home/widgets/shop_content.dart';
 import 'package:ruyi_booking/screens/menus/view_menu/view_menu_screen.dart';
+import 'package:ruyi_booking/screens/menus/widgets/small_button.dart';
 import 'package:ruyi_booking/utils/constants.dart';
 import 'package:ruyi_booking/widgets/extras/custom_buttons.dart';
 import 'package:ruyi_booking/widgets/extras/custom_divider.dart';
@@ -152,8 +153,8 @@ class _MobileHomeScreenState extends State<MobileHomeScreen> {
             },
             style: ElevatedButton.styleFrom(
               padding: EdgeInsets.symmetric(
-                horizontal: (screenWidth * 0.03).clamp(7.0, 14.0),
-                vertical: (screenWidth * 0.038).clamp(6.0, 22.0),
+                vertical: screenWidth <= 414 ? 8 : 20,
+                horizontal: screenWidth <= 414 ? 8 : 10,
               ),
               shape: RoundedRectangleBorder(
                   borderRadius:
@@ -161,13 +162,13 @@ class _MobileHomeScreenState extends State<MobileHomeScreen> {
             ),
             child: Text(
               'BOOK NOW',
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyLarge
-                  ?.copyWith(color: Colors.white),
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
             ),
           ),
-        )
+        ),
       ],
     );
   }
